@@ -8,30 +8,33 @@ class ArtistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget header() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.arrow_back,
-                color: primaryColor,
-              )),
-          Text(
-            "Artist",
-            style: primaryColorText.copyWith(
-                fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
-          )
-        ],
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  color: primaryColor,
+                )),
+            Text(
+              "Artist",
+              style: primaryColorText.copyWith(
+                  fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
+            )
+          ],
+        ),
       );
     }
 
     Widget sortAndFilter() {
       return Container(
-        margin: const EdgeInsets.only(top: 30, bottom: 30),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         child: Column(
           children: [
             Row(
@@ -65,72 +68,71 @@ class ArtistPage extends StatelessWidget {
 
     Widget artistTile() {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        height: 84,
         margin: const EdgeInsets.only(bottom: 24),
-        child: Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(right: 32),
-                height: 84,
-                width: 84,
-                decoration: BoxDecoration(
-                    image: const DecorationImage(
-                        image: AssetImage("assets/artist_img.png"),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(180)),
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 32),
+              height: 84,
+              width: 84,
+              decoration: BoxDecoration(
+                  image: const DecorationImage(
+                      image: AssetImage("assets/artist_img.png"),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.circular(180)),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Ariana Grande",
+                    overflow: TextOverflow.ellipsis,
+                    style: primaryColorText.copyWith(
+                        fontSize: 14, fontWeight: bold),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    "1 Album | 12 songs",
+                    overflow: TextOverflow.clip,
+                    style: primaryColorText.copyWith(
+                        fontSize: 12, fontWeight: light),
+                  )
+                ],
               ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Ariana Grande",
-                      overflow: TextOverflow.ellipsis,
-                      style: primaryColorText.copyWith(
-                          fontSize: 14, fontWeight: bold),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      "1 Album | 12 songs",
-                      overflow: TextOverflow.clip,
-                      style: primaryColorText.copyWith(
-                          fontSize: 12, fontWeight: light),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       );
     }
 
     Widget listOfArtist() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          artistTile(),
-          artistTile(),
-          artistTile(),
-          artistTile(),
-          artistTile(),
-          artistTile(),
-          artistTile(),
-        ],
+      return Expanded(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 24),
+          children: [
+            artistTile(),
+            artistTile(),
+            artistTile(),
+            artistTile(),
+            artistTile(),
+            artistTile(),
+            artistTile(),
+          ],
+        ),
       );
     }
 
     Widget content() {
-      return ListView(
-        padding: EdgeInsets.symmetric(
-            horizontal: defaultMargin, vertical: defaultMargin),
-        children: [header(), sortAndFilter(), listOfArtist()],
+      return Column(
+        children: [
+          header(),
+          sortAndFilter(),
+          listOfArtist(),
+        ],
       );
     }
 

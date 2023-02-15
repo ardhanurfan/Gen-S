@@ -8,31 +8,38 @@ class RecentlyPlayedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget header() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.arrow_back,
-                color: primaryColor,
-              )),
-          Text(
-            "Recently Played",
-            style: primaryColorText.copyWith(fontWeight: bold, fontSize: 24),
-          )
-        ],
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  color: primaryColor,
+                )),
+            Text(
+              "Recently Played",
+              style: primaryColorText.copyWith(fontWeight: bold, fontSize: 24),
+            )
+          ],
+        ),
       );
     }
 
     Widget listOfSong() {
-      return Padding(
-        padding: const EdgeInsets.only(top: 47),
-        child: Column(
-          // ignore: prefer_const_literals_to_create_immutables
+      return Expanded(
+        child: ListView(
+          padding:
+              EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
           children: [
+            const SongTile(),
+            const SongTile(),
+            const SongTile(),
+            const SongTile(),
             const SongTile(),
             const SongTile(),
             const SongTile(),
@@ -46,10 +53,11 @@ class RecentlyPlayedPage extends StatelessWidget {
     }
 
     Widget content() {
-      return ListView(
-        padding: EdgeInsets.symmetric(
-            horizontal: defaultMargin, vertical: defaultMargin),
-        children: [header(), listOfSong()],
+      return Column(
+        children: [
+          header(),
+          listOfSong(),
+        ],
       );
     }
 
