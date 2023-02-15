@@ -92,7 +92,7 @@ class SignUpPage extends StatelessWidget {
           ),
           CustomButton(
             marginTop: 60,
-            marginBottom: 90,
+            marginBottom: 80,
             heightButton: 53,
             radiusButton: 32,
             buttonColor: secondaryColor,

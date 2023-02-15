@@ -27,14 +27,14 @@ class CustomForm extends StatelessWidget {
           margin: const EdgeInsets.only(top: 42),
           child: Text(
             title,
-            style: primaryColorText.copyWith(fontSize: 13, fontWeight: medium),
+            style: primaryColorText.copyWith(fontSize: 14, fontWeight: medium),
           ),
         ),
         const SizedBox(height: 3),
         TextFormField(
           controller: textController,
           obscureText: isPassword,
-          style: primaryColorText.copyWith(fontSize: 13),
+          style: primaryColorText.copyWith(fontSize: 14),
           cursorColor: primaryColor,
           decoration: InputDecoration(
             suffixIcon: Visibility(
