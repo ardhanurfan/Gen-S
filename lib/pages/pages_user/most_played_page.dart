@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
-import 'package:music_player/widgets/song_tile.dart';
 
-class RecentlyPlayedPage extends StatelessWidget {
-  const RecentlyPlayedPage({super.key});
+import '../../widgets/song_tile.dart';
+
+class MostPlayedPage extends StatelessWidget {
+  const MostPlayedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class RecentlyPlayedPage extends StatelessWidget {
                 color: primaryColor,
               )),
           Text(
-            "Recently Played",
+            "Most Played",
             style: primaryColorText.copyWith(fontWeight: bold, fontSize: 24),
           )
         ],
@@ -31,15 +32,14 @@ class RecentlyPlayedPage extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(top: 47),
         child: Column(
-          // ignore: prefer_const_literals_to_create_immutables
           children: [
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
+            SongTile(isMostPlayed: true),
+            SongTile(isMostPlayed: true),
+            SongTile(isMostPlayed: true),
+            SongTile(isMostPlayed: true),
+            SongTile(isMostPlayed: true),
+            SongTile(isMostPlayed: true),
+            SongTile(isMostPlayed: true),
           ],
         ),
       );
