@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/pages_user/artist_page.dart';
 
 import 'pages/forgot_password_page.dart';
 import 'pages/import_audio_page.dart';
@@ -17,13 +18,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MostPlayedPage(),
+      home: const ArtistPage(),
       routes: {
         '/sign-in': (context) => const SignInPage(),
         '/sign-up': (context) => const SignUpPage(),
         '/forgot-password': (context) => const ForgotPasswordPage(),
         '/import-audio': (context) => const ImportAudioPage(),
         '/recently-played': (context) => const RecentlyPlayedPage(),
+        '/most-played': (context) => const MostPlayedPage(),
+        '/artist': (context) => const ArtistPage(),
       },
     );
   }
