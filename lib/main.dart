@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/forgot_password_page.dart';
 import 'package:music_player/pages/import_audio_page.dart';
-import 'package:music_player/pages_user/recently_played_page.dart';
+import 'package:music_player/pages/pages_user/recently_played_page.dart';
 
 import 'pages/sign_up_page.dart';
 import 'pages/sign_in_page.dart';
