@@ -72,6 +72,7 @@ class SongTile extends StatelessWidget {
                   color: primaryColor,
                 ),
               ),
+              const SizedBox(width: 20),
               Visibility(
                 visible: isHome,
                 child: GestureDetector(
