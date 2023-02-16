@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/pages_user/home_page.dart';
 
 import 'pages/pages_user/artist_page.dart';
 import 'pages/forgot_password_page.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       scrollBehavior: MyBehavior(),
-      home: const MostPlayedPage(),
+      home: const HomePage(),
       routes: {
         '/sign-in': (context) => const SignInPage(),
         '/sign-up': (context) => const SignUpPage(),

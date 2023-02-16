@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
 
 import 'suggested_home_content.dart';
+import 'songs_home_content.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -144,7 +145,7 @@ class HomePage extends StatelessWidget {
       return Column(
         children: [
           switchContent(),
-          const SuggestedHomeContent(),
+          const SongsHomeContent(),
         ],
       );
     }
