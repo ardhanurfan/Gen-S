@@ -8,24 +8,34 @@ class RecentlyPlayedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget header() {
-      return Container(
+      return SliverPadding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
+        sliver: SliverAppBar(
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          titleSpacing: 0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },
                 child: Icon(
                   Icons.arrow_back,
                   color: primaryColor,
-                )),
-            Text(
-              "Recently Played",
-              style: primaryColorText.copyWith(fontWeight: bold, fontSize: 24),
-            )
-          ],
+                ),
+              ),
+              Text(
+                "Recently Played",
+                style: primaryColorText.copyWith(
+                    fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
+              ),
+            ],
+          ),
+          backgroundColor: backgroundColor,
+          floating: true,
+          snap: true,
         ),
       );
     }
@@ -33,37 +43,37 @@ class RecentlyPlayedPage extends StatelessWidget {
     Widget listOfSong() {
       return Expanded(
         child: ListView(
-          padding:
-              EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
-          children: [
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
-            const SongTile(),
+          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+          children: const [
+            SongTile(),
+            SongTile(),
+            SongTile(),
+            SongTile(),
+            SongTile(),
+            SongTile(),
+            SongTile(),
+            SongTile(),
+            SongTile(),
+            SongTile(),
+            SongTile(),
           ],
         ),
       );
     }
 
-    Widget content() {
-      return Column(
-        children: [
-          header(),
-          listOfSong(),
-        ],
-      );
-    }
-
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SafeArea(child: content()),
+      body: SafeArea(
+        child: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              header(),
+            ];
+          },
+          body: listOfSong(),
+        ),
+      ),
     );
   }
 }

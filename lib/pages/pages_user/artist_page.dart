@@ -8,33 +8,42 @@ class ArtistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget header() {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
+      return SliverPadding(
+        padding:
+            EdgeInsets.only(right: defaultMargin, left: defaultMargin, top: 24),
+        sliver: SliverAppBar(
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          titleSpacing: 0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },
                 child: Icon(
                   Icons.arrow_back,
                   color: primaryColor,
-                )),
-            Text(
-              "Artist",
-              style: primaryColorText.copyWith(
-                  fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
-            )
-          ],
+                ),
+              ),
+              Text(
+                "Artist",
+                style: primaryColorText.copyWith(
+                    fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
+              ),
+            ],
+          ),
+          backgroundColor: backgroundColor,
+          floating: true,
+          snap: true,
         ),
       );
     }
 
     Widget sortAndFilter() {
       return Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 16),
         child: Column(
           children: [
             Row(
@@ -45,14 +54,17 @@ class ArtistPage extends StatelessWidget {
                   style:
                       primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
                 ),
-                Container(
-                  width: 15,
-                  height: 17,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/sort_icon.png"),
-                          fit: BoxFit.cover)),
-                )
+                GestureDetector(
+                  onTap: () {},
+                  child: RotatedBox(
+                    quarterTurns: 1,
+                    child: Icon(
+                      Icons.compare_arrows,
+                      size: 28,
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
               ],
             ),
             Container(
@@ -112,7 +124,7 @@ class ArtistPage extends StatelessWidget {
     Widget listOfArtist() {
       return Expanded(
         child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 24),
+          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
           children: [
             artistTile(),
             artistTile(),
@@ -129,7 +141,6 @@ class ArtistPage extends StatelessWidget {
     Widget content() {
       return Column(
         children: [
-          header(),
           sortAndFilter(),
           listOfArtist(),
         ],
@@ -138,7 +149,17 @@ class ArtistPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SafeArea(child: content()),
+      body: SafeArea(
+        child: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              header(),
+            ];
+          },
+          body: content(),
+        ),
+      ),
     );
   }
 }

@@ -9,23 +9,32 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget header() {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Icon(
-              Icons.add,
-              size: 36,
-              color: primaryColor,
-            ),
-            const SizedBox(width: 16),
-            Icon(
-              Icons.settings_outlined,
-              size: 32,
-              color: primaryColor,
-            )
-          ],
+      return SliverPadding(
+        padding:
+            EdgeInsets.only(right: defaultMargin, left: defaultMargin, top: 24),
+        sliver: SliverAppBar(
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          titleSpacing: 0,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Icon(
+                Icons.add,
+                size: 36,
+                color: primaryColor,
+              ),
+              const SizedBox(width: 16),
+              Icon(
+                Icons.settings_outlined,
+                size: 32,
+                color: primaryColor,
+              )
+            ],
+          ),
+          backgroundColor: backgroundColor,
+          floating: true,
+          snap: true,
         ),
       );
     }
@@ -33,7 +42,7 @@ class HomePage extends StatelessWidget {
     Widget switchContent() {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        height: 32,
+        height: 50,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -42,7 +51,7 @@ class HomePage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {},
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
                         'Suggested',
@@ -52,6 +61,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       Container(
+                        margin: const EdgeInsets.only(top: 14),
                         height: 3,
                         width: 70,
                         decoration: BoxDecoration(
@@ -66,7 +76,7 @@ class HomePage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {},
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
                         'Songs',
@@ -76,6 +86,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       Container(
+                        margin: const EdgeInsets.only(top: 14),
                         height: 3,
                         width: 40,
                         decoration: BoxDecoration(
@@ -90,7 +101,7 @@ class HomePage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {},
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
                         'Albums',
@@ -100,6 +111,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       Container(
+                        margin: const EdgeInsets.only(top: 14),
                         height: 3,
                         width: 50,
                         decoration: BoxDecoration(
@@ -129,18 +141,25 @@ class HomePage extends StatelessWidget {
     }
 
     Widget content() {
-      return SuggestedHomeContent();
+      return Column(
+        children: [
+          switchContent(),
+          const SuggestedHomeContent(),
+        ],
+      );
     }
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            header(),
-            switchContent(),
-            content(),
-          ],
+        child: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              header(),
+            ];
+          },
+          body: content(),
         ),
       ),
     );
