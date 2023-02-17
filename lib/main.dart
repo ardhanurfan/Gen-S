@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/pages_user/home_page.dart';
+import 'package:music_player/pages/splash_page.dart';
+import 'package:music_player/providers/page_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'pages/pages_user/artist_page.dart';
 import 'pages/forgot_password_page.dart';
@@ -25,19 +28,24 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      scrollBehavior: MyBehavior(),
-      home: const HomePage(),
-      routes: {
-        '/sign-in': (context) => const SignInPage(),
-        '/sign-up': (context) => const SignUpPage(),
-        '/forgot-password': (context) => const ForgotPasswordPage(),
-        '/import-audio': (context) => const ImportAudioPage(),
-        '/recently-played': (context) => const RecentlyPlayedPage(),
-        '/most-played': (context) => const MostPlayedPage(),
-        '/artist': (context) => const ArtistPage(),
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => PageProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        scrollBehavior: MyBehavior(),
+        routes: {
+          '/': (context) => const SplashPage(),
+          '/sign-in': (context) => const SignInPage(),
+          '/sign-up': (context) => const SignUpPage(),
+          '/forgot-password': (context) => const ForgotPasswordPage(),
+          '/import-audio': (context) => const ImportAudioPage(),
+          '/recently-played': (context) => const RecentlyPlayedPage(),
+          '/most-played': (context) => const MostPlayedPage(),
+          '/artist': (context) => const ArtistPage(),
+        },
+      ),
     );
   }
 }

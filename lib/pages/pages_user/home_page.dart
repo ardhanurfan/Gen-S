@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/page_provider.dart';
 import 'suggested_home_content.dart';
 import 'songs_home_content.dart';
 
@@ -9,6 +11,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PageProvider pageProvider = Provider.of<PageProvider>(context);
+
     Widget header() {
       return SliverPadding(
         padding:
@@ -48,81 +52,12 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
-              children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Suggested',
-                        style: secondaryColorText.copyWith(
-                          fontSize: 12,
-                          fontWeight: medium,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 14),
-                        height: 3,
-                        width: 70,
-                        decoration: BoxDecoration(
-                          color: secondaryColor,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 24),
-                GestureDetector(
-                  onTap: () {},
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Songs',
-                        style: primaryColorText.copyWith(
-                          fontSize: 12,
-                          fontWeight: medium,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 14),
-                        height: 3,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 24),
-                GestureDetector(
-                  onTap: () {},
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Albums',
-                        style: primaryColorText.copyWith(
-                          fontSize: 12,
-                          fontWeight: medium,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 14),
-                        height: 3,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                      )
-                    ],
-                  ),
-                )
+              children: const [
+                HomePageNav(title: 'Suggested', index: 0, width: 66),
+                SizedBox(width: 24),
+                HomePageNav(title: 'Songs', index: 1, width: 38),
+                SizedBox(width: 24),
+                HomePageNav(title: 'Albums', index: 2, width: 47),
               ],
             ),
             GestureDetector(
@@ -141,11 +76,26 @@ class HomePage extends StatelessWidget {
       );
     }
 
+    Widget changeContent() {
+      int indexHome = pageProvider.homePage;
+      switch (indexHome) {
+        case 0:
+          return const SuggestedHomeContent();
+        case 1:
+          return const SongsHomeContent();
+        case 2:
+        // return const Album();
+
+        default:
+          return const SuggestedHomeContent();
+      }
+    }
+
     Widget content() {
       return Column(
         children: [
           switchContent(),
-          const SongsHomeContent(),
+          changeContent(),
         ],
       );
     }
@@ -162,6 +112,59 @@ class HomePage extends StatelessWidget {
           },
           body: content(),
         ),
+      ),
+    );
+  }
+}
+
+// Ini untuk ganti content suggested, songs, albums
+class HomePageNav extends StatelessWidget {
+  const HomePageNav({
+    Key? key,
+    required this.title,
+    required this.index,
+    required this.width,
+  }) : super(key: key);
+
+  final String title;
+  final int index;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    PageProvider pageProvider = Provider.of<PageProvider>(context);
+
+    return GestureDetector(
+      onTap: () {
+        pageProvider.setHomePage = index;
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            title,
+            style: pageProvider.homePage == index
+                ? secondaryColorText.copyWith(
+                    fontSize: 12,
+                    fontWeight: medium,
+                  )
+                : primaryColorText.copyWith(
+                    fontSize: 12,
+                    fontWeight: medium,
+                  ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 14),
+            height: 3,
+            width: width,
+            decoration: BoxDecoration(
+              color: pageProvider.homePage == index
+                  ? secondaryColor
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(18),
+            ),
+          )
+        ],
       ),
     );
   }
