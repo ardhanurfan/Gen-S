@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/pages_user/albums_home_content.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +85,7 @@ class HomePage extends StatelessWidget {
         case 1:
           return const SongsHomeContent();
         case 2:
-        // return const Album();
+          return const AlbumsHomeContent();
 
         default:
           return const SuggestedHomeContent();

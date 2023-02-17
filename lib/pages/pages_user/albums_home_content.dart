@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../shared/theme.dart';
 
-class AlbumsPage extends StatelessWidget {
-  const AlbumsPage({super.key});
+class AlbumsHomeContent extends StatelessWidget {
+  const AlbumsHomeContent({super.key});
 
   @override
   Widget build(BuildContext context) {
