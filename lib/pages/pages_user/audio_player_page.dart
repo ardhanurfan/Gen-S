@@ -18,6 +18,7 @@ class AudioPlayerPage extends StatelessWidget {
           ),
           Text(
             "playing from playlist",
+            textAlign: TextAlign.center,
             style: primaryColorText.copyWith(fontSize: 12),
           ),
           GestureDetector(
@@ -38,6 +39,8 @@ class AudioPlayerPage extends StatelessWidget {
             Text(
               "Favourite of Maliq & D’Essentials",
               style: primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(
               height: 55,
@@ -56,10 +59,13 @@ class AudioPlayerPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Terdiam",
-                  style:
-                      primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
+                Expanded(
+                  child: Text(
+                    "Terdiam",
+                    style: primaryColorText.copyWith(
+                        fontSize: 16, fontWeight: bold),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
                 Icon(
                   Icons.favorite,
@@ -97,30 +103,45 @@ class AudioPlayerPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.shuffle,
-                  color: primaryColor,
-                  size: 28,
+                GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.shuffle,
+                    color: primaryColor,
+                    size: 28,
+                  ),
                 ),
-                Icon(
-                  Icons.fast_rewind_outlined,
-                  color: primaryColor,
-                  size: 34,
+                GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.fast_rewind_outlined,
+                    color: primaryColor,
+                    size: 34,
+                  ),
                 ),
-                Icon(
-                  Icons.play_circle_fill_rounded,
-                  color: primaryColor,
-                  size: 34,
+                GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.play_circle_fill_rounded,
+                    color: primaryColor,
+                    size: 34,
+                  ),
                 ),
-                Icon(
-                  Icons.fast_forward_outlined,
-                  color: primaryColor,
-                  size: 34,
+                GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.fast_forward_outlined,
+                    color: primaryColor,
+                    size: 34,
+                  ),
                 ),
-                Icon(
-                  Icons.replay,
-                  color: primaryColor,
-                  size: 28,
+                GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.replay,
+                    color: primaryColor,
+                    size: 28,
+                  ),
                 ),
               ],
             )
