@@ -14,7 +14,7 @@ class SuggestedHomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView(
-        padding: const EdgeInsets.only(top: 24, bottom: 120),
+        padding: const EdgeInsets.only(top: 24, bottom: 100),
         children: [
           SectionTitle(
             onTap: () {
@@ -84,6 +84,7 @@ class SuggestedHomeContent extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 48),
         ],
       ),
     );
