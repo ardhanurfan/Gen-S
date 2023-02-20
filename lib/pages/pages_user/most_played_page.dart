@@ -12,6 +12,7 @@ class MostPlayedPage extends StatelessWidget {
       return SliverPadding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
         sliver: SliverAppBar(
+          stretch: true,
           elevation: 0,
           automaticallyImplyLeading: false,
           titleSpacing: 0,
@@ -42,22 +43,20 @@ class MostPlayedPage extends StatelessWidget {
     }
 
     Widget listOfSong() {
-      return Expanded(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-          children: const [
-            SongTile(isMostPlayed: true),
-            SongTile(isMostPlayed: true),
-            SongTile(isMostPlayed: true),
-            SongTile(isMostPlayed: true),
-            SongTile(isMostPlayed: true),
-            SongTile(isMostPlayed: true),
-            SongTile(isMostPlayed: true),
-            SongTile(isMostPlayed: true),
-            SongTile(isMostPlayed: true),
-            SongTile(isMostPlayed: true),
-          ],
-        ),
+      return ListView(
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+        children: const [
+          SongTile(isMostPlayed: true),
+          SongTile(isMostPlayed: true),
+          SongTile(isMostPlayed: true),
+          SongTile(isMostPlayed: true),
+          SongTile(isMostPlayed: true),
+          SongTile(isMostPlayed: true),
+          SongTile(isMostPlayed: true),
+          SongTile(isMostPlayed: true),
+          SongTile(isMostPlayed: true),
+          SongTile(isMostPlayed: true),
+        ],
       );
     }
 

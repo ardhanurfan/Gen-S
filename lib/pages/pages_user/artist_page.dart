@@ -12,6 +12,7 @@ class ArtistPage extends StatelessWidget {
         padding:
             EdgeInsets.only(right: defaultMargin, left: defaultMargin, top: 24),
         sliver: SliverAppBar(
+          stretch: true,
           elevation: 0,
           automaticallyImplyLeading: false,
           titleSpacing: 0,

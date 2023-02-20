@@ -19,6 +19,7 @@ class HomePage extends StatelessWidget {
         padding:
             EdgeInsets.only(right: defaultMargin, left: defaultMargin, top: 24),
         sliver: SliverAppBar(
+          stretch: true,
           elevation: 0,
           automaticallyImplyLeading: false,
           titleSpacing: 0,
@@ -61,14 +62,17 @@ class HomePage extends StatelessWidget {
                 HomePageNav(title: 'Albums', index: 2, width: 47),
               ],
             ),
-            GestureDetector(
-              onTap: () {},
-              child: RotatedBox(
-                quarterTurns: 1,
-                child: Icon(
-                  Icons.compare_arrows,
-                  size: 28,
-                  color: primaryColor,
+            Visibility(
+              visible: pageProvider.homePage != 0,
+              child: GestureDetector(
+                onTap: () {},
+                child: RotatedBox(
+                  quarterTurns: 1,
+                  child: Icon(
+                    Icons.compare_arrows,
+                    size: 28,
+                    color: primaryColor,
+                  ),
                 ),
               ),
             )

@@ -32,7 +32,7 @@ class AlbumsHomeContent extends StatelessWidget {
 
     return Expanded(
       child: GridView(
-        padding: const EdgeInsets.only(top: 24, bottom: 120),
+        padding: const EdgeInsets.only(top: 24, bottom: 100),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, childAspectRatio: 1 / 1.2),
         children: [

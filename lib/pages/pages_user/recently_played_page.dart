@@ -11,6 +11,7 @@ class RecentlyPlayedPage extends StatelessWidget {
       return SliverPadding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
         sliver: SliverAppBar(
+          stretch: true,
           elevation: 0,
           automaticallyImplyLeading: false,
           titleSpacing: 0,
@@ -41,23 +42,21 @@ class RecentlyPlayedPage extends StatelessWidget {
     }
 
     Widget listOfSong() {
-      return Expanded(
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-          children: const [
-            SongTile(),
-            SongTile(),
-            SongTile(),
-            SongTile(),
-            SongTile(),
-            SongTile(),
-            SongTile(),
-            SongTile(),
-            SongTile(),
-            SongTile(),
-            SongTile(),
-          ],
-        ),
+      return ListView(
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+        children: const [
+          SongTile(),
+          SongTile(),
+          SongTile(),
+          SongTile(),
+          SongTile(),
+          SongTile(),
+          SongTile(),
+          SongTile(),
+          SongTile(),
+          SongTile(),
+          SongTile(),
+        ],
       );
     }
 

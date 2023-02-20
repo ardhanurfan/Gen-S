@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/pages/pages_user/home_page.dart';
+import 'package:music_player/pages/pages_user/main_page.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_button.dart';
 
@@ -100,10 +100,11 @@ class SignUpPage extends StatelessWidget {
             buttonText: 'Register',
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MainPage(),
+                ),
+              );
             },
           ),
         ],

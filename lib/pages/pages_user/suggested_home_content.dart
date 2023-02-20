@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../shared/theme.dart';
 import '../../widgets/artists_tile.dart';
-import '../../widgets/music_suggested.dart';
+import '../../widgets/music_suggested_tile.dart';
 import '../../widgets/section_title.dart';
 
 class SuggestedHomeContent extends StatelessWidget {
@@ -17,7 +17,9 @@ class SuggestedHomeContent extends StatelessWidget {
         padding: const EdgeInsets.only(top: 24, bottom: 120),
         children: [
           SectionTitle(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/recently-played');
+            },
             title: 'Recently Played',
           ),
           SingleChildScrollView(
@@ -37,7 +39,9 @@ class SuggestedHomeContent extends StatelessWidget {
             ),
           ),
           SectionTitle(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/artist');
+            },
             marginTop: 48,
             title: 'Artists',
           ),
@@ -58,7 +62,9 @@ class SuggestedHomeContent extends StatelessWidget {
             ),
           ),
           SectionTitle(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/most-played');
+            },
             marginTop: 48,
             title: 'Most Played',
           ),

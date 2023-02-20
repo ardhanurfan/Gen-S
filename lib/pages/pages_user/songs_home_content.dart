@@ -10,7 +10,7 @@ class SongsHomeContent extends StatelessWidget {
     return Expanded(
       child: ListView(
         padding: EdgeInsets.only(
-            right: defaultMargin, left: defaultMargin, top: 24, bottom: 120),
+            right: defaultMargin, left: defaultMargin, top: 24, bottom: 100),
         children: const [
           SongTile(isHome: true),
           SongTile(isHome: true),
