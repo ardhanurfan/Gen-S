@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/pages_user/detail_gallery_page.dart';
 import 'package:music_player/pages/pages_user/empty_album_page.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_button.dart';
@@ -8,30 +9,63 @@ class GalleryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget header() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Icon(
-            Icons.arrow_back_rounded,
-            color: primaryColor,
-          ),
-          Expanded(
-            child: Text(
-              "Album Name",
-              textAlign: TextAlign.end,
-              style: primaryColorText.copyWith(fontSize: 20, fontWeight: bold),
-              overflow: TextOverflow.ellipsis,
+    Widget albumGrid() {
+      return Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DetailGalleryPage()));
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Image.asset(
+                  "assets/ex_gallery.png",
+                  width: 160,
+                  height: 160,
+                ),
+              ),
             ),
-          ),
-        ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Album Name",
+                  style: primaryColorText.copyWith(
+                      fontSize: 16, fontWeight: medium),
+                ),
+                Text(
+                  "4736",
+                  style: primaryColorText.copyWith(fontSize: 12),
+                )
+              ],
+            ),
+          ],
+        ),
       );
     }
 
     Widget content() {
-      return ListView(
-        padding: EdgeInsets.all(defaultMargin),
-        children: [header(), EmptyAlbumPage()],
+      return Expanded(
+        child: GridView(
+          padding: const EdgeInsets.only(top: 24, bottom: 100),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, childAspectRatio: 1 / 1.2),
+          children: [
+            albumGrid(),
+            albumGrid(),
+            albumGrid(),
+            albumGrid(),
+            albumGrid(),
+            albumGrid(),
+            albumGrid(),
+            albumGrid()
+          ],
+        ),
       );
     }
 
