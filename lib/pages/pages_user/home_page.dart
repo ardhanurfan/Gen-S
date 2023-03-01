@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/pages/pages_user/albums_home_content.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/page_provider.dart';
 import 'suggested_home_content.dart';
-import 'songs_home_content.dart';
+import 'audios_home_content.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
