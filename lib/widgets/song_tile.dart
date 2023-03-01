@@ -5,9 +5,11 @@ import '../shared/theme.dart';
 class SongTile extends StatelessWidget {
   final bool isHome;
   final bool isMostPlayed;
+  final bool isSearch;
   const SongTile({
     this.isHome = false,
     this.isMostPlayed = false,
+    this.isSearch = false,
     Key? key,
   }) : super(key: key);
 
@@ -65,11 +67,14 @@ class SongTile extends StatelessWidget {
           ),
           Row(
             children: [
-              GestureDetector(
-                onTap: () {},
-                child: Icon(
-                  Icons.play_circle,
-                  color: primaryColor,
+              Visibility(
+                visible: isSearch ? false : true,
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.play_circle,
+                    color: primaryColor,
+                  ),
                 ),
               ),
               const SizedBox(width: 20),
