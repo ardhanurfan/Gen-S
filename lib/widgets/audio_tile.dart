@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../shared/theme.dart';
 
-class SongTile extends StatelessWidget {
+class AudioTile extends StatelessWidget {
   final bool isHome;
   final bool isMostPlayed;
   final bool isSearch;
-  const SongTile({
+  const AudioTile({
     this.isHome = false,
     this.isMostPlayed = false,
     this.isSearch = false,

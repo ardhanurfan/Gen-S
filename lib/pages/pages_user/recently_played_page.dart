@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
-import 'package:music_player/widgets/song_tile.dart';
+import 'package:music_player/widgets/audio_tile.dart';
 
 class RecentlyPlayedPage extends StatelessWidget {
   const RecentlyPlayedPage({super.key});
@@ -45,17 +45,17 @@ class RecentlyPlayedPage extends StatelessWidget {
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: const [
-          SongTile(),
-          SongTile(),
-          SongTile(),
-          SongTile(),
-          SongTile(),
-          SongTile(),
-          SongTile(),
-          SongTile(),
-          SongTile(),
-          SongTile(),
-          SongTile(),
+          AudioTile(),
+          AudioTile(),
+          AudioTile(),
+          AudioTile(),
+          AudioTile(),
+          AudioTile(),
+          AudioTile(),
+          AudioTile(),
+          AudioTile(),
+          AudioTile(),
+          AudioTile(),
         ],
       );
     }

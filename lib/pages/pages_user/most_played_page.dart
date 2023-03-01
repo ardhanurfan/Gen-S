@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
 
-import '../../widgets/song_tile.dart';
+import '../../widgets/audio_tile.dart';
 
 class MostPlayedPage extends StatelessWidget {
   const MostPlayedPage({super.key});
@@ -46,16 +46,16 @@ class MostPlayedPage extends StatelessWidget {
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: const [
-          SongTile(isMostPlayed: true),
-          SongTile(isMostPlayed: true),
-          SongTile(isMostPlayed: true),
-          SongTile(isMostPlayed: true),
-          SongTile(isMostPlayed: true),
-          SongTile(isMostPlayed: true),
-          SongTile(isMostPlayed: true),
-          SongTile(isMostPlayed: true),
-          SongTile(isMostPlayed: true),
-          SongTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true),
         ],
       );
     }

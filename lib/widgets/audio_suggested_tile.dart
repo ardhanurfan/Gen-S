@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../shared/theme.dart';
 
-class MusicSuggestedTile extends StatelessWidget {
-  const MusicSuggestedTile({
+class AudioSuggestedTile extends StatelessWidget {
+  const AudioSuggestedTile({
     Key? key,
   }) : super(key: key);
 

@@ -57,9 +57,8 @@ class HomePage extends StatelessWidget {
               children: const [
                 HomePageNav(title: 'Suggested', index: 0, width: 66),
                 SizedBox(width: 24),
-                HomePageNav(title: 'Songs', index: 1, width: 38),
+                HomePageNav(title: 'Audios', index: 1, width: 38),
                 SizedBox(width: 24),
-                HomePageNav(title: 'Albums', index: 2, width: 47),
               ],
             ),
             Visibility(
@@ -88,8 +87,6 @@ class HomePage extends StatelessWidget {
           return const SuggestedHomeContent();
         case 1:
           return const SongsHomeContent();
-        case 2:
-          return const AlbumsHomeContent();
 
         default:
           return const SuggestedHomeContent();

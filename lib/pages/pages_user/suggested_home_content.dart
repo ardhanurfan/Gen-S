@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../shared/theme.dart';
-import '../../widgets/artists_tile.dart';
-import '../../widgets/music_suggested_tile.dart';
+import '../../widgets/audio_suggested_tile.dart';
 import '../../widgets/section_title.dart';
 
 class SuggestedHomeContent extends StatelessWidget {
@@ -29,34 +28,11 @@ class SuggestedHomeContent extends StatelessWidget {
                   left: defaultMargin, right: defaultMargin - 24),
               child: Row(
                 children: const [
-                  MusicSuggestedTile(),
-                  MusicSuggestedTile(),
-                  MusicSuggestedTile(),
-                  MusicSuggestedTile(),
-                  MusicSuggestedTile(),
-                ],
-              ),
-            ),
-          ),
-          SectionTitle(
-            onTap: () {
-              Navigator.pushNamed(context, '/artist');
-            },
-            marginTop: 48,
-            title: 'Artists',
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              margin: EdgeInsets.only(
-                  left: defaultMargin, right: defaultMargin - 24),
-              child: Row(
-                children: const [
-                  ArtistsTile(),
-                  ArtistsTile(),
-                  ArtistsTile(),
-                  ArtistsTile(),
-                  ArtistsTile(),
+                  AudioSuggestedTile(),
+                  AudioSuggestedTile(),
+                  AudioSuggestedTile(),
+                  AudioSuggestedTile(),
+                  AudioSuggestedTile(),
                 ],
               ),
             ),
@@ -75,11 +51,11 @@ class SuggestedHomeContent extends StatelessWidget {
                   left: defaultMargin, right: defaultMargin - 24),
               child: Row(
                 children: const [
-                  MusicSuggestedTile(),
-                  MusicSuggestedTile(),
-                  MusicSuggestedTile(),
-                  MusicSuggestedTile(),
-                  MusicSuggestedTile(),
+                  AudioSuggestedTile(),
+                  AudioSuggestedTile(),
+                  AudioSuggestedTile(),
+                  AudioSuggestedTile(),
+                  AudioSuggestedTile(),
                 ],
               ),
             ),

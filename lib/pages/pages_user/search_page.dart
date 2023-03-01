@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
-import 'package:music_player/widgets/custom_form.dart';
-import 'package:music_player/widgets/song_tile.dart';
+import 'package:music_player/widgets/audio_tile.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -60,28 +59,26 @@ class SearchPage extends StatelessWidget {
           // ADA ISI
           Visibility(
               visible: true,
-              child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 32),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "History",
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 32),
+                      child: Text(
+                        "Audio",
                         style: primaryColorText.copyWith(
                             fontSize: 20, fontWeight: bold),
                       ),
-                      Text(
-                        "clear",
-                        style: primaryColorText.copyWith(fontSize: 12),
-                      )
-                    ],
-                  ),
-                ),
-                const SongTile(
-                  isSearch: true,
-                )
-              ]))
+                    ),
+                    const AudioTile(
+                      isSearch: true,
+                    ),
+                    Text(
+                      "Gallery",
+                      style: primaryColorText.copyWith(
+                          fontSize: 20, fontWeight: bold),
+                    )
+                  ]))
         ],
       );
     }
