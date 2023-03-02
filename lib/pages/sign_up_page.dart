@@ -1,23 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/pages/pages_user/main_page.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_button.dart';
+import 'package:music_player/widgets/loading_button.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/custom_form.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
   @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+final TextEditingController emailController = TextEditingController(text: '');
+final TextEditingController usernameController =
+    TextEditingController(text: '');
+final TextEditingController passwordController =
+    TextEditingController(text: '');
+final TextEditingController confirmPasswordController =
+    TextEditingController(text: '');
+
+bool isLoading = false;
+
+class _SignUpPageState extends State<SignUpPage> {
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController =
-        TextEditingController(text: '');
-    final TextEditingController usernameController =
-        TextEditingController(text: '');
-    final TextEditingController passwordController =
-        TextEditingController(text: '');
-    final TextEditingController confirmPasswordController =
-        TextEditingController(text: '');
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+
+    handleSignUp() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      if (await userProvider.register(
+        username: usernameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+        confirmPassword: confirmPasswordController.text,
+      )) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: successColor,
+            content: const Text(
+              'Register success check your email verification',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/sign-in', (route) => false);
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: Text(
+              userProvider.errorMessage,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+
     Widget header() {
       return Container(
         margin: const EdgeInsets.only(top: 90),
@@ -91,22 +143,23 @@ class SignUpPage extends StatelessWidget {
             prefixIcon: Icons.lock_outline,
             isPassword: true,
           ),
-          CustomButton(
-            marginTop: 60,
-            marginBottom: 80,
-            heightButton: 53,
-            radiusButton: 32,
-            buttonColor: secondaryColor,
-            buttonText: 'Register',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MainPage(),
+          isLoading
+              ? LoadingButton(
+                  marginTop: 60,
+                  marginBottom: 80,
+                  heightButton: 53,
+                  radiusButton: 32,
+                  buttonColor: secondaryColor,
+                )
+              : CustomButton(
+                  marginTop: 60,
+                  marginBottom: 80,
+                  heightButton: 53,
+                  radiusButton: 32,
+                  buttonColor: secondaryColor,
+                  buttonText: 'Register',
+                  onPressed: handleSignUp,
                 ),
-              );
-            },
-          ),
         ],
       );
     }

@@ -36,7 +36,7 @@ class UserService {
       'username': username,
       'email': email,
       'password': password,
-      'name': confirmPassword,
+      'confirmPassword': confirmPassword,
     });
 
     var response = await http.post(
@@ -48,7 +48,7 @@ class UserService {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(jsonDecode(response.body)['data']['error']);
+      throw jsonDecode(response.body)['data']['error'];
     }
   }
 
@@ -76,7 +76,7 @@ class UserService {
       await setTokenPreference(user.token);
       return user;
     } else {
-      throw Exception(jsonDecode(response.body)['data']['error']);
+      throw jsonDecode(response.body)['data']['error'];
     }
   }
 
@@ -96,7 +96,7 @@ class UserService {
       await clearTokenPreference();
       return true;
     } else {
-      throw Exception(jsonDecode(response.body)['data']['error']);
+      throw jsonDecode(response.body)['data']['error'];
     }
   }
 
@@ -117,7 +117,7 @@ class UserService {
       UserModel user = UserModel.fromJson(data, token);
       return user;
     } else {
-      throw Exception("Get user failed");
+      throw "Get user failed";
     }
   }
 
@@ -167,7 +167,7 @@ class UserService {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw Exception(jsonDecode(response.body)['data']['error']);
+      throw jsonDecode(response.body)['data']['error'];
     }
   }
 }

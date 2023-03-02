@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/pages_user/main_page.dart';
 import 'package:music_player/pages/splash_page.dart';
 import 'package:music_player/providers/page_provider.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/pages_user/artist_page.dart';
@@ -30,12 +32,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => PageProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         scrollBehavior: MyBehavior(),
         routes: {
           '/': (context) => const SplashPage(),
+          '/main': (context) => const MainPage(),
           '/sign-in': (context) => const SignInPage(),
           '/sign-up': (context) => const SignUpPage(),
           '/forgot-password': (context) => const ForgotPasswordPage(),

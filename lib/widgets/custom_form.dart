@@ -40,7 +40,7 @@ class _CustomFormState extends State<CustomForm> {
         const SizedBox(height: 3),
         TextFormField(
           controller: widget.textController,
-          obscureText: isObscure,
+          obscureText: widget.isPassword ? isObscure : false,
           style: primaryColorText.copyWith(fontSize: 14),
           cursorColor: primaryColor,
           decoration: InputDecoration(

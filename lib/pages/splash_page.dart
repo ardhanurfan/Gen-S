@@ -1,6 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/user_provider.dart';
+import 'package:music_player/services/user_service.dart';
+import 'package:provider/provider.dart';
 
 import '../shared/theme.dart';
 
@@ -19,10 +20,19 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   getInit() async {
-    Timer(const Duration(seconds: 3), () async {
-      final navigator = Navigator.of(context);
+    final navigator = Navigator.of(context);
+    UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    final String? token = await UserService().getTokenPreference();
+    if (token == null) {
       navigator.pushNamedAndRemoveUntil('/sign-in', (route) => false);
-    });
+    } else {
+      if (await userProvider.getUser(token: token)) {
+        navigator.pushNamedAndRemoveUntil('/main', (route) => false);
+      } else {
+        navigator.pushNamedAndRemoveUntil('/sign-in', (route) => false);
+      }
+    }
   }
 
   @override

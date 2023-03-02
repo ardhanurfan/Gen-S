@@ -88,4 +88,14 @@ class UserProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> getUser({required String token}) async {
+    try {
+      UserModel user = await UserService().getUser(token: token);
+      _user = user;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

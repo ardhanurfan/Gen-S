@@ -1,18 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_button.dart';
+import 'package:music_player/widgets/loading_button.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/page_provider.dart';
+import '../providers/user_provider.dart';
 import '../widgets/custom_form.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
 
   @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+final TextEditingController emailController = TextEditingController(text: '');
+final TextEditingController passwordController =
+    TextEditingController(text: '');
+
+bool isLoading = false;
+
+class _SignInPageState extends State<SignInPage> {
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController =
-        TextEditingController(text: '');
-    final TextEditingController passwordController =
-        TextEditingController(text: '');
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+    PageProvider pageProvider = Provider.of<PageProvider>(context);
+
+    handleSignIn() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      if (await userProvider.login(
+        email: emailController.text,
+        password: passwordController.text,
+      )) {
+        pageProvider.setPage = 0;
+        Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: Text(
+              userProvider.errorMessage,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+
     Widget header() {
       return Container(
         margin: const EdgeInsets.only(top: 110),
@@ -27,7 +70,7 @@ class SignInPage extends StatelessWidget {
               height: 22,
             ),
             Text(
-              "If you don’t have an account register",
+              "If you don't have an account register",
               style: primaryColorText.copyWith(fontSize: 16),
             ),
             const SizedBox(
@@ -40,8 +83,7 @@ class SignInPage extends StatelessWidget {
                   style: primaryColorText.copyWith(fontSize: 16),
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.pushNamedAndRemoveUntil(
-                      context, '/sign-up', (route) => false),
+                  onTap: () => Navigator.pushNamed(context, '/sign-up'),
                   child: Text(
                     "Register here!",
                     style: secondaryColorText.copyWith(
@@ -87,15 +129,23 @@ class SignInPage extends StatelessWidget {
             isPassword: true,
           ),
           forgotPassword(),
-          CustomButton(
-            marginTop: 60,
-            marginBottom: 80,
-            heightButton: 53,
-            radiusButton: 32,
-            buttonColor: secondaryColor,
-            buttonText: 'Login',
-            onPressed: () {},
-          ),
+          isLoading
+              ? LoadingButton(
+                  marginTop: 60,
+                  marginBottom: 80,
+                  heightButton: 53,
+                  radiusButton: 32,
+                  buttonColor: secondaryColor,
+                )
+              : CustomButton(
+                  marginTop: 60,
+                  marginBottom: 80,
+                  heightButton: 53,
+                  radiusButton: 32,
+                  buttonColor: secondaryColor,
+                  buttonText: 'Login',
+                  onPressed: handleSignIn,
+                ),
         ],
       );
     }

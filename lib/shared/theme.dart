@@ -12,6 +12,8 @@ Color darkGreyColor = const Color(0xff6A6767);
 Color progressIndicatorColor = const Color(0xff6D6D6D);
 Color backgroundProgressIndicatorColor =
     const Color.fromARGB(30, 196, 196, 196);
+Color successColor = const Color(0xFF38ABBE);
+Color alertColor = const Color(0xFFED6363);
 
 TextStyle primaryColorText = GoogleFonts.poppins(color: primaryColor);
 TextStyle secondaryColorText = GoogleFonts.poppins(color: secondaryColor);
