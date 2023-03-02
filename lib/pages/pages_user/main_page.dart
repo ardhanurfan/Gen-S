@@ -115,6 +115,9 @@ class NavigationItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         pageProvider.setPage = index;
+        if (index == 0) {
+          pageProvider.setHomePage = 0;
+        }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
