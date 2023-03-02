@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../shared/theme.dart';
 
-class CustomForm extends StatelessWidget {
+class CustomForm extends StatefulWidget {
   const CustomForm({
     Key? key,
     required this.title,
@@ -19,6 +19,13 @@ class CustomForm extends StatelessWidget {
   final bool isPassword;
 
   @override
+  State<CustomForm> createState() => _CustomFormState();
+}
+
+class _CustomFormState extends State<CustomForm> {
+  bool isObscure = true;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,30 +33,37 @@ class CustomForm extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(top: 42),
           child: Text(
-            title,
+            widget.title,
             style: primaryColorText.copyWith(fontSize: 14, fontWeight: medium),
           ),
         ),
         const SizedBox(height: 3),
         TextFormField(
-          controller: textController,
-          obscureText: isPassword,
+          controller: widget.textController,
+          obscureText: widget.isPassword,
           style: primaryColorText.copyWith(fontSize: 14),
           cursorColor: primaryColor,
           decoration: InputDecoration(
             suffixIcon: Visibility(
-              visible: isPassword,
-              child: Icon(
-                Icons.visibility_off,
-                color: primaryColor,
+              visible: widget.isPassword,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isObscure = !isObscure;
+                  });
+                },
+                child: Icon(
+                  isObscure ? Icons.visibility_off : Icons.visibility,
+                  color: primaryColor,
+                ),
               ),
             ),
             prefixIcon: Icon(
-              prefixIcon,
+              widget.prefixIcon,
               color: primaryColor,
               size: 21,
             ),
-            hintText: hintText,
+            hintText: widget.hintText,
             hintStyle: primaryColorText.copyWith(fontSize: 16),
             focusedBorder: UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(defaultRadius),

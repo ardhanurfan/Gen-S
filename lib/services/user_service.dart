@@ -117,11 +117,11 @@ class UserService {
       UserModel user = UserModel.fromJson(data, token);
       return user;
     } else {
-      throw Exception("Gagal Get User");
+      throw Exception("Get user failed");
     }
   }
 
-  Future<bool> forgotPassword({
+  Future<int> forgotPassword({
     required String email,
   }) async {
     var url = UrlService().api('forgot-password');
@@ -137,7 +137,7 @@ class UserService {
     );
 
     if (response.statusCode == 200) {
-      return true;
+      return jsonDecode(response.body)['data']['token'];
     } else {
       throw Exception(jsonDecode(response.body)['data']['error']);
     }
