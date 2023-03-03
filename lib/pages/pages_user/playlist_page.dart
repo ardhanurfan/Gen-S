@@ -193,7 +193,8 @@ class PlaylistPage extends StatelessWidget {
 
     Widget content() {
       return ListView(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 47),
+        padding: EdgeInsets.only(
+            right: defaultMargin, left: defaultMargin, top: 24, bottom: 100),
         children: [
           playlistTile(),
           playlistTile(),
