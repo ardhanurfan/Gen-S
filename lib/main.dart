@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
         ),
         scrollBehavior: MyBehavior(),
         routes: {
-          '/': (context) => const MainPage(),
-          // '/main': (context) => const MainPage(),
+          '/': (context) => const SplashPage(),
+          '/main': (context) => const MainPage(),
           '/sign-in': (context) => const SignInPage(),
           '/sign-up': (context) => const SignUpPage(),
           '/forgot-password': (context) => const ForgotPasswordPage(),

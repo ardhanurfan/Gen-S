@@ -101,12 +101,71 @@ class PlaylistPage extends StatelessWidget {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () {},
-              child: Icon(
+            PopupMenuButton(
+              icon: Icon(
                 Icons.more_vert,
                 color: primaryColor,
               ),
+              color: dropDownColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(defaultRadius),
+              ),
+              elevation: 4,
+              onSelected: (value) {
+                if (value == 0) {
+                } else {}
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 0,
+                  child: Center(
+                    child: Text(
+                      'Edit',
+                      style: primaryColorText.copyWith(fontSize: 14),
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  onTap: () {},
+                  value: 1,
+                  child: Center(
+                    child: Text(
+                      'Delete',
+                      style: primaryColorText.copyWith(fontSize: 14),
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  onTap: () {},
+                  value: 2,
+                  child: Center(
+                    child: Text(
+                      'Add song',
+                      style: primaryColorText.copyWith(fontSize: 14),
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  onTap: () {},
+                  value: 3,
+                  child: Center(
+                    child: Text(
+                      'Add to queue',
+                      style: primaryColorText.copyWith(fontSize: 14),
+                    ),
+                  ),
+                ),
+                PopupMenuItem(
+                  onTap: () {},
+                  value: 4,
+                  child: Center(
+                    child: Text(
+                      'Share',
+                      style: primaryColorText.copyWith(fontSize: 14),
+                    ),
+                  ),
+                ),
+              ],
             )
           ],
         ),
