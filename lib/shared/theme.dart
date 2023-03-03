@@ -15,6 +15,7 @@ Color backgroundProgressIndicatorColor =
 Color successColor = const Color(0xFF38ABBE);
 Color alertColor = const Color(0xFFED6363);
 Color dropDownColor = const Color(0xFF4A4A4A);
+Color addSongsColor = const Color(0xFF363636);
 
 TextStyle primaryColorText = GoogleFonts.poppins(color: primaryColor);
 TextStyle secondaryColorText = GoogleFonts.poppins(color: secondaryColor);

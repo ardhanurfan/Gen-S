@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/pages_user/create_playlist_page.dart';
 import 'package:music_player/pages/pages_user/playlist_detail_page.dart';
 import 'package:music_player/shared/theme.dart';
 
@@ -44,10 +45,19 @@ class PlaylistPage extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Icon(
-                    Icons.add,
-                    size: 36,
-                    color: primaryColor,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const CreatePlaylistPage()));
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 36,
+                      color: primaryColor,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Icon(
