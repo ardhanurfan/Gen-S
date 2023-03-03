@@ -76,12 +76,15 @@ class PlaylistDetailPage extends StatelessWidget {
         children: [
           header(),
           playlistInfo(),
-          AudioTile(isHome: true),
-          AudioTile(isHome: true),
-          AudioTile(isHome: true),
-          AudioTile(isHome: true),
-          AudioTile(isHome: true),
-          AudioTile(isHome: true),
+          const AudioTile(isHome: true, title: 'Ini Lagu'),
+          const AudioTile(isHome: true, title: 'Ini Lagu'),
+          const AudioTile(isHome: true, title: 'Ini Lagu'),
+          const AudioTile(isHome: true, title: 'Ini Lagu'),
+          const AudioTile(isHome: true, title: 'Ini Lagu'),
+          const AudioTile(isHome: true, title: 'Ini Lagu'),
+          const AudioTile(isHome: true, title: 'Ini Lagu'),
+          const AudioTile(isHome: true, title: 'Ini Lagu'),
+          const AudioTile(isHome: true, title: 'Ini Lagu'),
         ],
       );
     }
