@@ -1,43 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_button.dart';
 import 'package:music_player/widgets/loading_button.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/page_provider.dart';
-import '../providers/user_provider.dart';
 import '../widgets/custom_form.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({super.key, required this.email, required this.otp});
+
+  final String email;
+  final String otp;
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
 bool isLoading = false;
 
-class _SignInPageState extends State<SignInPage> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController =
-        TextEditingController(text: '');
     final TextEditingController passwordController =
         TextEditingController(text: '');
+    final TextEditingController confirmPasswordController =
+        TextEditingController(text: '');
     UserProvider userProvider = Provider.of<UserProvider>(context);
-    PageProvider pageProvider = Provider.of<PageProvider>(context);
 
-    handleSignIn() async {
+    handleSignUp() async {
       setState(() {
         isLoading = true;
       });
 
-      if (await userProvider.login(
-        email: emailController.text,
+      if (await userProvider.resetPassword(
+        email: widget.email,
         password: passwordController.text,
+        confirmPassword: confirmPasswordController.text,
+        token: int.parse(widget.otp),
       )) {
-        pageProvider.setPage = 0;
-        Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: successColor,
+            content: const Text(
+              'Reset password successfully',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/sign-in', (route) => false);
       } else {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -58,55 +71,23 @@ class _SignInPageState extends State<SignInPage> {
 
     Widget header() {
       return Container(
-        margin: const EdgeInsets.only(top: 110),
+        margin: const EdgeInsets.only(top: 90),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Sign in",
+              "Reset Password",
               style: primaryColorText.copyWith(fontSize: 30),
             ),
             const SizedBox(
               height: 22,
             ),
             Text(
-              "If you don't have an account register",
+              "Enter your new password",
               style: primaryColorText.copyWith(fontSize: 16),
             ),
-            const SizedBox(
-              height: 6,
-            ),
-            Row(
-              children: [
-                Text(
-                  "You can   ",
-                  style: primaryColorText.copyWith(fontSize: 16),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, '/sign-up'),
-                  child: Text(
-                    "Register here!",
-                    style: secondaryColorText.copyWith(
-                        fontSize: 16, fontWeight: semibold),
-                  ),
-                )
-              ],
-            )
           ],
         ),
-      );
-    }
-
-    Widget forgotPassword() {
-      return Container(
-        margin: const EdgeInsets.only(top: 8),
-        child: GestureDetector(
-            onTap: () => Navigator.pushNamed(context, '/forgot-password'),
-            child: Text(
-              "Forgot Password?",
-              textAlign: TextAlign.end,
-              style: greyColorText,
-            )),
       );
     }
 
@@ -116,19 +97,19 @@ class _SignInPageState extends State<SignInPage> {
         children: [
           header(),
           CustomForm(
-            title: 'Email',
-            textController: emailController,
-            hintText: 'Enter your email address',
-            prefixIcon: Icons.email_outlined,
-          ),
-          CustomForm(
-            title: 'Password',
+            title: 'New Password',
             textController: passwordController,
-            hintText: 'Enter your Password',
+            hintText: 'Enter your new Password',
             prefixIcon: Icons.lock_outline,
             isPassword: true,
           ),
-          forgotPassword(),
+          CustomForm(
+            title: 'Confirm New Password',
+            textController: confirmPasswordController,
+            hintText: 'Confrim your new Password',
+            prefixIcon: Icons.lock_outline,
+            isPassword: true,
+          ),
           isLoading
               ? LoadingButton(
                   marginTop: 60,
@@ -143,8 +124,8 @@ class _SignInPageState extends State<SignInPage> {
                   heightButton: 53,
                   radiusButton: 32,
                   buttonColor: secondaryColor,
-                  buttonText: 'Login',
-                  onPressed: handleSignIn,
+                  buttonText: 'Reset Password',
+                  onPressed: handleSignUp,
                 ),
         ],
       );

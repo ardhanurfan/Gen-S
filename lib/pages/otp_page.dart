@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:music_player/pages/reset_password_page.dart';
+import 'package:music_player/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../shared/theme.dart';
 import '../widgets/custom_button.dart';
 
 class OtpPage extends StatelessWidget {
-  const OtpPage({super.key});
+  const OtpPage({super.key, required this.email});
+
+  final String email;
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     final TextEditingController pin1Controller =
         TextEditingController(text: '');
     final TextEditingController pin2Controller =
@@ -17,6 +23,32 @@ class OtpPage extends StatelessWidget {
         TextEditingController(text: '');
     final TextEditingController pin4Controller =
         TextEditingController(text: '');
+
+    handleOtp() {
+      String otp = pin1Controller.text +
+          pin2Controller.text +
+          pin3Controller.text +
+          pin4Controller.text;
+      if (otp == userProvider.tokenReset) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResetPasswordPage(email: email, otp: otp),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: const Text(
+              'OTP not valid, check your email again',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    }
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -51,7 +83,7 @@ class OtpPage extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    'email@gmail.commmmmmmmmmm',
+                    email.toString(),
                     style: primaryColorText.copyWith(
                         fontSize: 16, fontWeight: bold),
                     overflow: TextOverflow.ellipsis,
@@ -78,15 +110,20 @@ class OtpPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Don’t receive the code? ',
+                  'Don\'t receive the code? ',
                   style: primaryColorText.copyWith(
                     fontSize: 16,
                   ),
                 ),
-                Text(
-                  'Resend',
-                  style:
-                      primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
+                GestureDetector(
+                  onTap: () async {
+                    await userProvider.forgotPassword(email: email);
+                  },
+                  child: Text(
+                    'Resend',
+                    style: primaryColorText.copyWith(
+                        fontSize: 16, fontWeight: bold),
+                  ),
                 ),
               ],
             ),
@@ -97,7 +134,7 @@ class OtpPage extends StatelessWidget {
               radiusButton: 32,
               buttonColor: secondaryColor,
               buttonText: 'Submit',
-              onPressed: () {},
+              onPressed: handleOtp,
             ),
           ],
         ),

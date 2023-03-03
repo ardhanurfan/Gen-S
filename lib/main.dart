@@ -36,6 +36,10 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          highlightColor: Colors.transparent,
+          splashColor: Colors.transparent,
+        ),
         scrollBehavior: MyBehavior(),
         routes: {
           '/': (context) => const SplashPage(),

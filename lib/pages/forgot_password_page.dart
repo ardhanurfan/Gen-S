@@ -1,16 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/otp_page.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/loading_button.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/custom_button.dart';
 
-class ForgotPasswordPage extends StatelessWidget {
+class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
 
+  @override
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
+}
+
+bool isLoading = false;
+
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController emailController =
         TextEditingController(text: '');
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+
+    handleForgot() async {
+      setState(() {
+        isLoading = true;
+      });
+
+      if (await userProvider.forgotPassword(email: emailController.text)) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtpPage(email: emailController.text),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: Text(
+              userProvider.errorMessage,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -34,7 +76,7 @@ class ForgotPasswordPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Don’t worry! It happens. Please enter the phone number we will send the OTP in this phone number.',
+              'Don\'t worry! It happens. Please enter the phone number we will send the OTP in this phone number.',
               style: primaryColorText.copyWith(
                 fontSize: 16,
               ),
@@ -70,22 +112,23 @@ class ForgotPasswordPage extends StatelessWidget {
                 ),
               ),
             ),
-            CustomButton(
-              marginTop: 24,
-              marginBottom: 80,
-              heightButton: 53,
-              radiusButton: 32,
-              buttonColor: secondaryColor,
-              buttonText: 'Continue',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const OtpPage(),
+            isLoading
+                ? LoadingButton(
+                    marginTop: 24,
+                    marginBottom: 80,
+                    heightButton: 53,
+                    radiusButton: 32,
+                    buttonColor: secondaryColor,
+                  )
+                : CustomButton(
+                    marginTop: 24,
+                    marginBottom: 80,
+                    heightButton: 53,
+                    radiusButton: 32,
+                    buttonColor: secondaryColor,
+                    buttonText: 'Continue',
+                    onPressed: handleForgot,
                   ),
-                );
-              },
-            ),
           ],
         ),
       ),

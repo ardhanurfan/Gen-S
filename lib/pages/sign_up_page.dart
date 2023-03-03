@@ -14,19 +14,19 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-final TextEditingController emailController = TextEditingController(text: '');
-final TextEditingController usernameController =
-    TextEditingController(text: '');
-final TextEditingController passwordController =
-    TextEditingController(text: '');
-final TextEditingController confirmPasswordController =
-    TextEditingController(text: '');
-
 bool isLoading = false;
 
 class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
+    final TextEditingController emailController =
+        TextEditingController(text: '');
+    final TextEditingController usernameController =
+        TextEditingController(text: '');
+    final TextEditingController passwordController =
+        TextEditingController(text: '');
+    final TextEditingController confirmPasswordController =
+        TextEditingController(text: '');
     UserProvider userProvider = Provider.of<UserProvider>(context);
 
     handleSignUp() async {

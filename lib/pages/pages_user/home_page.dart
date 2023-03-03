@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/setting_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/page_provider.dart';
@@ -31,11 +32,7 @@ class HomePage extends StatelessWidget {
                 color: primaryColor,
               ),
               const SizedBox(width: 16),
-              Icon(
-                Icons.settings_outlined,
-                size: 32,
-                color: primaryColor,
-              )
+              const SettingButton(),
             ],
           ),
           backgroundColor: backgroundColor,

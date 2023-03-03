@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/pages_user/detail_gallery_page.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/setting_button.dart';
 
 class GalleryPage extends StatelessWidget {
   const GalleryPage({super.key});
@@ -32,11 +33,7 @@ class GalleryPage extends StatelessWidget {
                     color: primaryColor,
                   ),
                   const SizedBox(width: 16),
-                  Icon(
-                    Icons.settings_outlined,
-                    size: 32,
-                    color: primaryColor,
-                  )
+                  const SettingButton(),
                 ],
               ),
             ],

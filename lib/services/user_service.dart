@@ -121,7 +121,7 @@ class UserService {
     }
   }
 
-  Future<int> forgotPassword({
+  Future<String> forgotPassword({
     required String email,
   }) async {
     var url = UrlService().api('forgot-password');
@@ -139,7 +139,7 @@ class UserService {
     if (response.statusCode == 200) {
       return jsonDecode(response.body)['data']['token'];
     } else {
-      throw Exception(jsonDecode(response.body)['data']['error']);
+      throw jsonDecode(response.body)['data']['error'];
     }
   }
 
@@ -149,7 +149,7 @@ class UserService {
     required String confirmPassword,
     required int token,
   }) async {
-    var url = UrlService().api('forgot-password');
+    var url = UrlService().api('reset-password');
     var headers = {'Content-Type': 'application/json'};
     var body = jsonEncode({
       'email': email,
