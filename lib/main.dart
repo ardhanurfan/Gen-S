@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/pages/pages_user/home_page.dart';
 import 'package:music_player/pages/pages_user/main_page.dart';
 import 'package:music_player/pages/splash_page.dart';
 import 'package:music_player/providers/page_provider.dart';
@@ -39,8 +38,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         scrollBehavior: MyBehavior(),
         routes: {
-          '/': (context) => const MainPage(),
-          // '/main': (context) => const MainPage(),
+          '/': (context) => const SplashPage(),
+          '/main': (context) => const MainPage(),
           '/sign-in': (context) => const SignInPage(),
           '/sign-up': (context) => const SignUpPage(),
           '/forgot-password': (context) => const ForgotPasswordPage(),
