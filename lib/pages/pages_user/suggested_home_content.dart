@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/audio_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../shared/theme.dart';
 import '../../widgets/audio_suggested_tile.dart';
@@ -11,6 +13,8 @@ class SuggestedHomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+
     return Expanded(
       child: ListView(
         padding: const EdgeInsets.only(top: 24, bottom: 100),
@@ -27,13 +31,14 @@ class SuggestedHomeContent extends StatelessWidget {
               margin: EdgeInsets.only(
                   left: defaultMargin, right: defaultMargin - 24),
               child: Row(
-                children: const [
-                  AudioSuggestedTile(),
-                  AudioSuggestedTile(),
-                  AudioSuggestedTile(),
-                  AudioSuggestedTile(),
-                  AudioSuggestedTile(),
-                ],
+                children: audioProvider.historyRecents
+                    .map(
+                      (audio) => AudioSuggestedTile(
+                        title: audio.title,
+                        coverUrl: audio.images[0].url,
+                      ),
+                    )
+                    .toList(),
               ),
             ),
           ),
@@ -50,13 +55,14 @@ class SuggestedHomeContent extends StatelessWidget {
               margin: EdgeInsets.only(
                   left: defaultMargin, right: defaultMargin - 24),
               child: Row(
-                children: const [
-                  AudioSuggestedTile(),
-                  AudioSuggestedTile(),
-                  AudioSuggestedTile(),
-                  AudioSuggestedTile(),
-                  AudioSuggestedTile(),
-                ],
+                children: audioProvider.historyMosts
+                    .map(
+                      (audio) => AudioSuggestedTile(
+                        title: audio.title,
+                        coverUrl: audio.images[0].url,
+                      ),
+                    )
+                    .toList(),
               ),
             ),
           ),

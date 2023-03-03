@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_button.dart';
 import 'package:music_player/widgets/loading_button.dart';
@@ -26,6 +27,7 @@ class _SignInPageState extends State<SignInPage> {
         TextEditingController(text: '');
     UserProvider userProvider = Provider.of<UserProvider>(context);
     PageProvider pageProvider = Provider.of<PageProvider>(context);
+    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
 
     handleSignIn() async {
       setState(() {
@@ -36,8 +38,13 @@ class _SignInPageState extends State<SignInPage> {
         email: emailController.text,
         password: passwordController.text,
       )) {
-        pageProvider.setPage = 0;
-        Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+        final navigator = Navigator.of(context);
+        // Get Data User
+        await audioProvider.getAudios(token: userProvider.user.token);
+        await audioProvider.getHistory(token: userProvider.user.token);
+
+        pageProvider.setPage = 0; // agar mulai di home
+        navigator.pushNamedAndRemoveUntil('/main', (route) => false);
       } else {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(

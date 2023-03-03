@@ -46,16 +46,11 @@ class MostPlayedPage extends StatelessWidget {
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: const [
-          AudioTile(isMostPlayed: true),
-          AudioTile(isMostPlayed: true),
-          AudioTile(isMostPlayed: true),
-          AudioTile(isMostPlayed: true),
-          AudioTile(isMostPlayed: true),
-          AudioTile(isMostPlayed: true),
-          AudioTile(isMostPlayed: true),
-          AudioTile(isMostPlayed: true),
-          AudioTile(isMostPlayed: true),
-          AudioTile(isMostPlayed: true),
+          AudioTile(isMostPlayed: true, title: 'Aku anak sehat'),
+          AudioTile(
+            isMostPlayed: true,
+            title: 'Tubuhku kuat',
+          ),
         ],
       );
     }

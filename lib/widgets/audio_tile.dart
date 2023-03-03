@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../shared/theme.dart';
@@ -6,10 +7,15 @@ class AudioTile extends StatelessWidget {
   final bool isHome;
   final bool isMostPlayed;
   final bool isSearch;
+  final String title;
+  final String coverUrl;
+
   const AudioTile({
     this.isHome = false,
     this.isMostPlayed = false,
     this.isSearch = false,
+    required this.title,
+    this.coverUrl = '',
     Key? key,
   }) : super(key: key);
 
@@ -38,30 +44,41 @@ class AudioTile extends StatelessWidget {
             height: 60,
             margin: const EdgeInsets.only(right: 24),
             width: 60,
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/bg_song_example.png"),
-                    fit: BoxFit.fill)),
+            child: coverUrl.isEmpty
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      "assets/bg_song_example.png",
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      imageUrl: coverUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
           ),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Locked Out of Heaven",
+                  title,
                   overflow: TextOverflow.ellipsis,
                   style:
                       primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  "Bruno Mars",
-                  overflow: TextOverflow.ellipsis,
-                  style: primaryColorText.copyWith(
-                      fontSize: 16, fontWeight: regular),
-                ),
+                // const SizedBox(
+                //   height: 8,
+                // ),
+                // Text(
+                //   "Bruno Mars",
+                //   overflow: TextOverflow.ellipsis,
+                //   style: primaryColorText.copyWith(
+                //       fontSize: 16, fontWeight: regular),
+                // ),
               ],
             ),
           ),

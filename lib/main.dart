@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/pages_user/main_page.dart';
 import 'package:music_player/pages/splash_page.dart';
+import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/providers/page_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => PageProvider()),
         ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => AudioProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -72,6 +72,7 @@ class SearchPage extends StatelessWidget {
                     ),
                     const AudioTile(
                       isSearch: true,
+                      title: 'Halo semua',
                     ),
                     Text(
                       "Gallery",
