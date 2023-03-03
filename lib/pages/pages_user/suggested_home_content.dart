@@ -46,7 +46,7 @@ class SuggestedHomeContent extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, '/most-played');
             },
-            marginTop: 48,
+            marginTop: 36,
             title: 'Most Played',
           ),
           SingleChildScrollView(
@@ -66,7 +66,6 @@ class SuggestedHomeContent extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 48),
         ],
       ),
     );
