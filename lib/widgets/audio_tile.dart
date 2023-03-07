@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../pages/audio_player_page.dart';
 import '../shared/theme.dart';
 
 class AudioTile extends StatelessWidget {
@@ -9,6 +10,7 @@ class AudioTile extends StatelessWidget {
   final bool isSearch;
   final String title;
   final String coverUrl;
+  final int sequence;
 
   const AudioTile({
     this.isHome = false,
@@ -16,98 +18,109 @@ class AudioTile extends StatelessWidget {
     this.isSearch = false,
     required this.title,
     this.coverUrl = '',
+    this.sequence = 0,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      child: Row(
-        children: [
-          Visibility(
-            visible: isMostPlayed,
-            child: Container(
-              margin: const EdgeInsets.only(right: 20),
-              width: 30,
-              child: Text("20",
-                  style: primaryColorText.copyWith(
-                      fontWeight: bold,
-                      fontSize: 20,
-                      foreground: Paint()
-                        ..style = PaintingStyle.stroke
-                        ..strokeWidth = 0.1
-                        ..color = primaryColor)),
-            ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AudioPlayerPage(),
           ),
-          Container(
-            height: 60,
-            margin: const EdgeInsets.only(right: 24),
-            width: 60,
-            child: coverUrl.isEmpty
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      "assets/bg_song_example.png",
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: CachedNetworkImage(
-                      imageUrl: coverUrl,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  overflow: TextOverflow.ellipsis,
-                  style:
-                      primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
-                ),
-                // const SizedBox(
-                //   height: 8,
-                // ),
-                // Text(
-                //   "Bruno Mars",
-                //   overflow: TextOverflow.ellipsis,
-                //   style: primaryColorText.copyWith(
-                //       fontSize: 16, fontWeight: regular),
-                // ),
-              ],
-            ),
-          ),
-          Row(
-            children: [
-              Visibility(
-                visible: isSearch ? false : true,
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.play_circle,
-                    color: primaryColor,
-                  ),
-                ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 24),
+        child: Row(
+          children: [
+            Visibility(
+              visible: isMostPlayed,
+              child: Container(
+                margin: const EdgeInsets.only(right: 20),
+                width: 30,
+                child: Text(sequence < 10 ? "0$sequence" : sequence.toString(),
+                    style: primaryColorText.copyWith(
+                        fontWeight: bold,
+                        fontSize: 20,
+                        foreground: Paint()
+                          ..style = PaintingStyle.stroke
+                          ..strokeWidth = 0.1
+                          ..color = primaryColor)),
               ),
-              const SizedBox(width: 20),
-              Visibility(
-                visible: isHome,
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.more_vert,
-                    color: primaryColor,
+            ),
+            Container(
+              height: 60,
+              margin: const EdgeInsets.only(right: 24),
+              width: 60,
+              child: coverUrl.isEmpty
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.asset(
+                        "assets/bg_song_example.png",
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedNetworkImage(
+                        imageUrl: coverUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    overflow: TextOverflow.ellipsis,
+                    style: primaryColorText.copyWith(
+                        fontSize: 16, fontWeight: bold),
+                  ),
+                  // const SizedBox(
+                  //   height: 8,
+                  // ),
+                  // Text(
+                  //   "Bruno Mars",
+                  //   overflow: TextOverflow.ellipsis,
+                  //   style: primaryColorText.copyWith(
+                  //       fontSize: 16, fontWeight: regular),
+                  // ),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Visibility(
+                  visible: isSearch ? false : true,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.play_circle,
+                      color: primaryColor,
+                    ),
                   ),
                 ),
-              )
-            ],
-          )
-        ],
+                const SizedBox(width: 20),
+                Visibility(
+                  visible: isHome,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.more_vert,
+                      color: primaryColor,
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

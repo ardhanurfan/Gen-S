@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/shared/theme.dart';
 
 import '../../widgets/audio_tile.dart';
 
 class MostPlayedPage extends StatelessWidget {
-  const MostPlayedPage({super.key});
+  const MostPlayedPage({super.key, required this.historyMosts});
+
+  final List<AudioModel> historyMosts;
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +46,20 @@ class MostPlayedPage extends StatelessWidget {
     }
 
     Widget listOfSong() {
+      int idx = 0;
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        children: const [
-          AudioTile(isMostPlayed: true, title: 'Aku anak sehat'),
-          AudioTile(
-            isMostPlayed: true,
-            title: 'Tubuhku kuat',
-          ),
-        ],
+        children: historyMosts.map(
+          (audio) {
+            idx++;
+            return AudioTile(
+              title: audio.title,
+              coverUrl: audio.images[0].url,
+              sequence: idx,
+              isMostPlayed: true,
+            );
+          },
+        ).toList(),
       );
     }
 

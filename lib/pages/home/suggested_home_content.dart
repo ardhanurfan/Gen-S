@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/home/most_played_page.dart';
+import 'package:music_player/pages/home/recently_played_page.dart';
 import 'package:music_player/providers/audio_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -21,7 +23,14 @@ class SuggestedHomeContent extends StatelessWidget {
         children: [
           SectionTitle(
             onTap: () {
-              Navigator.pushNamed(context, '/recently-played');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RecentlyPlayedPage(
+                    historyRecents: audioProvider.historyRecents,
+                  ),
+                ),
+              );
             },
             title: 'Recently Played',
           ),
@@ -44,7 +53,13 @@ class SuggestedHomeContent extends StatelessWidget {
           ),
           SectionTitle(
             onTap: () {
-              Navigator.pushNamed(context, '/most-played');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      MostPlayedPage(historyMosts: audioProvider.historyMosts),
+                ),
+              );
             },
             marginTop: 36,
             title: 'Most Played',

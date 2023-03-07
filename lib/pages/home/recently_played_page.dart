@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
 
 class RecentlyPlayedPage extends StatelessWidget {
-  const RecentlyPlayedPage({super.key});
+  const RecentlyPlayedPage({super.key, required this.historyRecents});
+
+  final List<AudioModel> historyRecents;
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +46,15 @@ class RecentlyPlayedPage extends StatelessWidget {
 
     Widget listOfSong() {
       return ListView(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-        children: const [
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-          AudioTile(title: 'aku anak hebat'),
-        ],
-      );
+          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+          children: historyRecents
+              .map(
+                (audio) => AudioTile(
+                  title: audio.title,
+                  coverUrl: audio.images[0].url,
+                ),
+              )
+              .toList());
     }
 
     return Scaffold(

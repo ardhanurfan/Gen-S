@@ -49,8 +49,6 @@ class MyApp extends StatelessWidget {
           '/sign-up': (context) => const SignUpPage(),
           '/forgot-password': (context) => const ForgotPasswordPage(),
           '/import-audio': (context) => const ImportAudioPage(),
-          '/recently-played': (context) => const RecentlyPlayedPage(),
-          '/most-played': (context) => const MostPlayedPage(),
         },
       ),
     );

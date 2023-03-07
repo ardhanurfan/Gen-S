@@ -11,6 +11,7 @@ class AudioPlayerPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
+            onTap: () => Navigator.pop(context),
             child: Icon(
               Icons.keyboard_arrow_down_rounded,
               color: primaryColor,
@@ -37,7 +38,7 @@ class AudioPlayerPage extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "Favourite of Maliq & D’Essentials",
+              "Favourite of Maliq & D'Essentials",
               style: primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
