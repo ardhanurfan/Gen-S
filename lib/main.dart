@@ -9,8 +9,6 @@ import 'pages/auth/sign_in_page.dart';
 import 'pages/auth/sign_up_page.dart';
 import 'pages/import_audio_page.dart';
 import 'pages/main_page.dart';
-import 'pages/home/most_played_page.dart';
-import 'pages/home/recently_played_page.dart';
 import 'pages/splash_page.dart';
 
 void main() {

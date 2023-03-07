@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/home/empty_state_page.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/setting_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/page_provider.dart';
+import '../../providers/audio_provider.dart';
 import 'audios_home_content.dart';
 import 'suggested_home_content.dart';
 
@@ -13,6 +15,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
+    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
 
     Widget header() {
       return SliverPadding(
@@ -78,12 +81,19 @@ class HomePage extends StatelessWidget {
 
     Widget changeContent() {
       int indexHome = pageProvider.homePage;
+      bool isNullHistory = audioProvider.historyMosts.isEmpty ||
+          audioProvider.historyMosts.isEmpty;
+      bool isNullAudio = audioProvider.audios.isEmpty;
+
       switch (indexHome) {
         case 0:
-          return const SuggestedHomeContent();
+          return isNullHistory
+              ? const EmptyStatePage()
+              : const SuggestedHomeContent();
         case 1:
-          return const SongsHomeContent();
-
+          return isNullAudio
+              ? const EmptyStatePage()
+              : const SongsHomeContent();
         default:
           return const SuggestedHomeContent();
       }

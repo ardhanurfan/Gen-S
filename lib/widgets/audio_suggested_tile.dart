@@ -21,7 +21,7 @@ class AudioSuggestedTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => AudioPlayerPage(),
+            builder: (context) => const AudioPlayerPage(),
           ),
         );
       },
