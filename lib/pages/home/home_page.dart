@@ -3,9 +3,9 @@ import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/setting_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/page_provider.dart';
-import 'suggested_home_content.dart';
+import '../../../providers/page_provider.dart';
 import 'audios_home_content.dart';
+import 'suggested_home_content.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

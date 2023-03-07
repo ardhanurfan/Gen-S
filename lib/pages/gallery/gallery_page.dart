@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/pages/pages_user/detail_gallery_page.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/setting_button.dart';
+
+import 'detail_gallery_page.dart';
 
 class GalleryPage extends StatelessWidget {
   const GalleryPage({super.key});

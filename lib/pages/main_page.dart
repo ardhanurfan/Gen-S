@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/pages/pages_user/gallery_page.dart';
-import 'package:music_player/pages/pages_user/playlist_page.dart';
-import 'package:music_player/pages/pages_user/search_page.dart';
+import 'package:music_player/pages/gallery/gallery_page.dart';
+import 'package:music_player/pages/playlist/playlist_page.dart';
+import 'package:music_player/pages/search_page.dart';
 import 'package:music_player/providers/page_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../shared/theme.dart';
-import 'home_page.dart';
+import 'home/home_page.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});

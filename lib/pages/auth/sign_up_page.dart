@@ -5,23 +5,24 @@ import 'package:music_player/widgets/custom_button.dart';
 import 'package:music_player/widgets/loading_button.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/custom_form.dart';
+import '../../widgets/custom_form.dart';
 
-class ResetPasswordPage extends StatefulWidget {
-  const ResetPasswordPage({super.key, required this.email, required this.otp});
-
-  final String email;
-  final String otp;
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
 bool isLoading = false;
 
-class _ResetPasswordPageState extends State<ResetPasswordPage> {
+class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
+    final TextEditingController emailController =
+        TextEditingController(text: '');
+    final TextEditingController usernameController =
+        TextEditingController(text: '');
     final TextEditingController passwordController =
         TextEditingController(text: '');
     final TextEditingController confirmPasswordController =
@@ -33,18 +34,18 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         isLoading = true;
       });
 
-      if (await userProvider.resetPassword(
-        email: widget.email,
+      if (await userProvider.register(
+        username: usernameController.text,
+        email: emailController.text,
         password: passwordController.text,
         confirmPassword: confirmPasswordController.text,
-        token: int.parse(widget.otp),
       )) {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: successColor,
             content: const Text(
-              'Reset password successfully',
+              'Register success check your email verification',
               textAlign: TextAlign.center,
             ),
           ),
@@ -76,16 +77,36 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Reset Password",
+              "Sign up",
               style: primaryColorText.copyWith(fontSize: 30),
             ),
             const SizedBox(
               height: 22,
             ),
             Text(
-              "Enter your new password",
+              "If you already have an account register",
               style: primaryColorText.copyWith(fontSize: 16),
             ),
+            const SizedBox(
+              height: 6,
+            ),
+            Row(
+              children: [
+                Text(
+                  "You can   ",
+                  style: primaryColorText.copyWith(fontSize: 16),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.pushNamedAndRemoveUntil(
+                      context, '/sign-in', (route) => false),
+                  child: Text(
+                    "Login here!",
+                    style: secondaryColorText.copyWith(
+                        fontSize: 16, fontWeight: semibold),
+                  ),
+                )
+              ],
+            )
           ],
         ),
       );
@@ -97,16 +118,28 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         children: [
           header(),
           CustomForm(
-            title: 'New Password',
+            title: 'Email',
+            textController: emailController,
+            hintText: 'Enter your email address',
+            prefixIcon: Icons.email_outlined,
+          ),
+          CustomForm(
+            title: 'Username',
+            textController: usernameController,
+            hintText: 'Enter your Username',
+            prefixIcon: Icons.person_outline,
+          ),
+          CustomForm(
+            title: 'Password',
             textController: passwordController,
-            hintText: 'Enter your new Password',
+            hintText: 'Enter your Password',
             prefixIcon: Icons.lock_outline,
             isPassword: true,
           ),
           CustomForm(
-            title: 'Confirm New Password',
+            title: 'Confirm Password',
             textController: confirmPasswordController,
-            hintText: 'Confrim your new Password',
+            hintText: 'Confrim your Password',
             prefixIcon: Icons.lock_outline,
             isPassword: true,
           ),
@@ -124,7 +157,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   heightButton: 53,
                   radiusButton: 32,
                   buttonColor: secondaryColor,
-                  buttonText: 'Reset Password',
+                  buttonText: 'Register',
                   onPressed: handleSignUp,
                 ),
         ],

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_button.dart';
 
-class EmptyAlbumPage extends StatelessWidget {
-  const EmptyAlbumPage({super.key});
+class EmptyGalleryPage extends StatelessWidget {
+  const EmptyGalleryPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/theme.dart';
-import '../../widgets/custom_button.dart';
+import '../../../shared/theme.dart';
+import '../../../widgets/custom_button.dart';
 
 class MyWidget extends StatelessWidget {
   const MyWidget({super.key});

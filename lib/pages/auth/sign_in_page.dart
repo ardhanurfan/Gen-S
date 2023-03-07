@@ -5,9 +5,9 @@ import 'package:music_player/widgets/custom_button.dart';
 import 'package:music_player/widgets/loading_button.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/page_provider.dart';
-import '../providers/user_provider.dart';
-import '../widgets/custom_form.dart';
+import '../../providers/page_provider.dart';
+import '../../providers/user_provider.dart';
+import '../../widgets/custom_form.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});

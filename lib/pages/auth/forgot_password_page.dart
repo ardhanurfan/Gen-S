@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/pages/otp_page.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/loading_button.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/custom_button.dart';
+import '../../widgets/custom_button.dart';
+import 'otp_page.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});

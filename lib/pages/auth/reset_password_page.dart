@@ -5,24 +5,23 @@ import 'package:music_player/widgets/custom_button.dart';
 import 'package:music_player/widgets/loading_button.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/custom_form.dart';
+import '../../widgets/custom_form.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({super.key, required this.email, required this.otp});
+
+  final String email;
+  final String otp;
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
 bool isLoading = false;
 
-class _SignUpPageState extends State<SignUpPage> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController =
-        TextEditingController(text: '');
-    final TextEditingController usernameController =
-        TextEditingController(text: '');
     final TextEditingController passwordController =
         TextEditingController(text: '');
     final TextEditingController confirmPasswordController =
@@ -34,18 +33,18 @@ class _SignUpPageState extends State<SignUpPage> {
         isLoading = true;
       });
 
-      if (await userProvider.register(
-        username: usernameController.text,
-        email: emailController.text,
+      if (await userProvider.resetPassword(
+        email: widget.email,
         password: passwordController.text,
         confirmPassword: confirmPasswordController.text,
+        token: int.parse(widget.otp),
       )) {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: successColor,
             content: const Text(
-              'Register success check your email verification',
+              'Reset password successfully',
               textAlign: TextAlign.center,
             ),
           ),
@@ -77,36 +76,16 @@ class _SignUpPageState extends State<SignUpPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Sign up",
+              "Reset Password",
               style: primaryColorText.copyWith(fontSize: 30),
             ),
             const SizedBox(
               height: 22,
             ),
             Text(
-              "If you already have an account register",
+              "Enter your new password",
               style: primaryColorText.copyWith(fontSize: 16),
             ),
-            const SizedBox(
-              height: 6,
-            ),
-            Row(
-              children: [
-                Text(
-                  "You can   ",
-                  style: primaryColorText.copyWith(fontSize: 16),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.pushNamedAndRemoveUntil(
-                      context, '/sign-in', (route) => false),
-                  child: Text(
-                    "Login here!",
-                    style: secondaryColorText.copyWith(
-                        fontSize: 16, fontWeight: semibold),
-                  ),
-                )
-              ],
-            )
           ],
         ),
       );
@@ -118,28 +97,16 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           header(),
           CustomForm(
-            title: 'Email',
-            textController: emailController,
-            hintText: 'Enter your email address',
-            prefixIcon: Icons.email_outlined,
-          ),
-          CustomForm(
-            title: 'Username',
-            textController: usernameController,
-            hintText: 'Enter your Username',
-            prefixIcon: Icons.person_outline,
-          ),
-          CustomForm(
-            title: 'Password',
+            title: 'New Password',
             textController: passwordController,
-            hintText: 'Enter your Password',
+            hintText: 'Enter your new Password',
             prefixIcon: Icons.lock_outline,
             isPassword: true,
           ),
           CustomForm(
-            title: 'Confirm Password',
+            title: 'Confirm New Password',
             textController: confirmPasswordController,
-            hintText: 'Confrim your Password',
+            hintText: 'Confrim your new Password',
             prefixIcon: Icons.lock_outline,
             isPassword: true,
           ),
@@ -157,7 +124,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   heightButton: 53,
                   radiusButton: 32,
                   buttonColor: secondaryColor,
-                  buttonText: 'Register',
+                  buttonText: 'Reset Password',
                   onPressed: handleSignUp,
                 ),
         ],

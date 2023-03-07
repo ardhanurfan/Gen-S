@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/pages/pages_user/create_playlist_page.dart';
-import 'package:music_player/pages/pages_user/playlist_detail_page.dart';
 import 'package:music_player/shared/theme.dart';
+
+import 'create_playlist_page.dart';
+import 'playlist_detail_page.dart';
 
 class PlaylistPage extends StatelessWidget {
   const PlaylistPage({super.key});

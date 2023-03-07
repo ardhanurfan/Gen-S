@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:music_player/pages/reset_password_page.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../shared/theme.dart';
-import '../widgets/custom_button.dart';
+import '../../shared/theme.dart';
+import '../../widgets/custom_button.dart';
+import 'reset_password_page.dart';
 
 class OtpPage extends StatelessWidget {
   const OtpPage({super.key, required this.email});
