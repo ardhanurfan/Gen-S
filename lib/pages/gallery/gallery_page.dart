@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/gallery_grid.dart';
 import 'package:music_player/widgets/setting_button.dart';
+import 'package:provider/provider.dart';
 
-import 'detail_gallery_page.dart';
+import '../../providers/gallery_provider.dart';
 
 class GalleryPage extends StatelessWidget {
   const GalleryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    GalleryProvider galleryProvider =
+        Provider.of<GalleryProvider>(context, listen: false);
+
     Widget header() {
       return SliverPadding(
         padding:
@@ -46,54 +51,19 @@ class GalleryPage extends StatelessWidget {
       );
     }
 
-    Widget albumGrid() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const DetailGalleryPage()));
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: Image.asset(
-                "assets/ex_gallery.png",
-                // width: 160,
-                // height: 160,
-              ),
-            ),
-          ),
-          Text(
-            "Album Name",
-            style: primaryColorText.copyWith(fontSize: 16, fontWeight: medium),
-          ),
-          Text(
-            "4736",
-            style: primaryColorText.copyWith(fontSize: 12),
-          ),
-        ],
-      );
-    }
-
     Widget content() {
       return GridView(
         padding:
             const EdgeInsets.only(top: 24, bottom: 100, left: 20, right: 20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, childAspectRatio: 1 / 1.4, crossAxisSpacing: 30),
-        children: [
-          albumGrid(),
-          albumGrid(),
-          albumGrid(),
-          albumGrid(),
-          albumGrid(),
-          albumGrid(),
-          albumGrid(),
-          albumGrid()
-        ],
+        children: galleryProvider.galleries
+            .map(
+              (gallery) => GalleryGrid(
+                gallery: gallery,
+              ),
+            )
+            .toList(),
       );
     }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
-import 'package:music_player/widgets/audio_tile.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -70,10 +69,10 @@ class SearchPage extends StatelessWidget {
                             fontSize: 20, fontWeight: bold),
                       ),
                     ),
-                    const AudioTile(
-                      isSearch: true,
-                      title: 'Halo semua',
-                    ),
+                    // const AudioTile(
+                    //   isSearch: true,
+                    //   title: 'Halo semua',
+                    // ),
                     Text(
                       "Gallery",
                       style: primaryColorText.copyWith(

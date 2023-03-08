@@ -44,7 +44,8 @@ class SuggestedHomeContent extends StatelessWidget {
                     .map(
                       (audio) => AudioSuggestedTile(
                         title: audio.title,
-                        coverUrl: audio.images[0].url,
+                        coverUrl:
+                            audio.images.isEmpty ? '' : audio.images[0].url,
                       ),
                     )
                     .toList(),
@@ -74,7 +75,8 @@ class SuggestedHomeContent extends StatelessWidget {
                     .map(
                       (audio) => AudioSuggestedTile(
                         title: audio.title,
-                        coverUrl: audio.images[0].url,
+                        coverUrl:
+                            audio.images.isEmpty ? '' : audio.images[0].url,
                       ),
                     )
                     .toList(),

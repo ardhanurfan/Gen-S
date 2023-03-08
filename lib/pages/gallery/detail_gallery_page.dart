@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:music_player/models/gallery_model.dart';
 import 'package:music_player/shared/theme.dart';
 
 class DetailGalleryPage extends StatelessWidget {
-  const DetailGalleryPage({super.key});
+  const DetailGalleryPage({required this.gallery, super.key});
+
+  final GalleryModel gallery;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +31,7 @@ class DetailGalleryPage extends StatelessWidget {
                 ),
               ),
               Text(
-                "Album Name",
+                gallery.name,
                 style: primaryColorText.copyWith(
                   fontWeight: bold,
                   fontSize: 20,
@@ -42,63 +46,19 @@ class DetailGalleryPage extends StatelessWidget {
       );
     }
 
-    Widget image1() {
-      return ClipRRect(
-        child: Image.asset(
-          "assets/ex_gallery.png",
-        ),
-      );
-    }
-
-    Widget image2() {
-      return ClipRRect(
-        child: Image.asset(
-          "assets/ex_gallery1.png",
-        ),
-      );
-    }
-
-    Widget image3() {
-      return ClipRRect(
-        child: Image.asset(
-          "assets/ex_gallery2.png",
-        ),
-      );
-    }
-
     Widget gridImages() {
       return GridView(
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-        children: [
-          image1(),
-          image2(),
-          image3(),
-          image1(),
-          image2(),
-          image3(),
-          image1(),
-          image2(),
-          image3(),
-          image1(),
-          image2(),
-          image3(),
-          image1(),
-          image2(),
-          image3(),
-          image1(),
-          image2(),
-          image3(),
-          image1(),
-          image2(),
-          image3(),
-          image1(),
-          image2(),
-          image3(),
-          image1(),
-          image2(),
-          image3(),
-        ],
+        children: gallery.images
+            .map(
+              (image) => ClipRRect(
+                child: CachedNetworkImage(
+                  imageUrl: image.url,
+                ),
+              ),
+            )
+            .toList(),
       );
     }
 

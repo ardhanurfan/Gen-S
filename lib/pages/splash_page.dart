@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/providers/audio_provider.dart';
+import 'package:music_player/providers/gallery_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/services/user_service.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,13 @@ class _SplashPageState extends State<SplashPage> {
         Provider.of<UserProvider>(context, listen: false);
     AudioProvider audioProvider =
         Provider.of<AudioProvider>(context, listen: false);
+    GalleryProvider galleryProvider =
+        Provider.of<GalleryProvider>(context, listen: false);
     final String? token = await UserService().getTokenPreference();
+
+    // Get general data
+    await galleryProvider.getGallery();
+
     if (token == null) {
       navigator.pushNamedAndRemoveUntil('/sign-in', (route) => false);
     } else {

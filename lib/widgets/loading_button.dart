@@ -25,10 +25,30 @@ class LoadingButton extends StatelessWidget {
       margin: EdgeInsets.only(top: marginTop, bottom: marginBottom),
       width: widthButton,
       height: heightButton,
-      child: Center(
-        child: CircularProgressIndicator(
-          color: primaryColor,
-        ),
+      decoration: BoxDecoration(
+        color: buttonColor,
+        borderRadius: BorderRadius.circular(radiusButton),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(
+              color: primaryColor,
+              strokeWidth: 2,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            'Loading',
+            style: primaryColorText.copyWith(
+              fontSize: 16,
+              fontWeight: medium,
+            ),
+          ),
+        ],
       ),
     );
   }

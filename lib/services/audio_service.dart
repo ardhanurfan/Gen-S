@@ -28,7 +28,7 @@ class AudioService {
     );
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(response.body)['data']['data'] as List;
+      var data = jsonDecode(response.body)['data'] as List;
       List<AudioModel> audios = List<AudioModel>.from(
         data.map((e) => AudioModel.fromJson(e)),
       );

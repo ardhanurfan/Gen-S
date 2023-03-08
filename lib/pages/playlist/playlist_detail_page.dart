@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
-import 'package:music_player/widgets/audio_tile.dart';
 
 class PlaylistDetailPage extends StatelessWidget {
   const PlaylistDetailPage({super.key});
@@ -76,15 +75,15 @@ class PlaylistDetailPage extends StatelessWidget {
         children: [
           header(),
           playlistInfo(),
-          const AudioTile(isHome: true, title: 'Ini Lagu'),
-          const AudioTile(isHome: true, title: 'Ini Lagu'),
-          const AudioTile(isHome: true, title: 'Ini Lagu'),
-          const AudioTile(isHome: true, title: 'Ini Lagu'),
-          const AudioTile(isHome: true, title: 'Ini Lagu'),
-          const AudioTile(isHome: true, title: 'Ini Lagu'),
-          const AudioTile(isHome: true, title: 'Ini Lagu'),
-          const AudioTile(isHome: true, title: 'Ini Lagu'),
-          const AudioTile(isHome: true, title: 'Ini Lagu'),
+          // const AudioTile(isHome: true, title: 'Ini Lagu'),
+          // const AudioTile(isHome: true, title: 'Ini Lagu'),
+          // const AudioTile(isHome: true, title: 'Ini Lagu'),
+          // const AudioTile(isHome: true, title: 'Ini Lagu'),
+          // const AudioTile(isHome: true, title: 'Ini Lagu'),
+          // const AudioTile(isHome: true, title: 'Ini Lagu'),
+          // const AudioTile(isHome: true, title: 'Ini Lagu'),
+          // const AudioTile(isHome: true, title: 'Ini Lagu'),
+          // const AudioTile(isHome: true, title: 'Ini Lagu'),
         ],
       );
     }

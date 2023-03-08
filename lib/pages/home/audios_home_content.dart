@@ -19,8 +19,7 @@ class SongsHomeContent extends StatelessWidget {
             .map(
               (audio) => AudioTile(
                 isHome: true,
-                title: audio.title,
-                coverUrl: audio.images[0].url,
+                audio: audio,
               ),
             )
             .toList(),

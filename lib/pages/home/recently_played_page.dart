@@ -50,8 +50,7 @@ class RecentlyPlayedPage extends StatelessWidget {
           children: historyRecents
               .map(
                 (audio) => AudioTile(
-                  title: audio.title,
-                  coverUrl: audio.images[0].url,
+                  audio: audio,
                 ),
               )
               .toList());

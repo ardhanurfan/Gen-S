@@ -53,8 +53,7 @@ class MostPlayedPage extends StatelessWidget {
           (audio) {
             idx++;
             return AudioTile(
-              title: audio.title,
-              coverUrl: audio.images[0].url,
+              audio: audio,
               sequence: idx,
               isMostPlayed: true,
             );
