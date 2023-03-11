@@ -15,19 +15,19 @@ class GalleryGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailGalleryPage(gallery: gallery),
-              ),
-            );
-          },
-          child: gallery.images.isEmpty
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailGalleryPage(gallery: gallery),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          gallery.images.isEmpty
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: Image.asset(
@@ -41,16 +41,16 @@ class GalleryGrid extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-        ),
-        Text(
-          gallery.name,
-          style: primaryColorText.copyWith(fontSize: 16, fontWeight: medium),
-        ),
-        Text(
-          gallery.images.length.toString(),
-          style: primaryColorText.copyWith(fontSize: 12),
-        ),
-      ],
+          Text(
+            gallery.name,
+            style: primaryColorText.copyWith(fontSize: 16, fontWeight: medium),
+          ),
+          Text(
+            gallery.images.length.toString(),
+            style: primaryColorText.copyWith(fontSize: 12),
+          ),
+        ],
+      ),
     );
   }
 }

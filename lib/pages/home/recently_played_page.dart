@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/audio_player_provider.dart';
 
 class RecentlyPlayedPage extends StatelessWidget {
   const RecentlyPlayedPage({super.key, required this.historyRecents});
@@ -10,6 +13,9 @@ class RecentlyPlayedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AudioPlayerProvider audioPlayerProvider =
+        Provider.of<AudioPlayerProvider>(context);
+
     Widget header() {
       return SliverPadding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
@@ -49,8 +55,17 @@ class RecentlyPlayedPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: defaultMargin),
           children: historyRecents
               .map(
-                (audio) => AudioTile(
-                  audio: audio,
+                (audio) => GestureDetector(
+                  onTap: () {
+                    audioPlayerProvider.setPlay(
+                      historyRecents,
+                      historyRecents.indexOf(audio),
+                    );
+                  },
+                  child: AudioTile(
+                    audio: audio,
+                    isPlaying: audioPlayerProvider.currentAudioId == audio.id,
+                  ),
                 ),
               )
               .toList());

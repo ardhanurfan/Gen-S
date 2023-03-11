@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/playlist_tile.dart';
+import 'package:provider/provider.dart';
 
 import 'create_playlist_page.dart';
-import 'playlist_detail_page.dart';
 
 class PlaylistPage extends StatelessWidget {
   const PlaylistPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+
     Widget header() {
       return SliverPadding(
         padding:
@@ -77,144 +81,13 @@ class PlaylistPage extends StatelessWidget {
       );
     }
 
-    Widget playlistTile() {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 24),
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const PlaylistDetailPage()));
-          },
-          child: Row(
-            children: [
-              Container(
-                height: 60,
-                margin: const EdgeInsets.only(right: 24),
-                width: 60,
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/ex_playlist.png"),
-                        fit: BoxFit.fill)),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Road Trip",
-                      overflow: TextOverflow.ellipsis,
-                      style: primaryColorText.copyWith(
-                          fontSize: 16, fontWeight: bold),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      "85 songs",
-                      overflow: TextOverflow.ellipsis,
-                      style: primaryColorText.copyWith(
-                          fontSize: 16, fontWeight: regular),
-                    ),
-                  ],
-                ),
-              ),
-              PopupMenuButton(
-                icon: Icon(
-                  Icons.more_vert,
-                  color: primaryColor,
-                ),
-                color: dropDownColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                ),
-                elevation: 4,
-                onSelected: (value) {
-                  if (value == 0) {
-                  } else {}
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                    value: 0,
-                    child: Center(
-                      child: Text(
-                        'Edit',
-                        style: primaryColorText.copyWith(fontSize: 14),
-                      ),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    onTap: () {},
-                    value: 1,
-                    child: Center(
-                      child: Text(
-                        'Delete',
-                        style: primaryColorText.copyWith(fontSize: 14),
-                      ),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    onTap: () {},
-                    value: 2,
-                    child: Center(
-                      child: Text(
-                        'Add song',
-                        style: primaryColorText.copyWith(fontSize: 14),
-                      ),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    onTap: () {},
-                    value: 3,
-                    child: Center(
-                      child: Text(
-                        'Add to queue',
-                        style: primaryColorText.copyWith(fontSize: 14),
-                      ),
-                    ),
-                  ),
-                  PopupMenuItem(
-                    onTap: () {},
-                    value: 4,
-                    child: Center(
-                      child: Text(
-                        'Share',
-                        style: primaryColorText.copyWith(fontSize: 14),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      );
-    }
-
     Widget content() {
       return ListView(
         padding: EdgeInsets.only(
             right: defaultMargin, left: defaultMargin, top: 24, bottom: 100),
-        children: [
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-          playlistTile(),
-        ],
+        children: playlistProvider.playlists
+            .map((playlist) => PlaylistTile(playlist: playlist))
+            .toList(),
       );
     }
 
