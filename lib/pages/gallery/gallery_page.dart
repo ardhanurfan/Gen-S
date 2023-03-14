@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/gallery/empty_gallery_page.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/gallery_grid.dart';
 import 'package:music_player/widgets/setting_button.dart';
@@ -77,7 +78,9 @@ class GalleryPage extends StatelessWidget {
                 header(),
               ];
             },
-            body: content(),
+            body: galleryProvider.galleries.isEmpty
+                ? const EmptyGalleryPage()
+                : content(),
           ),
         ));
   }

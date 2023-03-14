@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/playlist/empty_playlist_page.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/playlist_tile.dart';
@@ -101,7 +102,9 @@ class PlaylistPage extends StatelessWidget {
               header(),
             ];
           },
-          body: content(),
+          body: playlistProvider.playlists.isEmpty
+              ? const EmptyPlaylistPage()
+              : content(),
         ),
       ),
     );
