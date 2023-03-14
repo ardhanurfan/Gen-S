@@ -1,50 +1,71 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:music_player/models/audio_model.dart';
+import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/play_button.dart';
+import 'package:provider/provider.dart';
 
 class PlayingTile extends StatelessWidget {
   const PlayingTile({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: const Color(0xFF464343),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
-                    'assets/ex_gallery1.png',
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
+    AudioPlayerProvider audioPlayerProvider =
+        Provider.of<AudioPlayerProvider>(context);
+
+    AudioModel currentAudio = audioPlayerProvider.currentAudio;
+
+    return currentAudio.id == -1
+        ? const SizedBox()
+        : GestureDetector(
+            onTap: () => Navigator.pushNamed(context, '/player'),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: const Color(0xFF464343),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        currentAudio.images.isNotEmpty
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: CachedNetworkImage(
+                                  imageUrl: currentAudio.images[0].url,
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.asset(
+                                  'assets/ex_gallery1.png',
+                                  width: 60,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                        const SizedBox(width: 24),
+                        Text(
+                          currentAudio.title,
+                          style: primaryColorText.copyWith(
+                            fontSize: 16,
+                            fontWeight: bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: 24),
-                Text(
-                  'Judul Lagu',
-                  style: primaryColorText.copyWith(
-                    fontSize: 16,
-                    fontWeight: bold,
-                  ),
-                ),
-              ],
+                  const PlayButton(size: 36),
+                ],
+              ),
             ),
-          ),
-          Icon(
-            Icons.play_circle,
-            color: primaryColor,
-            size: 36,
-          ),
-        ],
-      ),
-    );
+          );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/audio_player_page.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/providers/gallery_provider.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
           '/sign-up': (context) => const SignUpPage(),
           '/forgot-password': (context) => const ForgotPasswordPage(),
           '/import-audio': (context) => const ImportAudioPage(),
+          '/player': (context) => const AudioPlayerPage(),
         },
       ),
     );

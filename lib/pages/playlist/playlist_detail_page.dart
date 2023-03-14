@@ -106,9 +106,8 @@ class PlaylistDetailPage extends StatelessWidget {
                   );
                 },
                 child: AudioTile(
-                  isHome: true,
                   audio: audio,
-                  isPlaying: audioPlayerProvider.currentAudioId == audio.id,
+                  isPlaying: audioPlayerProvider.currentAudio.id == audio.id,
                 ),
               ),
             )

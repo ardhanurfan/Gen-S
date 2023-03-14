@@ -1,18 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/models/position_data_model.dart';
+import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/play_button.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class AudioPlayerPage extends StatefulWidget {
+class AudioPlayerPage extends StatelessWidget {
   const AudioPlayerPage({super.key});
-
-  @override
-  State<AudioPlayerPage> createState() => _AudioPlayerPageState();
-}
-
-class _AudioPlayerPageState extends State<AudioPlayerPage> {
-  late ConcatenatingAudioSource _playlist;
 
   // Stream<PositionDataModel> get _positionDataStream =>
   //     Rx.combineLatest3<Duration, Duration, Duration?, PositionDataModel>(
@@ -24,17 +22,12 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
   //     );
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    AudioPlayerProvider audioPlayerProvider =
+        Provider.of<AudioPlayerProvider>(context);
+
+    AudioModel currentAudio = audioPlayerProvider.currentAudio;
+
     Widget header() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -75,14 +68,23 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
             const SizedBox(
               height: 55,
             ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(32),
-              child: Image.asset(
-                "assets/audio_page.png",
-                height: 280,
-                width: 280,
-              ),
-            ),
+            currentAudio.images.isEmpty
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(32),
+                    child: Image.asset(
+                      "assets/audio_page.png",
+                      height: 280,
+                      width: 280,
+                    ),
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(32),
+                    child: CachedNetworkImage(
+                      imageUrl: currentAudio.images[0].url,
+                      height: 280,
+                      width: 280,
+                    ),
+                  ),
             const SizedBox(
               height: 64,
             ),
@@ -91,7 +93,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
               children: [
                 Expanded(
                   child: Text(
-                    "Terdiam",
+                    currentAudio.title,
                     style: primaryColorText.copyWith(
                         fontSize: 16, fontWeight: bold),
                     overflow: TextOverflow.ellipsis,
@@ -130,7 +132,7 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
                 ),
               ),
             ),
-            AudioController()
+            const AudioController(),
           ],
         ),
       );
@@ -139,7 +141,10 @@ class _AudioPlayerPageState extends State<AudioPlayerPage> {
     Widget content() {
       return ListView(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 60),
-        children: [header(), music()],
+        children: [
+          header(),
+          music(),
+        ],
       );
     }
 
@@ -155,6 +160,9 @@ class AudioController extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AudioPlayerProvider audioPlayerProvider =
+        Provider.of<AudioPlayerProvider>(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -167,23 +175,22 @@ class AudioController extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () async {
+            await audioPlayerProvider.audioPlayer.seekToPrevious();
+            audioPlayerProvider.updateAudio();
+          },
           child: Icon(
             Icons.fast_rewind_outlined,
             color: primaryColor,
             size: 34,
           ),
         ),
+        const PlayButton(size: 34),
         GestureDetector(
-          onTap: () {},
-          child: Icon(
-            Icons.play_circle_fill_rounded,
-            color: primaryColor,
-            size: 34,
-          ),
-        ),
-        GestureDetector(
-          onTap: () {},
+          onTap: () async {
+            await audioPlayerProvider.audioPlayer.seekToNext();
+            audioPlayerProvider.updateAudio();
+          },
           child: Icon(
             Icons.fast_forward_outlined,
             color: primaryColor,

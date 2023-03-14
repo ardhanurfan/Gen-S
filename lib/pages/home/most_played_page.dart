@@ -65,7 +65,8 @@ class MostPlayedPage extends StatelessWidget {
                     audio: audio,
                     sequence: historyMosts.indexOf(audio) + 1,
                     isMostPlayed: true,
-                    isPlaying: audioPlayerProvider.currentAudioId == audio.id,
+                    isHistory: true,
+                    isPlaying: audioPlayerProvider.currentAudio.id == audio.id,
                   ),
                 ))
             .toList(),

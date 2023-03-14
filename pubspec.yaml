@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^4.0.3
   http: ^0.13.5
   just_audio: ^0.9.31
+  loading_animation_widget: ^1.2.0+4
   provider: ^6.0.5
   rxdart: ^0.27.7
   shared_preferences: ^2.0.18

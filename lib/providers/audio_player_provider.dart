@@ -7,15 +7,17 @@ class AudioPlayerProvider extends ChangeNotifier {
   late AudioPlayer _audioPlayer;
   late ConcatenatingAudioSource _playlist;
   List<AudioModel> _currentPlaylist = [];
-  int _currentAudioId = -1;
+  late AudioModel _currentAudio;
 
   AudioPlayer get audioPlayer => _audioPlayer;
   ConcatenatingAudioSource get playlist => _playlist;
   List<AudioModel> get currentPlaylist => _currentPlaylist;
-  int get currentAudioId => _currentAudioId;
+
+  AudioModel get currentAudio => _currentAudio;
 
   void init() {
     _audioPlayer = AudioPlayer();
+    _currentAudio = const AudioModel(id: -1, title: '', url: '', images: []);
   }
 
   Future<void> setPlay(List<AudioModel> playlist, int index) async {
@@ -28,13 +30,19 @@ class AudioPlayerProvider extends ChangeNotifier {
             .toList(),
       );
       _currentPlaylist = playlist;
+      notifyListeners();
       await _audioPlayer.setAudioSource(_playlist);
     }
 
-    _currentAudioId = playlist[index].id;
-    await _audioPlayer.seek(const Duration(seconds: 0), index: index);
-    await _audioPlayer.play();
+    _currentAudio = _currentPlaylist[index];
+    notifyListeners();
 
+    await _audioPlayer.seek(const Duration(seconds: 0), index: index);
+    _audioPlayer.play();
+  }
+
+  void updateAudio() {
+    _currentAudio = _currentPlaylist[_audioPlayer.currentIndex!];
     notifyListeners();
   }
 

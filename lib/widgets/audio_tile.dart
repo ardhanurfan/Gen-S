@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:music_player/models/audio_model.dart';
 
 import '../shared/theme.dart';
 
 class AudioTile extends StatelessWidget {
-  final bool isHome;
+  final bool isHistory;
   final bool isMostPlayed;
   final bool isSearch;
   final AudioModel audio;
@@ -13,7 +14,7 @@ class AudioTile extends StatelessWidget {
   final bool isPlaying;
 
   const AudioTile({
-    this.isHome = false,
+    this.isHistory = false,
     this.isMostPlayed = false,
     this.isSearch = false,
     required this.audio,
@@ -82,17 +83,14 @@ class AudioTile extends StatelessWidget {
             children: [
               Visibility(
                 visible: isPlaying,
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.play_circle,
-                    color: primaryColor,
-                  ),
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: primaryColor,
+                  size: 24,
                 ),
               ),
               const SizedBox(width: 20),
               Visibility(
-                visible: isHome,
+                visible: !isHistory,
                 child: GestureDetector(
                   onTap: () {},
                   child: Icon(

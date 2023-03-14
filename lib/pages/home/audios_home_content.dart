@@ -28,9 +28,8 @@ class SongsHomeContent extends StatelessWidget {
                   );
                 },
                 child: AudioTile(
-                  isHome: true,
                   audio: audio,
-                  isPlaying: audio.id == audioPlayerProvider.currentAudioId,
+                  isPlaying: audioPlayerProvider.currentAudio.id == audio.id,
                 ),
               ),
             )

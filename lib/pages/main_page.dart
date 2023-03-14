@@ -3,6 +3,7 @@ import 'package:music_player/pages/gallery/gallery_page.dart';
 import 'package:music_player/pages/playlist/playlist_page.dart';
 import 'package:music_player/pages/search_page.dart';
 import 'package:music_player/providers/page_provider.dart';
+import 'package:music_player/widgets/playing_tile.dart';
 import 'package:provider/provider.dart';
 
 import '../../shared/theme.dart';
@@ -89,7 +90,13 @@ class MainPage extends StatelessWidget {
         alignment: AlignmentDirectional.bottomCenter,
         children: [
           buildContent(),
-          customBottomNavigation(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const PlayingTile(),
+              customBottomNavigation(),
+            ],
+          ),
         ],
       ),
     );

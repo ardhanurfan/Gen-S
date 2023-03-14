@@ -64,7 +64,8 @@ class RecentlyPlayedPage extends StatelessWidget {
                   },
                   child: AudioTile(
                     audio: audio,
-                    isPlaying: audioPlayerProvider.currentAudioId == audio.id,
+                    isHistory: true,
+                    isPlaying: audioPlayerProvider.currentAudio.id == audio.id,
                   ),
                 ),
               )
