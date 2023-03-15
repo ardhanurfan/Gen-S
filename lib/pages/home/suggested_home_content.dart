@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/home/most_played_page.dart';
 import 'package:music_player/pages/home/recently_played_page.dart';
+import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/audio_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,8 @@ class SuggestedHomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+    AudioPlayerProvider audioPlayerProvider =
+        Provider.of<AudioPlayerProvider>(context);
 
     return Expanded(
       child: ListView(
@@ -42,10 +45,18 @@ class SuggestedHomeContent extends StatelessWidget {
               child: Row(
                 children: audioProvider.historyRecents
                     .map(
-                      (audio) => AudioSuggestedTile(
-                        title: audio.title,
-                        coverUrl:
-                            audio.images.isEmpty ? '' : audio.images[0].url,
+                      (audio) => GestureDetector(
+                        onTap: () {
+                          audioPlayerProvider.setPlay(
+                            audioProvider.historyRecents,
+                            audioProvider.historyRecents.indexOf(audio),
+                          );
+                        },
+                        child: AudioSuggestedTile(
+                          title: audio.title,
+                          coverUrl:
+                              audio.images.isEmpty ? '' : audio.images[0].url,
+                        ),
                       ),
                     )
                     .toList(),
@@ -73,10 +84,18 @@ class SuggestedHomeContent extends StatelessWidget {
               child: Row(
                 children: audioProvider.historyMosts
                     .map(
-                      (audio) => AudioSuggestedTile(
-                        title: audio.title,
-                        coverUrl:
-                            audio.images.isEmpty ? '' : audio.images[0].url,
+                      (audio) => GestureDetector(
+                        onTap: () {
+                          audioPlayerProvider.setPlay(
+                            audioProvider.historyMosts,
+                            audioProvider.historyMosts.indexOf(audio),
+                          );
+                        },
+                        child: AudioSuggestedTile(
+                          title: audio.title,
+                          coverUrl:
+                              audio.images.isEmpty ? '' : audio.images[0].url,
+                        ),
                       ),
                     )
                     .toList(),
