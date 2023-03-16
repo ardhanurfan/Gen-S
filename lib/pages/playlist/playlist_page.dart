@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:music_player/pages/playlist/empty_playlist_page.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/playlist_tile.dart';
 import 'package:provider/provider.dart';
-
-import 'create_playlist_page.dart';
 
 class PlaylistPage extends StatelessWidget {
   const PlaylistPage({super.key});
@@ -53,11 +52,11 @@ class PlaylistPage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const CreatePlaylistPage()));
+                      showDialog(
+                        context: context,
+                        builder: (context) =>
+                            const CustomPopUp(title: "Playlist Name"),
+                      );
                     },
                     child: Icon(
                       Icons.add,
