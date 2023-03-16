@@ -6,6 +6,9 @@ import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/gallery_provider.dart';
+import '../widgets/gallery_grid.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -20,13 +23,18 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
-
+    GalleryProvider galleryProvider =
+        Provider.of<GalleryProvider>(context, listen: false);
     void updateFound(String value) {
       setState(() {
         if (value.isNotEmpty) {
           foundAudio = audioProvider.audios
               .where((audio) =>
                   audio.title.toLowerCase().contains(value.toLowerCase()))
+              .toList();
+          foundGallery = galleryProvider.galleries
+              .where((gallery) =>
+                  gallery.name.toLowerCase().contains(value.toLowerCase()))
               .toList();
         } else {
           foundAudio = [];
@@ -118,6 +126,27 @@ class _SearchPageState extends State<SearchPage> {
                           fontSize: 20, fontWeight: bold),
                     ),
                   ),
+                ),
+                Column(
+                  children: [
+                    GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1 / 1.5,
+                        crossAxisSpacing: 30,
+                      ),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: foundGallery
+                          .map(
+                            (gallery) => GalleryGrid(
+                              gallery: gallery,
+                            ),
+                          )
+                          .toList(),
+                    )
+                  ],
                 )
               ],
             ),
