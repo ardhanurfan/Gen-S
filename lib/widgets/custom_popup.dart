@@ -3,7 +3,13 @@ import 'package:music_player/shared/theme.dart';
 
 class CustomPopUp extends StatelessWidget {
   final String title;
-  const CustomPopUp({super.key, required this.title});
+  final Function() add;
+  final TextEditingController controller;
+  const CustomPopUp(
+      {super.key,
+      required this.title,
+      required this.add,
+      required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +26,10 @@ class CustomPopUp extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
+            onPressed: () async {
+              final navigator = Navigator.of(context);
+              await add();
+              navigator.pop(true);
             },
             child: Text(
               'ADD',
@@ -34,6 +42,7 @@ class CustomPopUp extends StatelessWidget {
           style: primaryColorText,
         ),
         content: TextField(
+          controller: controller,
           style: primaryColorText.copyWith(fontSize: 14),
           cursorColor: primaryColor,
           decoration: InputDecoration(

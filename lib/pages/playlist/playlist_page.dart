@@ -12,6 +12,7 @@ class PlaylistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    TextEditingController controller = TextEditingController();
 
     Widget header() {
       return SliverPadding(
@@ -54,8 +55,38 @@ class PlaylistPage extends StatelessWidget {
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder: (context) =>
-                            const CustomPopUp(title: "Playlist Name"),
+                        builder: (context) => CustomPopUp(
+                          controller: controller,
+                          title: "Playlist Name",
+                          add: () async {
+                            if (await playlistProvider.addPlaylist(
+                                name: controller.text)) {
+                              ScaffoldMessenger.of(context)
+                                  .removeCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: successColor,
+                                  content: const Text(
+                                    'Add Playlist Successfuly',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .removeCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: alertColor,
+                                  content: Text(
+                                    playlistProvider.errorMessage,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       );
                     },
                     child: Icon(

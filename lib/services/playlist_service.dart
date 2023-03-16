@@ -39,9 +39,8 @@ class PlaylistService {
     }
   }
 
-  Future<bool> addPlaylist({required String name}) async {
-    late Uri url = UrlService().api('add-audio');
-
+  Future<PlaylistModel> addPlaylist({required String name}) async {
+    late Uri url = UrlService().api('add-playlist');
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': await UserService().getTokenPreference() ?? '',
@@ -57,8 +56,11 @@ class PlaylistService {
 
     var response = await request.send();
 
+    var responsed = await http.Response.fromStream(response);
+
     if (response.statusCode == 200) {
-      return true;
+      var data = jsonDecode(responsed.body)['data'];
+      return PlaylistModel.fromJson(data);
     } else {
       throw "Add playlist failed";
     }

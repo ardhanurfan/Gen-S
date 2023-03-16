@@ -22,7 +22,9 @@ class PlaylistProvider extends ChangeNotifier {
 
   Future<bool> addPlaylist({required String name}) async {
     try {
-      return await PlaylistService().addPlaylist(name: name);
+      _playlists.add(await PlaylistService().addPlaylist(name: name));
+      notifyListeners();
+      return true;
     } catch (e) {
       _errorMessage = e.toString();
       return false;
