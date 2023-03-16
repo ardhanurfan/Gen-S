@@ -10,6 +10,7 @@ class DetailGalleryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final itemWidth = MediaQuery.of(context).size.width;
     Widget header() {
       return SliverPadding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 20),
@@ -55,6 +56,9 @@ class DetailGalleryPage extends StatelessWidget {
               (image) => ClipRRect(
                 child: CachedNetworkImage(
                   imageUrl: image.url,
+                  height: itemWidth,
+                  width: itemWidth,
+                  fit: BoxFit.fill,
                 ),
               ),
             )

@@ -15,6 +15,7 @@ class GalleryGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final itemWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -32,13 +33,18 @@ class GalleryGrid extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   child: Image.asset(
                     "assets/ex_gallery.png",
+                    height: itemWidth,
+                    width: itemWidth,
+                    fit: BoxFit.fill,
                   ),
                 )
               : ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: CachedNetworkImage(
                     imageUrl: gallery.images[0].url,
-                    fit: BoxFit.cover,
+                    height: 160,
+                    width: 160,
+                    fit: BoxFit.fill,
                   ),
                 ),
           Text(

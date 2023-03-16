@@ -68,15 +68,12 @@ class AudioPlayerPage extends StatelessWidget {
             const SizedBox(
               height: 55,
             ),
-            StreamBuilder<SequenceState?>(
-              stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
+            StreamBuilder<int?>(
+              stream: audioPlayerProvider.audioPlayer.currentIndexStream,
               builder: (context, snapshot) {
-                final state = snapshot.data;
-                if (state?.sequence.isEmpty ?? true) {
-                  return const SizedBox();
-                }
+                final currIdx = snapshot.data;
                 AudioModel audio =
-                    audioPlayerProvider.currentPlaylist[state!.currentIndex];
+                    audioPlayerProvider.currentPlaylist[currIdx ?? 0];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

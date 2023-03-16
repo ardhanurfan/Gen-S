@@ -44,8 +44,8 @@ class MainPage extends StatelessWidget {
 
     Widget customBottomNavigation() {
       return Container(
+        padding: const EdgeInsets.symmetric(vertical: 24),
         width: double.infinity,
-        height: 120,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -85,6 +85,7 @@ class MainPage extends StatelessWidget {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: backgroundColor,
       body: Stack(
         alignment: AlignmentDirectional.bottomCenter,
@@ -131,7 +132,7 @@ class NavigationItem extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 40,
+            size: 32,
             color: pageProvider.page == index ? secondaryColor : primaryColor,
           ),
           Text(

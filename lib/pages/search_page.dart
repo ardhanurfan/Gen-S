@@ -1,12 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/models/audio_model.dart';
+import 'package:music_player/models/gallery_model.dart';
+import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/audio_tile.dart';
+import 'package:provider/provider.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
   @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  List<AudioModel> foundAudio = [];
+  List<GalleryModel> foundGallery = [];
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController search = TextEditingController();
+    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+
+    void updateFound(String value) {
+      setState(() {
+        if (value.isNotEmpty) {
+          foundAudio = audioProvider.audios
+              .where((audio) =>
+                  audio.title.toLowerCase().contains(value.toLowerCase()))
+              .toList();
+        } else {
+          foundAudio = [];
+        }
+      });
+    }
 
     Widget content() {
       return ListView(
@@ -15,7 +41,7 @@ class SearchPage extends StatelessWidget {
         children: [
           // SEARCH BAR
           TextFormField(
-            controller: search,
+            onChanged: (value) => updateFound(value),
             style: darkGreyText.copyWith(fontSize: 14),
             cursorColor: darkGreyColor,
             decoration: InputDecoration(
@@ -45,7 +71,7 @@ class SearchPage extends StatelessWidget {
           //
           // EMPTY STATE
           Visibility(
-            visible: false,
+            visible: foundAudio.isEmpty,
             child: Container(
               margin: const EdgeInsets.only(top: 90),
               child: Image.asset(
@@ -57,33 +83,54 @@ class SearchPage extends StatelessWidget {
           ),
           // ADA ISI
           Visibility(
-              visible: true,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 32),
-                      child: Text(
-                        "Audio",
-                        style: primaryColorText.copyWith(
-                            fontSize: 20, fontWeight: bold),
-                      ),
+            visible: foundAudio.isNotEmpty || foundGallery.isNotEmpty,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Visibility(
+                  visible: foundAudio.isNotEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 32),
+                    child: Text(
+                      "Audio",
+                      style: primaryColorText.copyWith(
+                          fontSize: 20, fontWeight: bold),
                     ),
-                    // const AudioTile(
-                    //   isSearch: true,
-                    //   title: 'Halo semua',
-                    // ),
-                    Text(
+                  ),
+                ),
+                Column(
+                  children: foundAudio
+                      .map(
+                        (audio) => AudioTile(
+                          audio: audio,
+                          playlist: audioProvider.audios,
+                        ),
+                      )
+                      .toList(),
+                ),
+                Visibility(
+                  visible: foundGallery.isNotEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 32),
+                    child: Text(
                       "Gallery",
                       style: primaryColorText.copyWith(
                           fontSize: 20, fontWeight: bold),
-                    )
-                  ]))
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       );
     }
 
     return Scaffold(
-        backgroundColor: backgroundColor, body: SafeArea(child: content()));
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: content(),
+      ),
+    );
   }
 }

@@ -28,7 +28,7 @@ class PlayingTile extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, '/player'),
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 12),
-              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 color: const Color(0xFF464343),
@@ -64,6 +64,7 @@ class PlayingTile extends StatelessWidget {
                             fontSize: 16,
                             fontWeight: bold,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),

@@ -28,7 +28,7 @@ class GalleryPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Albums",
+                "Gallery",
                 style:
                     primaryColorText.copyWith(fontSize: 24, fontWeight: bold),
               ),
@@ -57,7 +57,10 @@ class GalleryPage extends StatelessWidget {
         padding:
             const EdgeInsets.only(top: 24, bottom: 100, left: 20, right: 20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, childAspectRatio: 1 / 1.4, crossAxisSpacing: 30),
+          crossAxisCount: 2,
+          childAspectRatio: 1 / 1.4,
+          crossAxisSpacing: 30,
+        ),
         children: galleryProvider.galleries
             .map(
               (gallery) => GalleryGrid(
