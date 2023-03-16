@@ -4,6 +4,7 @@ import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/playlist_tile.dart';
+import 'package:music_player/widgets/setting_button.dart';
 import 'package:provider/provider.dart';
 
 class PlaylistPage extends StatelessWidget {
@@ -96,11 +97,7 @@ class PlaylistPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Icon(
-                    Icons.settings_outlined,
-                    size: 32,
-                    color: primaryColor,
-                  )
+                  const SettingButton(),
                 ],
               ),
             ],
@@ -115,7 +112,7 @@ class PlaylistPage extends StatelessWidget {
     Widget content() {
       return ListView(
         padding: EdgeInsets.only(
-            right: defaultMargin, left: defaultMargin, top: 24, bottom: 100),
+            right: defaultMargin, left: defaultMargin, top: 24, bottom: 160),
         children: playlistProvider.playlists
             .map((playlist) => PlaylistTile(playlist: playlist))
             .toList(),

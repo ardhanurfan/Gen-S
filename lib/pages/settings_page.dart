@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/widgets/custom_button.dart';
+import 'package:music_player/widgets/loading_button.dart';
 import 'package:provider/provider.dart';
 
 import '../shared/theme.dart';
@@ -46,54 +48,45 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     Widget header() {
-      return SliverPadding(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
-        sliver: SliverAppBar(
-          stretch: true,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          titleSpacing: 0,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  color: primaryColor,
-                ),
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.arrow_back,
+                color: primaryColor,
               ),
-              Text(
-                "Settings",
-                style: primaryColorText.copyWith(
-                    fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
-              ),
-            ],
-          ),
-          backgroundColor: backgroundColor,
-          floating: true,
-          snap: true,
+            ),
+            Text(
+              "Settings",
+              style: primaryColorText.copyWith(
+                  fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
+            ),
+          ],
         ),
       );
     }
 
     Widget content() {
-      return ListView(
-          padding:
-              EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 30),
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 30),
+        child: Column(
           children: [
             Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 30),
                   child: ClipOval(
-                    child: Image.network(
-                      userProvider.user.photoUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: userProvider.user.photoUrl,
                       height: 84,
                       width: 84,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
@@ -116,29 +109,34 @@ class _SettingsPageState extends State<SettingsPage> {
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: 84 - defaultMargin, vertical: 60),
-              child: CustomButton(
-                  radiusButton: 32,
-                  buttonColor: secondaryColor,
-                  buttonText: "Log Out",
-                  onPressed: () {
-                    handleLogout();
-                  },
-                  heightButton: 53),
+              child: isLoading
+                  ? LoadingButton(
+                      radiusButton: 32,
+                      buttonColor: secondaryColor,
+                      heightButton: 53,
+                    )
+                  : CustomButton(
+                      radiusButton: 32,
+                      buttonColor: secondaryColor,
+                      buttonText: "Log Out",
+                      onPressed: () {
+                        handleLogout();
+                      },
+                      heightButton: 53),
             )
-          ]);
+          ],
+        ),
+      );
     }
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              header(),
-            ];
-          },
-          body: content(),
+        child: Column(
+          children: [
+            header(),
+            content(),
+          ],
         ),
       ),
     );
