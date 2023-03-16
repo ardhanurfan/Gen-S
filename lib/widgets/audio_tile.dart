@@ -42,9 +42,10 @@ class AudioTile extends StatelessWidget {
           stream: audioPlayerProvider.audioPlayer.currentIndexStream,
           builder: (context, snapshot) {
             final currIdx = snapshot.data;
-            bool isSelect =
-                audioPlayerProvider.currentPlaylist[currIdx ?? 0].id ==
-                    audio.id;
+
+            bool isSelect = currIdx == null
+                ? false
+                : audioPlayerProvider.currentPlaylist[currIdx].id == audio.id;
             return Container(
               margin: const EdgeInsets.only(bottom: 24),
               child: Row(
