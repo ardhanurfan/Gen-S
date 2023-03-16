@@ -4,6 +4,7 @@ import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/services/url_service.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:music_player/services/user_service.dart';
 
 class AudioService {
   Future<List<AudioModel>> getAudios({
@@ -63,6 +64,44 @@ class AudioService {
       return history;
     } else {
       throw "Get history failed";
+    }
+  }
+
+  Future<bool> addAudio({
+    required String title,
+    required String audioPath,
+    required List<String> imagesPath,
+  }) async {
+    late Uri url = UrlService().api('add-audio');
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': await UserService().getTokenPreference() ?? '',
+    };
+
+    var request = http.MultipartRequest('POST', url);
+
+    // add headers
+    request.headers.addAll(headers);
+
+    // add title
+    request.fields['title'] = title;
+
+    // add audio
+    request.files
+        .add(await http.MultipartFile.fromPath('audioFile', audioPath));
+
+    // add images
+    for (var imagePath in imagesPath) {
+      request.files.add(await http.MultipartFile.fromPath('images', imagePath));
+    }
+
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "Add audio failed";
     }
   }
 }
