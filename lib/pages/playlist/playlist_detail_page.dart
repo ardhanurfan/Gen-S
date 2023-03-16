@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:music_player/models/playlist_model.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
-import 'package:provider/provider.dart';
-
-import '../../providers/audio_player_provider.dart';
 
 class PlaylistDetailPage extends StatelessWidget {
   const PlaylistDetailPage({required this.playlist, super.key});
@@ -14,9 +11,6 @@ class PlaylistDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AudioPlayerProvider audioPlayerProvider =
-        Provider.of<AudioPlayerProvider>(context);
-
     Widget header() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,17 +92,9 @@ class PlaylistDetailPage extends StatelessWidget {
       return Column(
         children: playlist.audios
             .map(
-              (audio) => GestureDetector(
-                onTap: () {
-                  audioPlayerProvider.setPlay(
-                    playlist.audios,
-                    playlist.audios.indexOf(audio),
-                  );
-                },
-                child: AudioTile(
-                  audio: audio,
-                  isPlaying: audioPlayerProvider.currentAudio.id == audio.id,
-                ),
+              (audio) => AudioTile(
+                audio: audio,
+                playlist: playlist.audios,
               ),
             )
             .toList(),

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/shared/theme.dart';
@@ -14,11 +15,16 @@ class PlayingTile extends StatelessWidget {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
 
-    AudioModel currentAudio = audioPlayerProvider.currentAudio;
-
-    return currentAudio.id == -1
-        ? const SizedBox()
-        : GestureDetector(
+    return StreamBuilder<SequenceState?>(
+        stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
+        builder: (context, snapshot) {
+          final state = snapshot.data;
+          if (state?.sequence.isEmpty ?? true) {
+            return const SizedBox();
+          }
+          AudioModel audio =
+              audioPlayerProvider.currentPlaylist[state!.currentIndex];
+          return GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/player'),
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 12),
@@ -32,11 +38,11 @@ class PlayingTile extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        currentAudio.images.isNotEmpty
+                        audio.images.isNotEmpty
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: CachedNetworkImage(
-                                  imageUrl: currentAudio.images[0].url,
+                                  imageUrl: audio.images[0].url,
                                   width: 60,
                                   height: 60,
                                   fit: BoxFit.cover,
@@ -53,7 +59,7 @@ class PlayingTile extends StatelessWidget {
                               ),
                         const SizedBox(width: 24),
                         Text(
-                          currentAudio.title,
+                          audio.title,
                           style: primaryColorText.copyWith(
                             fontSize: 16,
                             fontWeight: bold,
@@ -67,5 +73,6 @@ class PlayingTile extends StatelessWidget {
               ),
             ),
           );
+        });
   }
 }

@@ -1,4 +1,6 @@
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_player/models/audio_model.dart';
@@ -12,21 +14,19 @@ import 'package:rxdart/rxdart.dart';
 class AudioPlayerPage extends StatelessWidget {
   const AudioPlayerPage({super.key});
 
-  // Stream<PositionDataModel> get _positionDataStream =>
-  //     Rx.combineLatest3<Duration, Duration, Duration?, PositionDataModel>(
-  //       _audioPlayer.positionStream,
-  //       _audioPlayer.bufferedPositionStream,
-  //       _audioPlayer.durationStream,
-  //       (position, bufferedPosition, duration) => PositionDataModel(
-  //           position, bufferedPosition, duration ?? Duration.zero),
-  //     );
-
   @override
   Widget build(BuildContext context) {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
 
-    AudioModel currentAudio = audioPlayerProvider.currentAudio;
+    Stream<PositionDataModel> positionDataStream =
+        Rx.combineLatest3<Duration, Duration, Duration?, PositionDataModel>(
+      audioPlayerProvider.audioPlayer.positionStream,
+      audioPlayerProvider.audioPlayer.bufferedPositionStream,
+      audioPlayerProvider.audioPlayer.durationStream,
+      (position, bufferedPosition, duration) => PositionDataModel(
+          position, bufferedPosition, duration ?? Duration.zero),
+    );
 
     Widget header() {
       return Row(
@@ -68,70 +68,94 @@ class AudioPlayerPage extends StatelessWidget {
             const SizedBox(
               height: 55,
             ),
-            currentAudio.images.isEmpty
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(32),
-                    child: Image.asset(
-                      "assets/audio_page.png",
-                      height: 280,
-                      width: 280,
+            StreamBuilder<SequenceState?>(
+              stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
+              builder: (context, snapshot) {
+                final state = snapshot.data;
+                if (state?.sequence.isEmpty ?? true) {
+                  return const SizedBox();
+                }
+                AudioModel audio =
+                    audioPlayerProvider.currentPlaylist[state!.currentIndex];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    audio.images.isEmpty
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(32),
+                            child: Image.asset(
+                              "assets/audio_page.png",
+                              height: 280,
+                              width: 280,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : CarouselSlider(
+                            items: audio.images
+                                .map(
+                                  (image) => ClipRRect(
+                                    borderRadius: BorderRadius.circular(32),
+                                    child: CachedNetworkImage(
+                                      imageUrl: image.url,
+                                      width: 280,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            options: CarouselOptions(
+                              autoPlay: audio.images.length > 1,
+                              enableInfiniteScroll: audio.images.length > 1,
+                              viewportFraction: 1,
+                              enlargeCenterPage: false,
+                              height: 280,
+                              autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 2000),
+                              autoPlayInterval: const Duration(seconds: 10),
+                            ),
+                          ),
+                    const SizedBox(
+                      height: 64,
                     ),
-                  )
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(32),
-                    child: CachedNetworkImage(
-                      imageUrl: currentAudio.images[0].url,
-                      height: 280,
-                      width: 280,
+                    Text(
+                      audio.title,
+                      style: primaryColorText.copyWith(
+                        fontSize: 16,
+                        fontWeight: bold,
+                      ),
                     ),
-                  ),
-            const SizedBox(
-              height: 64,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    currentAudio.title,
-                    style: primaryColorText.copyWith(
-                        fontSize: 16, fontWeight: bold),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Icon(
-                  Icons.favorite,
-                  color: primaryColor,
-                )
-              ],
+                  ],
+                );
+              },
             ),
             const SizedBox(
               height: 24,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "2:10",
-                  style: primaryColorText.copyWith(fontSize: 12),
-                ),
-                Text("4:58", style: primaryColorText.copyWith(fontSize: 12))
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 5, bottom: 50),
-              width: double.infinity,
-              height: 8,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: LinearProgressIndicator(
-                  backgroundColor: backgroundProgressIndicatorColor,
-                  value: 2.1 / 4.58,
-                  color: progressIndicatorColor,
-                  minHeight: 8,
-                ),
-              ),
-            ),
+            StreamBuilder<PositionDataModel>(
+                stream: positionDataStream,
+                builder: (context, snapshot) {
+                  final positionData = snapshot.data;
+                  return Container(
+                    margin: const EdgeInsets.only(top: 5, bottom: 50),
+                    width: double.infinity,
+                    child: ProgressBar(
+                      timeLabelLocation: TimeLabelLocation.above,
+                      timeLabelPadding: 8,
+                      timeLabelTextStyle:
+                          primaryColorText.copyWith(fontSize: 12),
+                      barHeight: 8,
+                      baseBarColor: backgroundProgressIndicatorColor,
+                      bufferedBarColor: Colors.transparent,
+                      progressBarColor: progressIndicatorColor,
+                      thumbRadius: 0,
+                      thumbGlowRadius: 0,
+                      progress: positionData?.position ?? Duration.zero,
+                      buffered: positionData?.bufferedPosition ?? Duration.zero,
+                      total: positionData?.duration ?? Duration.zero,
+                      onSeek: audioPlayerProvider.audioPlayer.seek,
+                    ),
+                  );
+                }),
             const AudioController(),
           ],
         ),
@@ -175,9 +199,8 @@ class AudioController extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () async {
-            await audioPlayerProvider.audioPlayer.seekToPrevious();
-            audioPlayerProvider.updateAudio();
+          onTap: () {
+            audioPlayerProvider.audioPlayer.seekToPrevious();
           },
           child: Icon(
             Icons.fast_rewind_outlined,
@@ -187,9 +210,8 @@ class AudioController extends StatelessWidget {
         ),
         const PlayButton(size: 34),
         GestureDetector(
-          onTap: () async {
-            await audioPlayerProvider.audioPlayer.seekToNext();
-            audioPlayerProvider.updateAudio();
+          onTap: () {
+            audioPlayerProvider.audioPlayer.seekToNext();
           },
           child: Icon(
             Icons.fast_forward_outlined,
