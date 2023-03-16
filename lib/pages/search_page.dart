@@ -38,6 +38,7 @@ class _SearchPageState extends State<SearchPage> {
               .toList();
         } else {
           foundAudio = [];
+          foundGallery = [];
         }
       });
     }
@@ -79,7 +80,7 @@ class _SearchPageState extends State<SearchPage> {
           //
           // EMPTY STATE
           Visibility(
-            visible: foundAudio.isEmpty,
+            visible: foundAudio.isEmpty && foundGallery.isEmpty,
             child: Container(
               margin: const EdgeInsets.only(top: 90),
               child: Image.asset(
