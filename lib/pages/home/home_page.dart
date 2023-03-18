@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/home/empty_state_page.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/setting_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/page_provider.dart';
+import '../../providers/audio_player_provider.dart';
 import '../../providers/audio_provider.dart';
 import 'audios_home_content.dart';
 import 'suggested_home_content.dart';
@@ -16,6 +18,61 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+    AudioPlayerProvider audioPlayerProvider =
+        Provider.of<AudioPlayerProvider>(context);
+    TextEditingController controller = TextEditingController(text: '');
+
+    handleAddAudio() async {
+      if (await audioProvider.audioPicker()) {
+        showDialog(
+          context: context,
+          builder: (context) => CustomPopUp(
+            title: 'Audio Title',
+            controller: controller,
+            add: () async {
+              if (await audioProvider.addAudio(
+                  title: controller.text,
+                  audioPath: audioProvider.audioPickedPath,
+                  imagesPath: [])) {
+                audioPlayerProvider.addAudio(audio: audioProvider.audios[0]);
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: successColor,
+                    content: const Text(
+                      'Add Audio Successfuly',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: alertColor,
+                    content: Text(
+                      audioProvider.errorMessage,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: Text(
+              audioProvider.errorMessage,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    }
 
     Widget header() {
       return SliverPadding(
@@ -29,10 +86,15 @@ class HomePage extends StatelessWidget {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Icon(
-                Icons.add,
-                size: 36,
-                color: primaryColor,
+              GestureDetector(
+                onTap: () async {
+                  handleAddAudio();
+                },
+                child: Icon(
+                  Icons.add,
+                  size: 36,
+                  color: primaryColor,
+                ),
               ),
               const SizedBox(width: 16),
               const SettingButton(),

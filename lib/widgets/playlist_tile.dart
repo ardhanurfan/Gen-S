@@ -15,7 +15,8 @@ class PlaylistTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 24),
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      color: backgroundColor,
       child: GestureDetector(
         onTap: () {
           Navigator.push(
