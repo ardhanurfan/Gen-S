@@ -38,16 +38,17 @@ class AudioTile extends StatelessWidget {
           index,
         );
       },
-      child: StreamBuilder<int?>(
-          stream: audioPlayerProvider.audioPlayer.currentIndexStream,
+      child: StreamBuilder<SequenceState?>(
+          stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
           builder: (context, snapshot) {
-            final currIdx = snapshot.data;
-
-            bool isSelect = currIdx == null
-                ? false
-                : audioPlayerProvider.currentPlaylist[currIdx].id == audio.id;
+            final state = snapshot.data;
+            bool isSelect = false;
+            if (state?.sequence.isNotEmpty ?? false) {
+              AudioModel curraudio = state!.currentSource!.tag;
+              isSelect = curraudio.id == audio.id;
+            }
             return Container(
-              margin: const EdgeInsets.only(bottom: 24),
+              margin: const EdgeInsets.symmetric(vertical: 12),
               child: Row(
                 children: [
                   Visibility(

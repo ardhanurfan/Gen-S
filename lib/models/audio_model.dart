@@ -6,12 +6,14 @@ class AudioModel extends Equatable {
   final int id;
   final String title;
   final String url;
+  final int uploaderId;
   final List<ImageModel> images;
 
   const AudioModel({
     required this.id,
     required this.title,
     required this.url,
+    required this.uploaderId,
     required this.images,
   });
 
@@ -20,6 +22,7 @@ class AudioModel extends Equatable {
       id: json['id'],
       title: json['title'],
       url: json['url'],
+      uploaderId: json['uploaderId'],
       images: List<ImageModel>.from(
         json['images'].map((x) => ImageModel.fromJson(x)),
       ),

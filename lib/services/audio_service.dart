@@ -67,7 +67,7 @@ class AudioService {
     }
   }
 
-  Future<bool> addAudio({
+  Future<AudioModel> addAudio({
     required String title,
     required String audioPath,
     required List<String> imagesPath,
@@ -98,8 +98,11 @@ class AudioService {
 
     var response = await request.send();
 
+    var responsed = await http.Response.fromStream(response);
+
     if (response.statusCode == 200) {
-      return true;
+      var data = jsonDecode(responsed.body)['data'];
+      return AudioModel.fromJson(data);
     } else {
       throw "Add audio failed";
     }

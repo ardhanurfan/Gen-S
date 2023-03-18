@@ -7,6 +7,7 @@ import 'package:music_player/providers/page_provider.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/providers/sort_by_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
+import 'package:music_player/providers/images_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/auth/forgot_password_page.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PlaylistProvider()),
         ChangeNotifierProvider(create: (context) => AudioPlayerProvider()),
         ChangeNotifierProvider(create: (context) => SortByProvider()),
+        ChangeNotifierProvider(create: (context) => ImagesProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

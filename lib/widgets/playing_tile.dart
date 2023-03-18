@@ -22,8 +22,7 @@ class PlayingTile extends StatelessWidget {
           if (state?.sequence.isEmpty ?? true) {
             return const SizedBox();
           }
-          AudioModel audio =
-              audioPlayerProvider.currentPlaylist[state!.currentIndex];
+          AudioModel audio = state!.currentSource!.tag;
           return GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/player'),
             child: Container(

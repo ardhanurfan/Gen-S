@@ -21,17 +21,33 @@ class AudioPlayerProvider extends ChangeNotifier {
       _playlist = ConcatenatingAudioSource(
         children: playlist
             .map(
-              (audio) => AudioSource.uri(Uri.parse(audio.url)),
+              (audio) => AudioSource.uri(
+                Uri.parse(audio.url),
+                tag: AudioModel(
+                  id: audio.id,
+                  title: audio.title,
+                  url: audio.url,
+                  uploaderId: audio.uploaderId,
+                  images: audio.images,
+                ),
+              ),
             )
             .toList(),
       );
       _currentPlaylist = playlist;
       notifyListeners();
-      await _audioPlayer.setAudioSource(_playlist);
+      await _audioPlayer.setAudioSource(_playlist, initialIndex: index);
     }
 
     await _audioPlayer.seek(const Duration(seconds: 0), index: index);
     _audioPlayer.play();
+  }
+
+  void addAudio({required AudioModel audio}) {
+    if (_currentPlaylist.isNotEmpty) {
+      _playlist.insert(0, AudioSource.uri(Uri.parse(audio.url), tag: audio));
+      notifyListeners();
+    }
   }
 
   @override

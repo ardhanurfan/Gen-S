@@ -12,8 +12,7 @@ class GalleryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    GalleryProvider galleryProvider =
-        Provider.of<GalleryProvider>(context, listen: false);
+    GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
 
     Widget header() {
       return SliverPadding(

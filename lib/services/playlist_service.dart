@@ -46,23 +46,48 @@ class PlaylistService {
       'Authorization': await UserService().getTokenPreference() ?? '',
     };
 
-    var request = http.MultipartRequest('POST', url);
+    var body = {
+      'name': name,
+    };
 
-    // add headers
-    request.headers.addAll(headers);
-
-    // add name
-    request.fields['name'] = name;
-
-    var response = await request.send();
-
-    var responsed = await http.Response.fromStream(response);
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
 
     if (response.statusCode == 200) {
-      var data = jsonDecode(responsed.body)['data'];
+      var data = jsonDecode(response.body)['data'];
       return PlaylistModel.fromJson(data);
     } else {
       throw "Add playlist failed";
+    }
+  }
+
+  Future<bool> swapPlaylist({required int toId, required int fromId}) async {
+    late Uri url = UrlService().api('swap-playlist');
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': await UserService().getTokenPreference() ?? '',
+    };
+
+    var body = {
+      'toId': toId,
+      'fromId': fromId,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "Swap playlist failed";
     }
   }
 }

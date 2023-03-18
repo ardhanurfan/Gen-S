@@ -14,7 +14,7 @@ class SongsHomeContent extends StatelessWidget {
     return Expanded(
       child: ListView(
         padding: EdgeInsets.only(
-            right: defaultMargin, left: defaultMargin, top: 24, bottom: 100),
+            right: defaultMargin, left: defaultMargin, top: 24, bottom: 180),
         children: audioProvider.audios
             .map(
               (audio) => AudioTile(

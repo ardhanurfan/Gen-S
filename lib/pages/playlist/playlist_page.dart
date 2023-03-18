@@ -13,7 +13,7 @@ class PlaylistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
-    TextEditingController controller = TextEditingController();
+    TextEditingController controller = TextEditingController(text: '');
 
     Widget header() {
       return SliverPadding(
@@ -68,7 +68,7 @@ class PlaylistPage extends StatelessWidget {
                                 SnackBar(
                                   backgroundColor: successColor,
                                   content: const Text(
-                                    'Add Playlist Successfuly',
+                                    'Add playlist successfuly',
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -109,12 +109,60 @@ class PlaylistPage extends StatelessWidget {
       );
     }
 
+    Widget proxyDecorator(
+        Widget child, int index, Animation<double> animation) {
+      return AnimatedBuilder(
+        animation: animation,
+        builder: (BuildContext context, Widget? child) {
+          return Material(
+            elevation: 1,
+            color: Colors.transparent,
+            shadowColor: darkGreyColor,
+            child: child,
+          );
+        },
+        child: child,
+      );
+    }
+
     Widget content() {
-      return ListView(
+      return ReorderableListView(
+        proxyDecorator: proxyDecorator,
         padding: EdgeInsets.only(
-            right: defaultMargin, left: defaultMargin, top: 24, bottom: 160),
+            right: defaultMargin, left: defaultMargin, top: 24, bottom: 180),
+        onReorder: (int oldIndex, int newIndex) async {
+          if (await playlistProvider.swapPlaylist(
+              oldIndex: oldIndex, newIndex: newIndex)) {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: successColor,
+                content: const Text(
+                  'Swap playlist successfuly',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: alertColor,
+                content: Text(
+                  playlistProvider.errorMessage,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          }
+        },
         children: playlistProvider.playlists
-            .map((playlist) => PlaylistTile(playlist: playlist))
+            .map(
+              (playlist) => PlaylistTile(
+                playlist: playlist,
+                key: Key(playlist.id.toString()),
+              ),
+            )
             .toList(),
       );
     }

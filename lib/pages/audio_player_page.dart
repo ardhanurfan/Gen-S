@@ -2,6 +2,7 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/models/position_data_model.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
@@ -67,12 +68,14 @@ class AudioPlayerPage extends StatelessWidget {
             const SizedBox(
               height: 55,
             ),
-            StreamBuilder<int?>(
-              stream: audioPlayerProvider.audioPlayer.currentIndexStream,
+            StreamBuilder<SequenceState?>(
+              stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
               builder: (context, snapshot) {
-                final currIdx = snapshot.data;
-                AudioModel audio =
-                    audioPlayerProvider.currentPlaylist[currIdx ?? 0];
+                final state = snapshot.data;
+                if (state?.sequence.isEmpty ?? true) {
+                  return const SizedBox();
+                }
+                AudioModel audio = state!.currentSource!.tag;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
