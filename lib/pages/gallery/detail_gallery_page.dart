@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/gallery_model.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:provider/provider.dart';
 
 class DetailGalleryPage extends StatelessWidget {
   const DetailGalleryPage({required this.gallery, super.key});
@@ -10,6 +12,7 @@ class DetailGalleryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     final itemWidth = MediaQuery.of(context).size.width;
     Widget header() {
       return SliverPadding(
@@ -79,12 +82,15 @@ class DetailGalleryPage extends StatelessWidget {
           body: gridImages(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: secondaryColor,
-        child: const Icon(
-          Icons.add,
-          size: 30,
+      floatingActionButton: Visibility(
+        visible: userProvider.user.role != "USER",
+        child: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: secondaryColor,
+          child: const Icon(
+            Icons.add,
+            size: 30,
+          ),
         ),
       ),
     );
