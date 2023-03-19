@@ -111,36 +111,6 @@ class PlaylistTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                PopupMenuItem(
-                  onTap: () {},
-                  value: 2,
-                  child: Center(
-                    child: Text(
-                      'Add song',
-                      style: primaryColorText.copyWith(fontSize: 14),
-                    ),
-                  ),
-                ),
-                PopupMenuItem(
-                  onTap: () {},
-                  value: 3,
-                  child: Center(
-                    child: Text(
-                      'Add to queue',
-                      style: primaryColorText.copyWith(fontSize: 14),
-                    ),
-                  ),
-                ),
-                PopupMenuItem(
-                  onTap: () {},
-                  value: 4,
-                  child: Center(
-                    child: Text(
-                      'Share',
-                      style: primaryColorText.copyWith(fontSize: 14),
-                    ),
-                  ),
-                ),
               ],
             )
           ],
