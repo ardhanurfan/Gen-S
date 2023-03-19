@@ -1,19 +1,12 @@
 import 'package:flutter/cupertino.dart';
 
 class SortByProvider extends ChangeNotifier {
-  int _page = 0;
-  int _homePage = 0;
+  int _current = 0;
 
-  int get page => _page;
-  int get homePage => _homePage;
+  int get sortBy => _current;
 
-  set setPage(int index) {
-    _page = index;
-    notifyListeners();
-  }
-
-  set setHomePage(int index) {
-    _homePage = index;
+  set setSortBy(int index) {
+    _current = index;
     notifyListeners();
   }
 }

@@ -4,6 +4,7 @@ import 'package:music_player/models/playlist_model.dart';
 import 'package:music_player/pages/playlist/playlist_detail_page.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/custom_popup.dart';
 import 'package:provider/provider.dart';
 
 class PlaylistTile extends StatelessWidget {
@@ -17,6 +18,7 @@ class PlaylistTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    TextEditingController playlistController = TextEditingController(text: " ");
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 12),
@@ -87,23 +89,27 @@ class PlaylistTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(defaultRadius),
               ),
               elevation: 4,
-              onSelected: (value) {
-                if (value == 0) {
-                } else {}
-              },
               itemBuilder: (context) => [
                 PopupMenuItem(
-                  value: 0,
-                  child: Center(
-                    child: Text(
-                      'Edit',
-                      style: primaryColorText.copyWith(fontSize: 14),
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => CustomPopUp(
+                                title: "Playlist Name",
+                                controller: playlistController,
+                                add: () {},
+                              ));
+                    },
+                    child: Center(
+                      child: Text(
+                        'Rename',
+                        style: primaryColorText.copyWith(fontSize: 14),
+                      ),
                     ),
                   ),
                 ),
                 PopupMenuItem(
-                  onTap: () {},
-                  value: 1,
                   child: Center(
                     child: Text(
                       'Delete',

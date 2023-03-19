@@ -20,7 +20,7 @@ class SortByTile extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
-          sortByProvider.setHomePage = index;
+          sortByProvider.setSortBy = index;
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,7 +32,7 @@ class SortByTile extends StatelessWidget {
               ),
             ),
             Icon(
-                sortByProvider.homePage == index
+                sortByProvider.sortBy == index
                     ? Icons.check_circle_outline
                     : Icons.circle_outlined,
                 color: primaryColor)
