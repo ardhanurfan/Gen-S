@@ -141,7 +141,9 @@ class _SearchPageState extends State<SearchPage> {
                 Column(
                   children: foundPlaylist
                       .map(
-                        (playlist) => PlaylistTile(playlist: playlist),
+                        (playlist) => PlaylistTile(
+                          playlist: playlist,
+                        ),
                       )
                       .toList(),
                 ),

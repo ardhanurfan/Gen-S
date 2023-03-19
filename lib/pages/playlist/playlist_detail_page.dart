@@ -1,43 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:music_player/models/playlist_model.dart';
+import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
+import 'package:provider/provider.dart';
 
 class PlaylistDetailPage extends StatelessWidget {
-  const PlaylistDetailPage({required this.playlist, super.key});
+  const PlaylistDetailPage(
+      {super.key, required this.playlistId, required this.name});
 
-  final PlaylistModel playlist;
+  final int playlistId;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
-    Widget header() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: primaryColor,
-            ),
-          ),
-          Icon(
-            Icons.add,
-            color: primaryColor,
-          )
-        ],
-      );
-    }
+    PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
 
     Widget playlistInfo() {
       return Padding(
         padding: const EdgeInsets.only(top: 27, bottom: 37),
         child: Column(
           children: [
-            playlist.audios.isEmpty
+            playlistProvider.audios.isEmpty
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: Image.asset(
@@ -50,7 +34,7 @@ class PlaylistDetailPage extends StatelessWidget {
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: CachedNetworkImage(
-                      imageUrl: playlist.audios[0].images[0].url,
+                      imageUrl: playlistProvider.audios[0].images[0].url,
                       fit: BoxFit.cover,
                       width: 200,
                       height: 200,
@@ -64,7 +48,7 @@ class PlaylistDetailPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Road Trip",
+                  name,
                   style:
                       primaryColorText.copyWith(fontSize: 20, fontWeight: bold),
                   overflow: TextOverflow.ellipsis,
@@ -80,7 +64,7 @@ class PlaylistDetailPage extends StatelessWidget {
               ],
             ),
             Text(
-              playlist.audios.length.toString(),
+              playlistProvider.audios.length.toString(),
               style: primaryColorText.copyWith(fontSize: 12, fontWeight: light),
             )
           ],
@@ -88,33 +72,73 @@ class PlaylistDetailPage extends StatelessWidget {
       );
     }
 
+    Widget header() {
+      return SliverPadding(
+        padding:
+            EdgeInsets.only(right: defaultMargin, left: defaultMargin, top: 24),
+        sliver: SliverAppBar(
+          stretch: true,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          titleSpacing: 0,
+          title: Column(
+            children: [
+              playlistInfo(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: primaryColor,
+                    ),
+                  ),
+                  Icon(
+                    Icons.add,
+                    color: primaryColor,
+                  )
+                ],
+              ),
+            ],
+          ),
+          backgroundColor: backgroundColor,
+          floating: true,
+          snap: true,
+        ),
+      );
+    }
+
     Widget audioList() {
-      return Column(
-        children: playlist.audios
+      return ReorderableListView(
+        onReorder: (oldIndex, newIndex) {},
+        children: playlistProvider.audios
             .map(
               (audio) => AudioTile(
+                key: Key(audio.id.toString()),
                 audio: audio,
-                playlist: playlist.audios,
+                playlist: playlistProvider.audios,
               ),
             )
             .toList(),
       );
     }
 
-    Widget content() {
-      return ListView(
-        padding: EdgeInsets.all(defaultMargin),
-        children: [
-          header(),
-          playlistInfo(),
-          audioList(),
-        ],
-      );
-    }
-
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SafeArea(child: content()),
+      body: SafeArea(
+        child: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              header(),
+            ];
+          },
+          body: audioList(),
+        ),
+      ),
     );
   }
 }

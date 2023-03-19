@@ -71,19 +71,20 @@ class GalleryPage extends StatelessWidget {
     }
 
     return Scaffold(
-        backgroundColor: backgroundColor,
-        body: SafeArea(
-          child: NestedScrollView(
-            floatHeaderSlivers: true,
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return [
-                header(),
-              ];
-            },
-            body: galleryProvider.galleries.isEmpty
-                ? const EmptyGalleryPage()
-                : content(),
-          ),
-        ));
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              header(),
+            ];
+          },
+          body: galleryProvider.galleries.isEmpty
+              ? const EmptyGalleryPage()
+              : content(),
+        ),
+      ),
+    );
   }
 }

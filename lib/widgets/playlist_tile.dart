@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/playlist_model.dart';
 import 'package:music_player/pages/playlist/playlist_detail_page.dart';
+import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:provider/provider.dart';
 
 class PlaylistTile extends StatelessWidget {
   const PlaylistTile({
@@ -14,16 +16,20 @@ class PlaylistTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 12),
       color: backgroundColor,
       child: GestureDetector(
         onTap: () {
+          playlistProvider.setAudios = playlist.audios;
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => PlaylistDetailPage(
-                playlist: playlist,
+                playlistId: playlist.id,
+                name: playlist.name,
               ),
             ),
           );

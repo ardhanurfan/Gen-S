@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/models/playlist_model.dart';
 import 'package:music_player/services/url_service.dart';
 
@@ -65,16 +66,19 @@ class PlaylistService {
     }
   }
 
-  Future<bool> swapPlaylist({required int toId, required int fromId}) async {
+  Future<bool> swapPlaylist({required List<PlaylistModel> playlist}) async {
     late Uri url = UrlService().api('swap-playlist');
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': await UserService().getTokenPreference() ?? '',
     };
 
     var body = {
-      'toId': toId,
-      'fromId': fromId,
+      'playlists': playlist
+          .map((e) => {
+                'id': e.id,
+                'sequence': playlist.indexOf(e) + 1, // +1 biar mulai dari 1
+              })
+          .toList(),
     };
 
     var response = await http.post(
@@ -88,6 +92,37 @@ class PlaylistService {
       return true;
     } else {
       throw "Swap playlist failed";
+    }
+  }
+
+  Future<bool> swapAudio(
+      {required int playlistId, required List<AudioModel> audios}) async {
+    late Uri url = UrlService().api('swap-audio-playlist');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'playlistId': playlistId,
+      'playlists': audios
+          .map((e) => {
+                'audioId': e.id,
+                'sequence': audios.indexOf(e) + 1, // +1 biar mulai dari 1
+              })
+          .toList(),
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "Swap audio failed";
     }
   }
 }
