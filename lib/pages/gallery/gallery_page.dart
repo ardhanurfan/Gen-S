@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/gallery/empty_gallery_page.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/gallery_grid.dart';
 import 'package:music_player/widgets/setting_button.dart';
@@ -13,6 +14,7 @@ class GalleryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     Widget header() {
       return SliverPadding(
@@ -33,11 +35,13 @@ class GalleryPage extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Icon(
-                    Icons.add,
-                    size: 36,
-                    color: primaryColor,
-                  ),
+                  userProvider.user.role == "USER"
+                      ? const SizedBox()
+                      : Icon(
+                          Icons.add,
+                          size: 36,
+                          color: primaryColor,
+                        ),
                   const SizedBox(width: 16),
                   const SettingButton(),
                 ],

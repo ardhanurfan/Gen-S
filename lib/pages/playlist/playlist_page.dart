@@ -37,17 +37,6 @@ class PlaylistPage extends StatelessWidget {
                   const SizedBox(
                     width: 21,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: RotatedBox(
-                      quarterTurns: 1,
-                      child: Icon(
-                        Icons.compare_arrows,
-                        size: 28,
-                        color: primaryColor,
-                      ),
-                    ),
-                  ),
                 ],
               ),
               Row(
