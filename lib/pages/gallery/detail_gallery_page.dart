@@ -5,6 +5,8 @@ import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:provider/provider.dart';
 
+import 'photo_view_page.dart';
+
 class DetailGalleryPage extends StatelessWidget {
   const DetailGalleryPage({required this.gallery, super.key});
 
@@ -51,22 +53,58 @@ class DetailGalleryPage extends StatelessWidget {
     }
 
     Widget gridImages() {
-      return GridView(
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-        children: gallery.images
-            .map(
-              (image) => ClipRRect(
-                child: CachedNetworkImage(
-                  imageUrl: image.url,
-                  height: itemWidth,
-                  width: itemWidth,
-                  fit: BoxFit.fill,
+      return GridView.builder(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
+        padding: const EdgeInsets.all(1),
+        itemCount: gallery.images.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+        ),
+        itemBuilder: ((context, index) {
+          return Container(
+            padding: const EdgeInsets.all(0.5),
+            child: InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      PhotoViewPage(images: gallery.images, index: index),
                 ),
               ),
-            )
-            .toList(),
+              child: Hero(
+                tag: gallery.images[index],
+                child: CachedNetworkImage(
+                  imageUrl: gallery.images[index].url,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(color: Colors.grey),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.red.shade400,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
       );
+
+      // return GridView(
+      //   gridDelegate:
+      //       const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+      //   children: gallery.images
+      //       .map(
+      //         (image) => ClipRRect(
+      //           child: CachedNetworkImage(
+      //             imageUrl: image.url,
+      //             height: itemWidth,
+      //             width: itemWidth,
+      //             fit: BoxFit.fill,
+      //           ),
+      //         ),
+      //       )
+      //       .toList(),
+      // );
     }
 
     return Scaffold(
