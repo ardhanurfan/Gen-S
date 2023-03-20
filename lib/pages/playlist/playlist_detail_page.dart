@@ -5,6 +5,8 @@ import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
 import 'package:provider/provider.dart';
 
+import 'add_song_page.dart';
+
 class PlaylistDetailPage extends StatelessWidget {
   const PlaylistDetailPage(
       {super.key, required this.playlistId, required this.name});
@@ -86,9 +88,17 @@ class PlaylistDetailPage extends StatelessWidget {
                     color: primaryColor,
                   ),
                 ),
-                Icon(
-                  Icons.add,
-                  color: primaryColor,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AddSongPage()));
+                  },
+                  child: Icon(
+                    Icons.add,
+                    color: primaryColor,
+                  ),
                 ),
               ],
             ),

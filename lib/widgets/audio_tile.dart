@@ -16,6 +16,7 @@ class AudioTile extends StatelessWidget {
   final bool isHistory;
   final bool isMostPlayed;
   final bool isPlaylist;
+  final bool isAddSongPlaylist;
   final AudioModel audio;
   final List<AudioModel> playlist;
 
@@ -23,6 +24,7 @@ class AudioTile extends StatelessWidget {
     this.isHistory = false,
     this.isMostPlayed = false,
     this.isPlaylist = false,
+    this.isAddSongPlaylist = false,
     required this.audio,
     required this.playlist,
     Key? key,
@@ -39,13 +41,18 @@ class AudioTile extends StatelessWidget {
     int index = playlist.indexOf(audio);
 
     return GestureDetector(
-      onTap: () async {
-        await audioPlayerProvider.setPlay(
-          playlist,
-          index,
-        );
-        audioProvider.updateHistory(audioId: audio.id);
-      },
+      onTap: isAddSongPlaylist
+          ? () {
+              // FUNGSI ADD SONG TO PLAYLIST
+              Navigator.pop(context);
+            }
+          : () async {
+              await audioPlayerProvider.setPlay(
+                playlist,
+                index,
+              );
+              audioProvider.updateHistory(audioId: audio.id);
+            },
       child: StreamBuilder<SequenceState?>(
           stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
           builder: (context, snapshot) {
@@ -130,12 +137,25 @@ class AudioTile extends StatelessWidget {
                           }),
                       const SizedBox(width: 20),
                       Visibility(
+                          visible: isAddSongPlaylist,
+                          child: Icon(
+                            Icons.add_circle_outline,
+                            color: primaryColor,
+                            size: 28,
+                          )),
+                      Visibility(
                         visible: !isHistory &&
+                            !isAddSongPlaylist &&
                             audio.uploaderId == userProvider.user.id,
                         child: PopupMenuButton(
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: isSelect ? secondaryColor : primaryColor,
+                          icon: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.more_vert,
+                              color: isSelect ? secondaryColor : primaryColor,
+                            ),
                           ),
                           color: dropDownColor,
                           shape: RoundedRectangleBorder(
