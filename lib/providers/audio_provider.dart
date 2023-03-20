@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/services/audio_service.dart';
+import 'package:music_player/services/user_service.dart';
 
 class AudioProvider extends ChangeNotifier {
   List<AudioModel> _audios = [];
@@ -34,6 +35,24 @@ class AudioProvider extends ChangeNotifier {
 
       _historyMosts = historyMosts;
       _historyRecents = historyRecents;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateHistory({required int audioId}) async {
+    try {
+      if (await AudioService().updateHistory(audioId: audioId)) {
+        var token = await UserService().getTokenPreference() ?? '';
+        List<AudioModel> historyMosts =
+            await AudioService().getHistory(token: token, isMost: true);
+        List<AudioModel> historyRecents =
+            await AudioService().getHistory(token: token);
+
+        _historyMosts = historyMosts;
+        _historyRecents = historyRecents;
+        notifyListeners();
+      }
     } catch (e) {
       rethrow;
     }

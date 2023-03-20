@@ -152,6 +152,7 @@ class PlaylistDetailPage extends StatelessWidget {
                 (audio) => AudioTile(
                   key: Key(audio.id.toString()),
                   audio: audio,
+                  isPlaylist: true,
                   playlist: playlistProvider.audios,
                 ),
               )

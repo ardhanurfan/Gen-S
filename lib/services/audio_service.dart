@@ -131,4 +131,29 @@ class AudioService {
       throw "Delete audio failed";
     }
   }
+
+  Future<bool> updateHistory({required int audioId}) async {
+    late Uri url = UrlService().api('history');
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': await UserService().getTokenPreference() ?? '',
+    };
+
+    var body = {
+      'audioId': audioId,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "Update audio failed";
+    }
+  }
 }

@@ -15,14 +15,14 @@ import '../shared/theme.dart';
 class AudioTile extends StatelessWidget {
   final bool isHistory;
   final bool isMostPlayed;
-  final bool isSearch;
+  final bool isPlaylist;
   final AudioModel audio;
   final List<AudioModel> playlist;
 
   const AudioTile({
     this.isHistory = false,
     this.isMostPlayed = false,
-    this.isSearch = false,
+    this.isPlaylist = false,
     required this.audio,
     required this.playlist,
     Key? key,
@@ -40,10 +40,11 @@ class AudioTile extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
-        audioPlayerProvider.setPlay(
+        await audioPlayerProvider.setPlay(
           playlist,
           index,
         );
+        audioProvider.updateHistory(audioId: audio.id);
       },
       child: StreamBuilder<SequenceState?>(
           stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
@@ -142,7 +143,7 @@ class AudioTile extends StatelessWidget {
                           ),
                           elevation: 4,
                           onSelected: (value) {
-                            if (value == 0) {
+                            if (value == 0 && !isPlaylist) {
                               showDialog(
                                 context: context,
                                 builder: (context) => DeletePopUp(
@@ -180,6 +181,47 @@ class AudioTile extends StatelessWidget {
                                         ),
                                       );
                                     }
+                                  },
+                                ),
+                              );
+                            } else if (value == 0 && isPlaylist) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => DeletePopUp(
+                                  delete: () async {
+                                    // if (await audioProvider.deleteAudio(
+                                    //     audioId: audio.id)) {
+                                    //   audioPlayerProvider.deleteAudio(
+                                    //       audioId: audio.id);
+                                    //   playlistProvider
+                                    //       .deleteAudioFromAllPlaylist(
+                                    //           audioId: audio.id);
+                                    //   ScaffoldMessenger.of(context)
+                                    //       .removeCurrentSnackBar();
+                                    //   ScaffoldMessenger.of(context)
+                                    //       .showSnackBar(
+                                    //     SnackBar(
+                                    //       backgroundColor: successColor,
+                                    //       content: const Text(
+                                    //         'Delete audio successfuly',
+                                    //         textAlign: TextAlign.center,
+                                    //       ),
+                                    //     ),
+                                    //   );
+                                    // } else {
+                                    //   ScaffoldMessenger.of(context)
+                                    //       .removeCurrentSnackBar();
+                                    //   ScaffoldMessenger.of(context)
+                                    //       .showSnackBar(
+                                    //     SnackBar(
+                                    //       backgroundColor: alertColor,
+                                    //       content: Text(
+                                    //         audioProvider.errorMessage,
+                                    //         textAlign: TextAlign.center,
+                                    //       ),
+                                    //     ),
+                                    //   );
+                                    // }
                                   },
                                 ),
                               );
