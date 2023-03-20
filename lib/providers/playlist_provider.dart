@@ -38,10 +38,29 @@ class PlaylistProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> renamePlaylist(
+      {required String name, required int playlistId}) async {
+    try {
+      PlaylistModel newPlaylist =
+          await PlaylistService().rename(name: name, playlistId: playlistId);
+      var index = _playlists.indexOf(
+        _playlists.firstWhere(
+          (element) => element.id == playlistId,
+        ),
+      );
+      _playlists.removeAt(index);
+      _playlists.insert(index, newPlaylist);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
+
   Future<bool> swapPlaylist(
       {required int oldIndex, required int newIndex}) async {
     try {
-      var backup = _playlists;
       if (oldIndex < newIndex) {
         newIndex -= 1;
       }
@@ -49,14 +68,7 @@ class PlaylistProvider extends ChangeNotifier {
       _playlists.insert(newIndex, item);
       notifyListeners();
 
-      // jika gagal dikembalikan
-      if (!(await PlaylistService().swapPlaylist(playlist: _playlists))) {
-        _playlists = backup;
-        notifyListeners();
-        return false;
-      } else {
-        return true;
-      }
+      return await PlaylistService().swapPlaylist(playlist: _playlists);
     } catch (e) {
       _errorMessage = e.toString();
       return false;
@@ -69,7 +81,6 @@ class PlaylistProvider extends ChangeNotifier {
     required int newIndex,
   }) async {
     try {
-      var backup = _audios;
       if (oldIndex < newIndex) {
         newIndex -= 1;
       }
@@ -77,15 +88,25 @@ class PlaylistProvider extends ChangeNotifier {
       _audios.insert(newIndex, item);
       notifyListeners();
 
-      // jika gagal dikembalikan
-      if (!(await PlaylistService()
-          .swapAudio(playlistId: playlistId, audios: _audios))) {
-        _audios = backup;
-        notifyListeners();
-        return false;
-      } else {
-        return true;
-      }
+      return await PlaylistService()
+          .swapAudio(playlistId: playlistId, audios: _audios);
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
+
+  Future<bool> deletePlaylist({required int playlistId}) async {
+    try {
+      var index = _playlists.indexOf(
+        _playlists.firstWhere(
+          (element) => element.id == playlistId,
+        ),
+      );
+      _playlists.removeAt(index);
+      notifyListeners();
+
+      return await PlaylistService().delete(playlistId: playlistId);
     } catch (e) {
       _errorMessage = e.toString();
       return false;

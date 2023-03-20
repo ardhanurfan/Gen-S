@@ -18,7 +18,7 @@ class PlaylistDetailPage extends StatelessWidget {
 
     Widget playlistInfo() {
       return Padding(
-        padding: const EdgeInsets.only(top: 27, bottom: 37),
+        padding: const EdgeInsets.only(top: 16, bottom: 8),
         child: Column(
           children: [
             playlistProvider.audios.isEmpty
@@ -31,40 +31,36 @@ class PlaylistDetailPage extends StatelessWidget {
                       alignment: Alignment.center,
                     ),
                   )
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: CachedNetworkImage(
-                      imageUrl: playlistProvider.audios[0].images[0].url,
-                      fit: BoxFit.cover,
-                      width: 200,
-                      height: 200,
-                      alignment: Alignment.center,
-                    ),
-                  ),
+                : playlistProvider.audios[0].images.isEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: Image.asset(
+                          "assets/ex_playlist.png",
+                          width: 200,
+                          height: 200,
+                          alignment: Alignment.center,
+                        ),
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: CachedNetworkImage(
+                          imageUrl: playlistProvider.audios[0].images[0].url,
+                          fit: BoxFit.cover,
+                          width: 200,
+                          height: 200,
+                          alignment: Alignment.center,
+                        ),
+                      ),
             const SizedBox(
-              height: 24,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  name,
-                  style:
-                      primaryColorText.copyWith(fontSize: 20, fontWeight: bold),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(
-                  width: 15,
-                ),
-                Icon(
-                  Icons.more_horiz,
-                  color: primaryColor,
-                  size: 20,
-                )
-              ],
+              height: 16,
             ),
             Text(
-              playlistProvider.audios.length.toString(),
+              name,
+              style: primaryColorText.copyWith(fontSize: 20, fontWeight: bold),
+              overflow: TextOverflow.ellipsis,
+            ),
+            Text(
+              '${playlistProvider.audios.length} audio',
               style: primaryColorText.copyWith(fontSize: 12, fontWeight: light),
             )
           ],
@@ -73,70 +69,106 @@ class PlaylistDetailPage extends StatelessWidget {
     }
 
     Widget header() {
-      return SliverPadding(
+      return Padding(
         padding:
             EdgeInsets.only(right: defaultMargin, left: defaultMargin, top: 24),
-        sliver: SliverAppBar(
-          stretch: true,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          titleSpacing: 0,
-          title: Column(
-            children: [
-              playlistInfo(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: primaryColor,
-                    ),
-                  ),
-                  Icon(
-                    Icons.add,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
                     color: primaryColor,
-                  )
-                ],
-              ),
-            ],
-          ),
-          backgroundColor: backgroundColor,
-          floating: true,
-          snap: true,
+                  ),
+                ),
+                Icon(
+                  Icons.add,
+                  color: primaryColor,
+                ),
+              ],
+            ),
+          ],
         ),
       );
     }
 
+    Widget proxyDecorator(
+        Widget child, int index, Animation<double> animation) {
+      return AnimatedBuilder(
+        animation: animation,
+        builder: (BuildContext context, Widget? child) {
+          return Material(
+            elevation: 1,
+            color: Colors.transparent,
+            shadowColor: darkGreyColor,
+            child: child,
+          );
+        },
+        child: child,
+      );
+    }
+
     Widget audioList() {
-      return ReorderableListView(
-        onReorder: (oldIndex, newIndex) {},
-        children: playlistProvider.audios
-            .map(
-              (audio) => AudioTile(
-                key: Key(audio.id.toString()),
-                audio: audio,
-                playlist: playlistProvider.audios,
-              ),
-            )
-            .toList(),
+      return Expanded(
+        child: ReorderableListView(
+          proxyDecorator: proxyDecorator,
+          padding: EdgeInsets.only(
+              right: defaultMargin, left: defaultMargin, bottom: 100),
+          onReorder: (oldIndex, newIndex) async {
+            if (await playlistProvider.swapAudio(
+                playlistId: playlistId,
+                oldIndex: oldIndex,
+                newIndex: newIndex)) {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: successColor,
+                  content: const Text(
+                    'Swap audio successfuly',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: alertColor,
+                  content: Text(
+                    playlistProvider.errorMessage,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
+          },
+          children: playlistProvider.audios
+              .map(
+                (audio) => AudioTile(
+                  key: Key(audio.id.toString()),
+                  audio: audio,
+                  playlist: playlistProvider.audios,
+                ),
+              )
+              .toList(),
+        ),
       );
     }
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              header(),
-            ];
-          },
-          body: audioList(),
+        child: Column(
+          children: [
+            header(),
+            playlistInfo(),
+            audioList(),
+          ],
         ),
       ),
     );

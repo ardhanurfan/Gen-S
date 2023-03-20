@@ -49,6 +49,7 @@ class AudioTile extends StatelessWidget {
             }
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 12),
+              color: backgroundColor,
               child: Row(
                 children: [
                   Visibility(
@@ -93,20 +94,14 @@ class AudioTile extends StatelessWidget {
                           ),
                   ),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          audio.title,
-                          overflow: TextOverflow.ellipsis,
-                          style:
-                              (isSelect ? secondaryColorText : primaryColorText)
-                                  .copyWith(
-                            fontSize: 16,
-                            fontWeight: bold,
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      audio.title,
+                      overflow: TextOverflow.ellipsis,
+                      style: (isSelect ? secondaryColorText : primaryColorText)
+                          .copyWith(
+                        fontSize: 16,
+                        fontWeight: bold,
+                      ),
                     ),
                   ),
                   Row(

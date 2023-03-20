@@ -17,27 +17,26 @@ class AudioPlayerProvider extends ChangeNotifier {
   }
 
   Future<void> setPlay(List<AudioModel> playlist, int index) async {
-    if (!listEquals(_currentPlaylist, playlist)) {
-      _playlist = ConcatenatingAudioSource(
-        children: playlist
-            .map(
-              (audio) => AudioSource.uri(
-                Uri.parse(audio.url),
-                tag: AudioModel(
-                  id: audio.id,
-                  title: audio.title,
-                  url: audio.url,
-                  uploaderId: audio.uploaderId,
-                  images: audio.images,
-                ),
+    _playlist = ConcatenatingAudioSource(
+      children: playlist
+          .map(
+            (audio) => AudioSource.uri(
+              Uri.parse(audio.url),
+              tag: AudioModel(
+                id: audio.id,
+                title: audio.title,
+                url: audio.url,
+                uploaderId: audio.uploaderId,
+                createdAt: audio.createdAt,
+                images: audio.images,
               ),
-            )
-            .toList(),
-      );
-      _currentPlaylist = playlist;
-      notifyListeners();
-      await _audioPlayer.setAudioSource(_playlist, initialIndex: index);
-    }
+            ),
+          )
+          .toList(),
+    );
+    _currentPlaylist = playlist;
+    notifyListeners();
+    await _audioPlayer.setAudioSource(_playlist, initialIndex: index);
 
     await _audioPlayer.seek(const Duration(seconds: 0), index: index);
     _audioPlayer.play();

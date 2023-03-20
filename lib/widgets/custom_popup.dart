@@ -51,7 +51,7 @@ class _CustomPopUpState extends State<CustomPopUp> {
               });
             },
             child: Text(
-              'ADD',
+              'SAVE',
               style: primaryColorText,
             ),
           ),

@@ -15,7 +15,6 @@ class DetailGalleryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
-    final itemWidth = MediaQuery.of(context).size.width;
     Widget header() {
       return SliverPadding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 20),

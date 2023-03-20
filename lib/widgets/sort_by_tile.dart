@@ -18,25 +18,21 @@ class SortByTile extends StatelessWidget {
   Widget build(BuildContext context) {
     SortByProvider sortByProvider = Provider.of<SortByProvider>(context);
 
-    return GestureDetector(
-        onTap: () {
-          sortByProvider.setSortBy = index;
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: primaryColorText.copyWith(
-                fontSize: 12,
-              ),
-            ),
-            Icon(
-                sortByProvider.sortBy == index
-                    ? Icons.check_circle_outline
-                    : Icons.circle_outlined,
-                color: primaryColor)
-          ],
-        ));
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: primaryColorText.copyWith(
+            fontSize: 12,
+          ),
+        ),
+        Icon(
+            sortByProvider.sortBy == index
+                ? Icons.check_circle_outline
+                : Icons.circle_outlined,
+            color: primaryColor)
+      ],
+    );
   }
 }

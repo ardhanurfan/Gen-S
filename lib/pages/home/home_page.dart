@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/home/empty_state_page.dart';
-import 'package:music_player/providers/sort_by_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/setting_button.dart';
@@ -10,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../../providers/page_provider.dart';
 import '../../providers/audio_player_provider.dart';
 import '../../providers/audio_provider.dart';
+import '../../providers/sort_by_provider.dart';
 import 'audios_home_content.dart';
 import 'suggested_home_content.dart';
 
@@ -22,11 +22,13 @@ class HomePage extends StatelessWidget {
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
+    SortByProvider sortByProvider = Provider.of<SortByProvider>(context);
     TextEditingController controller = TextEditingController(text: '');
 
     handleAddAudio() async {
       if (await audioProvider.audioPicker()) {
         showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (context) => CustomPopUp(
             title: 'Audio Title',
@@ -140,18 +142,31 @@ class HomePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(defaultRadius),
                 ),
                 elevation: 4,
+                onSelected: (value) {
+                  switch (value) {
+                    case 2:
+                      audioProvider.sortAscending();
+                      break;
+                    case 1:
+                      audioProvider.sortDescending();
+                      break;
+                    case 0:
+                      audioProvider.sortByDate();
+                      break;
+                    default:
+                      audioProvider.sortByDate();
+                  }
+                  sortByProvider.setSortBy = value;
+                },
                 itemBuilder: (context) => [
                   const PopupMenuItem(
-                      value: 0,
+                      value: 2,
                       child: SortByTile(title: "Ascending", index: 2)),
                   const PopupMenuItem(
                       value: 1,
-                      child: SortByTile(
-                        title: "Descending",
-                        index: 1,
-                      )),
+                      child: SortByTile(title: "Descending", index: 1)),
                   const PopupMenuItem(
-                      value: 2,
+                      value: 0,
                       child: SortByTile(title: "Date Added", index: 0)),
                 ],
               ),

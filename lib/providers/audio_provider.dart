@@ -16,21 +16,6 @@ class AudioProvider extends ChangeNotifier {
   String get audioPickedPath => _audioPickedPath;
   String get errorMessage => _errorMessage;
 
-  set audios(List<AudioModel> audios) {
-    _audios = audios;
-    notifyListeners();
-  }
-
-  set historyMosts(List<AudioModel> historyMosts) {
-    _historyMosts = historyMosts;
-    notifyListeners();
-  }
-
-  set historyRecents(List<AudioModel> historyRecents) {
-    _historyRecents = historyRecents;
-    notifyListeners();
-  }
-
   Future<void> getAudios({required String token}) async {
     try {
       List<AudioModel> audios = await AudioService().getAudios(token: token);
@@ -83,5 +68,26 @@ class AudioProvider extends ChangeNotifier {
       _errorMessage = e.toString();
       return false;
     }
+  }
+
+  void sortByDate() {
+    _audios.sort(
+      (a, b) => b.createdAt.compareTo(a.createdAt),
+    );
+    notifyListeners();
+  }
+
+  void sortAscending() {
+    _audios.sort(
+      (a, b) => a.title.compareTo(b.title),
+    );
+    notifyListeners();
+  }
+
+  void sortDescending() {
+    _audios.sort(
+      (a, b) => b.title.compareTo(a.title),
+    );
+    notifyListeners();
   }
 }

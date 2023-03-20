@@ -66,6 +66,33 @@ class PlaylistService {
     }
   }
 
+  Future<PlaylistModel> rename(
+      {required int playlistId, required String name}) async {
+    late Uri url = UrlService().api('rename-playlist');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'id': playlistId,
+      'name': name,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'];
+      return PlaylistModel.fromJson(data);
+    } else {
+      throw "Rename playlist failed";
+    }
+  }
+
   Future<bool> swapPlaylist({required List<PlaylistModel> playlist}) async {
     late Uri url = UrlService().api('swap-playlist');
     var headers = {
@@ -104,7 +131,7 @@ class PlaylistService {
 
     var body = {
       'playlistId': playlistId,
-      'playlists': audios
+      'audios': audios
           .map((e) => {
                 'audioId': e.id,
                 'sequence': audios.indexOf(e) + 1, // +1 biar mulai dari 1
@@ -123,6 +150,30 @@ class PlaylistService {
       return true;
     } else {
       throw "Swap audio failed";
+    }
+  }
+
+  Future<bool> delete({required int playlistId}) async {
+    late Uri url = UrlService().api('delete-playlist');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'id': playlistId,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "Delete playlist failed";
     }
   }
 }

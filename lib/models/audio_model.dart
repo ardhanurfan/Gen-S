@@ -7,6 +7,7 @@ class AudioModel extends Equatable {
   final String title;
   final String url;
   final int uploaderId;
+  final DateTime createdAt;
   final List<ImageModel> images;
 
   const AudioModel({
@@ -14,6 +15,7 @@ class AudioModel extends Equatable {
     required this.title,
     required this.url,
     required this.uploaderId,
+    required this.createdAt,
     required this.images,
   });
 
@@ -23,6 +25,7 @@ class AudioModel extends Equatable {
       title: json['title'],
       url: json['url'],
       uploaderId: json['uploaderId'],
+      createdAt: DateTime.parse(json['created_at']),
       images: List<ImageModel>.from(
         json['images'].map((x) => ImageModel.fromJson(x)),
       ),
