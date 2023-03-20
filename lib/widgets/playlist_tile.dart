@@ -27,7 +27,7 @@ class PlaylistTile extends StatelessWidget {
       color: backgroundColor,
       child: GestureDetector(
         onTap: () {
-          playlistProvider.setAudios = playlist.audios;
+          playlistProvider.setAudios(playlist.audios, playlist.id);
           Navigator.push(
             context,
             MaterialPageRoute(

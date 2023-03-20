@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/audio_model.dart';
 import '../../providers/audio_provider.dart';
+import '../../providers/playlist_provider.dart';
 import '../../shared/theme.dart';
 import '../../widgets/audio_tile.dart';
 
@@ -15,20 +16,26 @@ class AddSongPage extends StatefulWidget {
 
 class _AddSongPageState extends State<AddSongPage> {
   List<AudioModel> foundAudio = [];
+  List<AudioModel> allData = [];
+  @override
+  void initState() {
+    AudioProvider audioProvider =
+        Provider.of<AudioProvider>(context, listen: false);
+    allData = audioProvider.audios;
+    foundAudio = audioProvider.audios;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+    PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
 
     void updateFound(String value) {
       setState(() {
-        if (value.isNotEmpty) {
-          foundAudio = audioProvider.audios
-              .where((audio) =>
-                  audio.title.toLowerCase().contains(value.toLowerCase()))
-              .toList();
-        } else {
-          foundAudio = [];
-        }
+        foundAudio = allData
+            .where((audio) =>
+                audio.title.toLowerCase().contains(value.toLowerCase()))
+            .toList();
       });
     }
 
@@ -99,31 +106,17 @@ class _AddSongPageState extends State<AddSongPage> {
           Visibility(
             visible: foundAudio.isNotEmpty,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Visibility(
-                  visible: foundAudio.isNotEmpty,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 32),
-                    child: Text(
-                      "Audio",
-                      style: primaryColorText.copyWith(
-                          fontSize: 20, fontWeight: bold),
-                    ),
-                  ),
-                ),
-                Column(
-                  children: foundAudio
-                      .map(
-                        (audio) => AudioTile(
-                          isAddSongPlaylist: true,
-                          audio: audio,
-                          playlist: audioProvider.audios,
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
+              children: foundAudio.map(
+                (audio) {
+                  bool contain = playlistProvider.audios.contains(audio);
+                  return AudioTile(
+                    isAddSongPlaylist: true,
+                    audio: audio,
+                    playlist: foundAudio,
+                    isAdded: contain,
+                  );
+                },
+              ).toList(),
             ),
           ),
           const SizedBox(height: 160),

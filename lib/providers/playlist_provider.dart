@@ -12,8 +12,19 @@ class PlaylistProvider extends ChangeNotifier {
   List<PlaylistModel> get playlists => _playlists;
   List<AudioModel> get audios => _audios;
 
-  set setAudios(List<AudioModel> audios) {
+  void setAudios(List<AudioModel> audios, int playlistId) {
     _audios = audios;
+    notifyListeners();
+  }
+
+  Future<void> addAudio(
+      {required AudioModel audio, required int playlistId}) async {
+    _audios.add(audio);
+    _playlists
+        .where((element) => element.id == playlistId)
+        .first
+        .audios
+        .add(audio);
     notifyListeners();
   }
 

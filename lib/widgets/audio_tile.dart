@@ -17,6 +17,7 @@ class AudioTile extends StatelessWidget {
   final bool isMostPlayed;
   final bool isPlaylist;
   final bool isAddSongPlaylist;
+  final bool isAdded;
   final AudioModel audio;
   final List<AudioModel> playlist;
 
@@ -25,6 +26,7 @@ class AudioTile extends StatelessWidget {
     this.isMostPlayed = false,
     this.isPlaylist = false,
     this.isAddSongPlaylist = false,
+    this.isAdded = false,
     required this.audio,
     required this.playlist,
     Key? key,
@@ -44,7 +46,8 @@ class AudioTile extends StatelessWidget {
       onTap: isAddSongPlaylist
           ? () {
               // FUNGSI ADD SONG TO PLAYLIST
-              Navigator.pop(context);
+
+              Navigator.of(context).pop(true);
             }
           : () async {
               await audioPlayerProvider.setPlay(
@@ -137,12 +140,19 @@ class AudioTile extends StatelessWidget {
                           }),
                       const SizedBox(width: 20),
                       Visibility(
-                          visible: isAddSongPlaylist,
-                          child: Icon(
-                            Icons.add_circle_outline,
-                            color: primaryColor,
-                            size: 28,
-                          )),
+                        visible: isAddSongPlaylist,
+                        child: isAdded
+                            ? Icon(
+                                Icons.check_circle,
+                                color: secondaryColor,
+                                size: 28,
+                              )
+                            : Icon(
+                                Icons.add_circle_outline,
+                                color: primaryColor,
+                                size: 28,
+                              ),
+                      ),
                       Visibility(
                         visible: !isHistory &&
                             !isAddSongPlaylist &&
