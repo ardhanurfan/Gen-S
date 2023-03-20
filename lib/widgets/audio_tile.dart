@@ -16,19 +16,17 @@ class AudioTile extends StatelessWidget {
   final bool isHistory;
   final bool isMostPlayed;
   final bool isPlaylist;
-  final bool isAddSongPlaylist;
-  final bool isAdded;
   final AudioModel audio;
   final List<AudioModel> playlist;
+  final int playlistId;
 
   const AudioTile({
     this.isHistory = false,
     this.isMostPlayed = false,
     this.isPlaylist = false,
-    this.isAddSongPlaylist = false,
-    this.isAdded = false,
     required this.audio,
     required this.playlist,
+    this.playlistId = 0,
     Key? key,
   }) : super(key: key);
 
@@ -43,19 +41,13 @@ class AudioTile extends StatelessWidget {
     int index = playlist.indexOf(audio);
 
     return GestureDetector(
-      onTap: isAddSongPlaylist
-          ? () {
-              // FUNGSI ADD SONG TO PLAYLIST
-
-              Navigator.of(context).pop(true);
-            }
-          : () async {
-              await audioPlayerProvider.setPlay(
-                playlist,
-                index,
-              );
-              audioProvider.updateHistory(audioId: audio.id);
-            },
+      onTap: () async {
+        await audioPlayerProvider.setPlay(
+          playlist,
+          index,
+        );
+        audioProvider.updateHistory(audioId: audio.id);
+      },
       child: StreamBuilder<SequenceState?>(
           stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
           builder: (context, snapshot) {
@@ -140,32 +132,13 @@ class AudioTile extends StatelessWidget {
                           }),
                       const SizedBox(width: 20),
                       Visibility(
-                        visible: isAddSongPlaylist,
-                        child: isAdded
-                            ? Icon(
-                                Icons.check_circle,
-                                color: secondaryColor,
-                                size: 28,
-                              )
-                            : Icon(
-                                Icons.add_circle_outline,
-                                color: primaryColor,
-                                size: 28,
-                              ),
-                      ),
-                      Visibility(
                         visible: !isHistory &&
-                            !isAddSongPlaylist &&
-                            audio.uploaderId == userProvider.user.id,
+                            (audio.uploaderId == userProvider.user.id ||
+                                isPlaylist),
                         child: PopupMenuButton(
-                          icon: GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              Icons.more_vert,
-                              color: isSelect ? secondaryColor : primaryColor,
-                            ),
+                          icon: Icon(
+                            Icons.more_vert,
+                            color: isSelect ? secondaryColor : primaryColor,
                           ),
                           color: dropDownColor,
                           shape: RoundedRectangleBorder(
@@ -219,6 +192,10 @@ class AudioTile extends StatelessWidget {
                                 context: context,
                                 builder: (context) => DeletePopUp(
                                   delete: () async {
+                                    await playlistProvider.deleteAudio(
+                                      audio: audio,
+                                      playlistId: playlistId,
+                                    );
                                     // if (await audioProvider.deleteAudio(
                                     //     audioId: audio.id)) {
                                     //   audioPlayerProvider.deleteAudio(

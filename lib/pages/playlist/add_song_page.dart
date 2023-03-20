@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/widgets/add_audio_playlist_tile.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/audio_model.dart';
 import '../../providers/audio_provider.dart';
 import '../../providers/playlist_provider.dart';
 import '../../shared/theme.dart';
-import '../../widgets/audio_tile.dart';
 
 class AddSongPage extends StatefulWidget {
-  const AddSongPage({super.key});
+  const AddSongPage({required this.playlistId, super.key});
+
+  final int playlistId;
 
   @override
   State<AddSongPage> createState() => _AddSongPageState();
@@ -17,6 +19,7 @@ class AddSongPage extends StatefulWidget {
 class _AddSongPageState extends State<AddSongPage> {
   List<AudioModel> foundAudio = [];
   List<AudioModel> allData = [];
+
   @override
   void initState() {
     AudioProvider audioProvider =
@@ -109,10 +112,9 @@ class _AddSongPageState extends State<AddSongPage> {
               children: foundAudio.map(
                 (audio) {
                   bool contain = playlistProvider.audios.contains(audio);
-                  return AudioTile(
-                    isAddSongPlaylist: true,
+                  return AddAudioPlaylistTile(
+                    playlistId: widget.playlistId,
                     audio: audio,
-                    playlist: foundAudio,
                     isAdded: contain,
                   );
                 },

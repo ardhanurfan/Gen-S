@@ -91,9 +91,12 @@ class PlaylistDetailPage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AddSongPage()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AddSongPage(playlistId: playlistId),
+                      ),
+                    );
                   },
                   child: Icon(
                     Icons.add,
@@ -164,6 +167,7 @@ class PlaylistDetailPage extends StatelessWidget {
                   audio: audio,
                   isPlaylist: true,
                   playlist: playlistProvider.audios,
+                  playlistId: playlistId,
                 ),
               )
               .toList(),
