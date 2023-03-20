@@ -49,6 +49,20 @@ class AudioPlayerProvider extends ChangeNotifier {
     }
   }
 
+  void deleteAudio({required int audioId}) {
+    if (_currentPlaylist.isNotEmpty) {
+      var found = _currentPlaylist.where(
+        (element) => element.id == audioId,
+      );
+
+      if (found.isNotEmpty) {
+        var index = _currentPlaylist.indexOf(found.first);
+        _playlist.removeAt(index);
+      }
+      notifyListeners();
+    }
+  }
+
   @override
   void dispose() {
     _audioPlayer.dispose();

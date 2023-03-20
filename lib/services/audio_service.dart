@@ -107,4 +107,28 @@ class AudioService {
       throw "Add audio failed";
     }
   }
+
+  Future<bool> delete({required int audioId}) async {
+    late Uri url = UrlService().api('delete-audio');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'id': audioId,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "Delete audio failed";
+    }
+  }
 }

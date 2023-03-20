@@ -112,4 +112,18 @@ class PlaylistProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  void deleteAudioFromAllPlaylist({required int audioId}) {
+    for (var element in _playlists) {
+      var found = element.audios.where(
+        (element) => element.id == audioId,
+      );
+
+      if (found.isNotEmpty) {
+        var index = element.audios.indexOf(found.first);
+        element.audios.removeAt(index);
+      }
+    }
+    notifyListeners();
+  }
 }

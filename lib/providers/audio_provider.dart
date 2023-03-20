@@ -70,6 +70,23 @@ class AudioProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> deleteAudio({required int audioId}) async {
+    try {
+      var index = _audios.indexOf(
+        _audios.firstWhere(
+          (element) => element.id == audioId,
+        ),
+      );
+      _audios.removeAt(index);
+      notifyListeners();
+
+      return await AudioService().delete(audioId: audioId);
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
+
   void sortByDate() {
     _audios.sort(
       (a, b) => b.createdAt.compareTo(a.createdAt),

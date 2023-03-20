@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:music_player/models/audio_model.dart';
+import 'package:music_player/providers/playlist_provider.dart';
+import 'package:music_player/widgets/delete_popup.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/audio_player_provider.dart';
+import '../providers/audio_provider.dart';
+import '../providers/user_provider.dart';
 import '../shared/theme.dart';
 
 class AudioTile extends StatelessWidget {
@@ -28,6 +32,9 @@ class AudioTile extends StatelessWidget {
   Widget build(BuildContext context) {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
+    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+    PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     int index = playlist.indexOf(audio);
 
@@ -122,13 +129,74 @@ class AudioTile extends StatelessWidget {
                           }),
                       const SizedBox(width: 20),
                       Visibility(
-                        visible: !isHistory,
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: Icon(
+                        visible: !isHistory &&
+                            audio.uploaderId == userProvider.user.id,
+                        child: PopupMenuButton(
+                          icon: Icon(
                             Icons.more_vert,
                             color: isSelect ? secondaryColor : primaryColor,
                           ),
+                          color: dropDownColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(defaultRadius),
+                          ),
+                          elevation: 4,
+                          onSelected: (value) {
+                            if (value == 0) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => DeletePopUp(
+                                  delete: () async {
+                                    if (await audioProvider.deleteAudio(
+                                        audioId: audio.id)) {
+                                      audioPlayerProvider.deleteAudio(
+                                          audioId: audio.id);
+                                      playlistProvider
+                                          .deleteAudioFromAllPlaylist(
+                                              audioId: audio.id);
+                                      ScaffoldMessenger.of(context)
+                                          .removeCurrentSnackBar();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: successColor,
+                                          content: const Text(
+                                            'Delete audio successfuly',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .removeCurrentSnackBar();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: alertColor,
+                                          content: Text(
+                                            audioProvider.errorMessage,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              );
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 0,
+                              child: Center(
+                                child: Text(
+                                  'Delete',
+                                  style:
+                                      primaryColorText.copyWith(fontSize: 14),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       )
                     ],
