@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:music_player/pages/gallery/gallery_page.dart';
 import 'package:music_player/pages/playlist/playlist_page.dart';
 import 'package:music_player/pages/search_page.dart';
+import 'package:music_player/pages_admin/ads_page.dart';
 import 'package:music_player/providers/page_provider.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/widgets/playing_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +17,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     Widget buildContent() {
       int newPage = pageProvider.page;
@@ -33,7 +36,9 @@ class MainPage extends StatelessWidget {
           }
         case 3:
           {
-            return const PlaylistPage();
+            return userProvider.user.role == "USER"
+                ? const PlaylistPage()
+                : const AdsPage();
           }
         default:
           {
@@ -58,27 +63,33 @@ class MainPage extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            NavigationItem(
+          children: [
+            const NavigationItem(
               icon: Icons.home_outlined,
               label: 'Home',
               index: 0,
             ),
-            NavigationItem(
+            const NavigationItem(
               icon: Icons.perm_media_outlined,
               label: 'Gallery',
               index: 1,
             ),
-            NavigationItem(
+            const NavigationItem(
               icon: Icons.search,
               label: 'Search',
               index: 2,
             ),
-            NavigationItem(
-              icon: Icons.library_books_outlined,
-              label: 'Playlist',
-              index: 3,
-            ),
+            userProvider.user.role == "USER"
+                ? const NavigationItem(
+                    icon: Icons.library_books_outlined,
+                    label: 'Playlist',
+                    index: 3,
+                  )
+                : const NavigationItem(
+                    icon: Icons.ads_click,
+                    label: 'Ads',
+                    index: 3,
+                  ),
           ],
         ),
       );
