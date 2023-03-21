@@ -19,10 +19,6 @@ class GalleryGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
-<<<<<<< HEAD
-    final itemWidth = MediaQuery.of(context).size.width;
-=======
->>>>>>> 609880f4db4364dd44d7ba2ca3c5c373c7146d6f
     return GestureDetector(
       onTap: () {
         Navigator.push(
