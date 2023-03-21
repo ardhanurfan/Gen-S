@@ -6,7 +6,6 @@ import 'package:music_player/widgets/delete_popup.dart';
 import 'package:provider/provider.dart';
 
 import '../pages/gallery/detail_gallery_page.dart';
-import '../providers/gallery_provider.dart';
 import '../shared/theme.dart';
 
 class GalleryGrid extends StatelessWidget {
@@ -20,8 +19,6 @@ class GalleryGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
-    GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
-    final itemWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -39,8 +36,8 @@ class GalleryGrid extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   child: Image.asset(
                     "assets/ex_gallery.png",
-                    height: itemWidth,
-                    width: itemWidth,
+                    height: 160,
+                    width: 160,
                     fit: BoxFit.fill,
                   ),
                 )
