@@ -23,7 +23,7 @@ class SortByTile extends StatelessWidget {
       children: [
         Text(
           title,
-          style: primaryColorText.copyWith(
+          style: primaryUserColorText.copyWith(
             fontSize: 12,
           ),
         ),
@@ -31,7 +31,7 @@ class SortByTile extends StatelessWidget {
             sortByProvider.sortBy == index
                 ? Icons.check_circle_outline
                 : Icons.circle_outlined,
-            color: primaryColor)
+            color: primaryUserColor)
       ],
     );
   }

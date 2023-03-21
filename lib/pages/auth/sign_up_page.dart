@@ -78,14 +78,14 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             Text(
               "Sign up",
-              style: primaryColorText.copyWith(fontSize: 30),
+              style: primaryUserColorText.copyWith(fontSize: 30),
             ),
             const SizedBox(
               height: 22,
             ),
             Text(
               "If you already have an account register",
-              style: primaryColorText.copyWith(fontSize: 16),
+              style: primaryUserColorText.copyWith(fontSize: 16),
             ),
             const SizedBox(
               height: 6,
@@ -94,7 +94,7 @@ class _SignUpPageState extends State<SignUpPage> {
               children: [
                 Text(
                   "You can   ",
-                  style: primaryColorText.copyWith(fontSize: 16),
+                  style: primaryUserColorText.copyWith(fontSize: 16),
                 ),
                 GestureDetector(
                   onTap: () => Navigator.pushNamedAndRemoveUntil(
@@ -165,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(child: content()),
     );
   }

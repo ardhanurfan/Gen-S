@@ -59,6 +59,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: backgroundColor, body: const SizedBox());
+    return Scaffold(
+        backgroundColor: backgroundUserColor, body: const SizedBox());
   }
 }

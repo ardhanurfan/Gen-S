@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:provider/provider.dart';
 
 class EmptyGalleryPage extends StatelessWidget {
   const EmptyGalleryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     return Center(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
@@ -22,7 +25,11 @@ class EmptyGalleryPage extends StatelessWidget {
             Text(
               "Nothing pictures here :(",
               textAlign: TextAlign.center,
-              style: primaryColorText.copyWith(fontSize: 20, fontWeight: bold),
+              style: userProvider.user.role == "USER"
+                  ? primaryUserColorText.copyWith(
+                      fontSize: 20, fontWeight: bold)
+                  : primaryAdminColorText.copyWith(
+                      fontSize: 20, fontWeight: bold),
             ),
           ],
         ),

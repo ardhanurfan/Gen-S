@@ -34,17 +34,17 @@ class RecentlyPlayedPage extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: primaryColor,
+                  color: primaryUserColor,
                 ),
               ),
               Text(
                 "Recently Played",
-                style: primaryColorText.copyWith(
+                style: primaryUserColorText.copyWith(
                     fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
               ),
             ],
           ),
-          backgroundColor: backgroundColor,
+          backgroundColor: backgroundUserColor,
           floating: true,
           snap: true,
         ),
@@ -75,7 +75,7 @@ class RecentlyPlayedPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: Stack(
           alignment: Alignment.bottomCenter,

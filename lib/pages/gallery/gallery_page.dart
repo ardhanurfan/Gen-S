@@ -30,25 +30,36 @@ class GalleryPage extends StatelessWidget {
             children: [
               Text(
                 "Gallery",
-                style:
-                    primaryColorText.copyWith(fontSize: 24, fontWeight: bold),
+                style: userProvider.user.role == "USER"
+                    ? primaryUserColorText.copyWith(
+                        fontSize: 24, fontWeight: bold)
+                    : primaryAdminColorText.copyWith(
+                        fontSize: 24, fontWeight: bold),
               ),
               Row(
                 children: [
                   userProvider.user.role == "USER"
                       ? const SizedBox()
                       : Icon(
-                          Icons.add,
+                          Icons.delete_outline_outlined,
                           size: 36,
-                          color: primaryColor,
+                          color: primaryAdminColor,
                         ),
                   const SizedBox(width: 16),
-                  const SettingButton(),
+                  userProvider.user.role == "USER"
+                      ? const SettingButton()
+                      : Icon(
+                          Icons.add,
+                          color: primaryAdminColor,
+                          size: 36,
+                        ),
                 ],
               ),
             ],
           ),
-          backgroundColor: backgroundColor,
+          backgroundColor: userProvider.user.role == "USER"
+              ? backgroundUserColor
+              : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -75,7 +86,9 @@ class GalleryPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: userProvider.user.role == "USER"
+          ? backgroundUserColor
+          : backgroundAdminColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,

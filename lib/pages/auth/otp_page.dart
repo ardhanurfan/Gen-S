@@ -51,7 +51,7 @@ class OtpPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: defaultMargin),
@@ -66,7 +66,7 @@ class OtpPage extends StatelessWidget {
             const SizedBox(height: 28),
             Text(
               'OTP Verification',
-              style: primaryColorText.copyWith(
+              style: primaryUserColorText.copyWith(
                 fontSize: 24,
                 fontWeight: bold,
               ),
@@ -77,14 +77,14 @@ class OtpPage extends StatelessWidget {
               children: [
                 Text(
                   'Enter the OTP sent to ',
-                  style: primaryColorText.copyWith(
+                  style: primaryUserColorText.copyWith(
                     fontSize: 16,
                   ),
                 ),
                 Expanded(
                   child: Text(
                     email.toString(),
-                    style: primaryColorText.copyWith(
+                    style: primaryUserColorText.copyWith(
                         fontSize: 16, fontWeight: bold),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -111,7 +111,7 @@ class OtpPage extends StatelessWidget {
               children: [
                 Text(
                   'Don\'t receive the code? ',
-                  style: primaryColorText.copyWith(
+                  style: primaryUserColorText.copyWith(
                     fontSize: 16,
                   ),
                 ),
@@ -121,7 +121,7 @@ class OtpPage extends StatelessWidget {
                   },
                   child: Text(
                     'Resend',
-                    style: primaryColorText.copyWith(
+                    style: primaryUserColorText.copyWith(
                         fontSize: 16, fontWeight: bold),
                   ),
                 ),
@@ -164,11 +164,11 @@ class OtpForm extends StatelessWidget {
           }
         },
         obscureText: true,
-        style: primaryColorText.copyWith(
+        style: primaryUserColorText.copyWith(
           fontSize: 16,
           fontWeight: bold,
         ),
-        cursorColor: primaryColor,
+        cursorColor: primaryUserColor,
         keyboardType: TextInputType.number,
         textAlign: TextAlign.center,
         inputFormatters: [
@@ -188,7 +188,7 @@ class OtpForm extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32),
             borderSide: BorderSide(
-              color: primaryColor,
+              color: primaryUserColor,
               width: 2,
               style: BorderStyle.solid,
             ),

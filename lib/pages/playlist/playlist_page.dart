@@ -31,7 +31,7 @@ class PlaylistPage extends StatelessWidget {
                 children: [
                   Text(
                     "Playlist",
-                    style: primaryColorText.copyWith(
+                    style: primaryUserColorText.copyWith(
                         fontSize: 24, fontWeight: bold),
                   ),
                   const SizedBox(
@@ -82,7 +82,7 @@ class PlaylistPage extends StatelessWidget {
                     child: Icon(
                       Icons.add,
                       size: 36,
-                      color: primaryColor,
+                      color: primaryUserColor,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -91,7 +91,7 @@ class PlaylistPage extends StatelessWidget {
               ),
             ],
           ),
-          backgroundColor: backgroundColor,
+          backgroundColor: backgroundUserColor,
           floating: true,
           snap: true,
         ),
@@ -157,7 +157,7 @@ class PlaylistPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,

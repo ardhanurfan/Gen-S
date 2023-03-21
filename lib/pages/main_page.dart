@@ -86,7 +86,7 @@ class MainPage extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: Stack(
         alignment: AlignmentDirectional.bottomCenter,
         children: [
@@ -133,7 +133,8 @@ class NavigationItem extends StatelessWidget {
           Icon(
             icon,
             size: 32,
-            color: pageProvider.page == index ? secondaryColor : primaryColor,
+            color:
+                pageProvider.page == index ? secondaryColor : primaryUserColor,
           ),
           Text(
             label,
@@ -142,7 +143,7 @@ class NavigationItem extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: semibold,
                   )
-                : primaryColorText.copyWith(
+                : primaryUserColorText.copyWith(
                     fontSize: 12,
                     fontWeight: semibold,
                   ),

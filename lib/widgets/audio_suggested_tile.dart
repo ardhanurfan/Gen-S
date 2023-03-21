@@ -39,7 +39,7 @@ class AudioSuggestedTile extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             title,
-            style: primaryColorText.copyWith(fontSize: 12),
+            style: primaryUserColorText.copyWith(fontSize: 12),
             overflow: TextOverflow.ellipsis,
           ),
           // Text(

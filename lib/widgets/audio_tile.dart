@@ -59,7 +59,7 @@ class AudioTile extends StatelessWidget {
             }
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 12),
-              color: backgroundColor,
+              color: backgroundUserColor,
               child: Row(
                 children: [
                   Visibility(
@@ -71,15 +71,16 @@ class AudioTile extends StatelessWidget {
                         index + 1 < 10
                             ? "0${index + 1}"
                             : {index + 1}.toString(),
-                        style:
-                            (isSelect ? secondaryColorText : primaryColorText)
-                                .copyWith(
-                                    fontWeight: bold,
-                                    fontSize: 20,
-                                    foreground: Paint()
-                                      ..style = PaintingStyle.stroke
-                                      ..strokeWidth = 0.1
-                                      ..color = primaryColor),
+                        style: (isSelect
+                                ? secondaryColorText
+                                : primaryUserColorText)
+                            .copyWith(
+                                fontWeight: bold,
+                                fontSize: 20,
+                                foreground: Paint()
+                                  ..style = PaintingStyle.stroke
+                                  ..strokeWidth = 0.1
+                                  ..color = primaryUserColor),
                       ),
                     ),
                   ),
@@ -107,8 +108,9 @@ class AudioTile extends StatelessWidget {
                     child: Text(
                       audio.title,
                       overflow: TextOverflow.ellipsis,
-                      style: (isSelect ? secondaryColorText : primaryColorText)
-                          .copyWith(
+                      style:
+                          (isSelect ? secondaryColorText : primaryUserColorText)
+                              .copyWith(
                         fontSize: 16,
                         fontWeight: bold,
                       ),
@@ -138,7 +140,7 @@ class AudioTile extends StatelessWidget {
                         child: PopupMenuButton(
                           icon: Icon(
                             Icons.more_vert,
-                            color: isSelect ? secondaryColor : primaryColor,
+                            color: isSelect ? secondaryColor : primaryUserColor,
                           ),
                           color: dropDownColor,
                           shape: RoundedRectangleBorder(
@@ -233,8 +235,8 @@ class AudioTile extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   'Delete',
-                                  style:
-                                      primaryColorText.copyWith(fontSize: 14),
+                                  style: primaryUserColorText.copyWith(
+                                      fontSize: 14),
                                 ),
                               ),
                             ),

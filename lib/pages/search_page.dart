@@ -67,18 +67,18 @@ class _SearchPageState extends State<SearchPage> {
               hintText: "start searching",
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              fillColor: primaryColor,
+              fillColor: primaryUserColor,
               filled: true,
               hintStyle: darkGreyText.copyWith(
                 fontSize: 16,
               ),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(32),
-                  borderSide: BorderSide(color: primaryColor, width: 5)),
+                  borderSide: BorderSide(color: primaryUserColor, width: 5)),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(32),
                 borderSide: BorderSide(
-                  color: primaryColor,
+                  color: primaryUserColor,
                   width: 3,
                   style: BorderStyle.solid,
                 ),
@@ -112,7 +112,7 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       "Audio",
-                      style: primaryColorText.copyWith(
+                      style: primaryUserColorText.copyWith(
                           fontSize: 20, fontWeight: bold),
                     ),
                   ),
@@ -133,7 +133,7 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       "Playlist",
-                      style: primaryColorText.copyWith(
+                      style: primaryUserColorText.copyWith(
                           fontSize: 20, fontWeight: bold),
                     ),
                   ),
@@ -153,7 +153,7 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       "Gallery",
-                      style: primaryColorText.copyWith(
+                      style: primaryUserColorText.copyWith(
                           fontSize: 20, fontWeight: bold),
                     ),
                   ),
@@ -188,7 +188,7 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: content(),
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../shared/theme.dart';
 
@@ -7,6 +9,7 @@ class AlbumsHomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     Widget albumGrid() {
       return Column(
         children: [
@@ -20,11 +23,20 @@ class AlbumsHomeContent extends StatelessWidget {
           ),
           Text(
             "1989",
-            style: primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
+            style: userProvider.user.role == "USER"
+                ? primaryUserColorText.copyWith(fontSize: 16, fontWeight: bold)
+                : primaryAdminColorText.copyWith(
+                    fontSize: 16, fontWeight: bold),
           ),
           Text(
             "Taylor Swift",
-            style: primaryColorText.copyWith(fontSize: 12),
+            style: userProvider.user.role == "USER"
+                ? primaryUserColorText.copyWith(
+                    fontSize: 12,
+                  )
+                : primaryAdminColorText.copyWith(
+                    fontSize: 12,
+                  ),
           )
         ],
       );

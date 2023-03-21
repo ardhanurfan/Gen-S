@@ -59,12 +59,14 @@ class PlaylistDetailPage extends StatelessWidget {
             ),
             Text(
               name,
-              style: primaryColorText.copyWith(fontSize: 20, fontWeight: bold),
+              style:
+                  primaryUserColorText.copyWith(fontSize: 20, fontWeight: bold),
               overflow: TextOverflow.ellipsis,
             ),
             Text(
               '${playlistProvider.audios.length} audio',
-              style: primaryColorText.copyWith(fontSize: 12, fontWeight: light),
+              style: primaryUserColorText.copyWith(
+                  fontSize: 12, fontWeight: light),
             )
           ],
         ),
@@ -86,7 +88,7 @@ class PlaylistDetailPage extends StatelessWidget {
                   },
                   child: Icon(
                     Icons.arrow_back,
-                    color: primaryColor,
+                    color: primaryUserColor,
                   ),
                 ),
                 GestureDetector(
@@ -101,7 +103,7 @@ class PlaylistDetailPage extends StatelessWidget {
                   },
                   child: Icon(
                     Icons.add,
-                    color: primaryColor,
+                    color: primaryUserColor,
                   ),
                 ),
               ],
@@ -177,7 +179,7 @@ class PlaylistDetailPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: Stack(
           alignment: AlignmentDirectional.bottomCenter,

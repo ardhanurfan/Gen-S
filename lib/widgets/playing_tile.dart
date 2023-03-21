@@ -59,7 +59,7 @@ class PlayingTile extends StatelessWidget {
                         const SizedBox(width: 24),
                         Text(
                           audio.title,
-                          style: primaryColorText.copyWith(
+                          style: primaryUserColorText.copyWith(
                             fontSize: 16,
                             fontWeight: bold,
                           ),

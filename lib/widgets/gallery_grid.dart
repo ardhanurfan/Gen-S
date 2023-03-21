@@ -1,8 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/gallery_model.dart';
+import 'package:music_player/providers/user_provider.dart';
+import 'package:music_player/widgets/delete_popup.dart';
+import 'package:provider/provider.dart';
 
 import '../pages/gallery/detail_gallery_page.dart';
+import '../providers/gallery_provider.dart';
 import '../shared/theme.dart';
 
 class GalleryGrid extends StatelessWidget {
@@ -15,6 +19,8 @@ class GalleryGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+    GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
     final itemWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
@@ -47,13 +53,54 @@ class GalleryGrid extends StatelessWidget {
                     fit: BoxFit.fill,
                   ),
                 ),
-          Text(
-            gallery.name,
-            style: primaryColorText.copyWith(fontSize: 16, fontWeight: medium),
-          ),
-          Text(
-            gallery.images.length.toString(),
-            style: primaryColorText.copyWith(fontSize: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    gallery.name,
+                    style: userProvider.user.role == "USER"
+                        ? primaryUserColorText.copyWith(
+                            fontSize: 16, fontWeight: medium)
+                        : primaryAdminColorText.copyWith(
+                            fontSize: 16, fontWeight: medium),
+                  ),
+                  Text(
+                    gallery.images.length.toString(),
+                    style: userProvider.user.role == "USER"
+                        ? primaryUserColorText.copyWith(fontSize: 12)
+                        : primaryAdminColorText.copyWith(fontSize: 12),
+                  ),
+                ],
+              ),
+              PopupMenuButton(
+                icon: Icon(
+                  Icons.more_vert,
+                  color: primaryAdminColor,
+                ),
+                color: const Color.fromARGB(255, 223, 223, 223),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                ),
+                elevation: 4,
+                onSelected: (value) {
+                  if (value == 0) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => DeletePopUp(delete: () {}));
+                  }
+                },
+                itemBuilder: (BuildContext context) => [
+                  PopupMenuItem(
+                      value: 0,
+                      child: Text(
+                        "Delete",
+                        style: primaryAdminColorText,
+                      ))
+                ],
+              )
+            ],
           ),
         ],
       ),

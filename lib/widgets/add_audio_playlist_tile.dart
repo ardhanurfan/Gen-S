@@ -38,7 +38,7 @@ class AddAudioPlaylistTile extends StatelessWidget {
           }
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 12),
-            color: backgroundColor,
+            color: backgroundUserColor,
             child: Row(
               children: [
                 Container(
@@ -65,8 +65,9 @@ class AddAudioPlaylistTile extends StatelessWidget {
                   child: Text(
                     audio.title,
                     overflow: TextOverflow.ellipsis,
-                    style: (isSelect ? secondaryColorText : primaryColorText)
-                        .copyWith(
+                    style:
+                        (isSelect ? secondaryColorText : primaryUserColorText)
+                            .copyWith(
                       fontSize: 16,
                       fontWeight: bold,
                     ),
@@ -160,7 +161,7 @@ class AddAudioPlaylistTile extends StatelessWidget {
                             },
                             child: Icon(
                               Icons.add_circle_outline,
-                              color: primaryColor,
+                              color: primaryUserColor,
                               size: 28,
                             ),
                           ),

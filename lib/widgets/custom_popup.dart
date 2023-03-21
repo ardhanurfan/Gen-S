@@ -22,7 +22,7 @@ class _CustomPopUpState extends State<CustomPopUp> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       actions: [
         Visibility(
           visible: !isLoading,
@@ -32,7 +32,7 @@ class _CustomPopUpState extends State<CustomPopUp> {
             },
             child: Text(
               'CANCEL',
-              style: primaryColorText,
+              style: primaryUserColorText,
             ),
           ),
         ),
@@ -52,7 +52,7 @@ class _CustomPopUpState extends State<CustomPopUp> {
             },
             child: Text(
               'SAVE',
-              style: primaryColorText,
+              style: primaryUserColorText,
             ),
           ),
         )
@@ -61,7 +61,7 @@ class _CustomPopUpState extends State<CustomPopUp> {
         visible: !isLoading,
         child: Text(
           widget.title,
-          style: primaryColorText,
+          style: primaryUserColorText,
         ),
       ),
       content: isLoading
@@ -70,15 +70,15 @@ class _CustomPopUpState extends State<CustomPopUp> {
               height: 30,
               child: Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: primaryColor,
+                  color: primaryUserColor,
                   size: 32,
                 ),
               ),
             )
           : TextField(
               controller: widget.controller,
-              style: primaryColorText.copyWith(fontSize: 14),
-              cursorColor: primaryColor,
+              style: primaryUserColorText.copyWith(fontSize: 14),
+              cursorColor: primaryUserColor,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(defaultRadius),
@@ -86,7 +86,7 @@ class _CustomPopUpState extends State<CustomPopUp> {
                 enabledBorder: UnderlineInputBorder(
                   borderRadius: BorderRadius.circular(defaultRadius),
                   borderSide: BorderSide(
-                    color: primaryColor,
+                    color: primaryUserColor,
                     width: 3,
                     style: BorderStyle.solid,
                   ),

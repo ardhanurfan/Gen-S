@@ -28,7 +28,8 @@ class EmptyPlaylistPage extends StatelessWidget {
           margin: const EdgeInsets.only(top: 49, bottom: 24),
           child: Text(
             "Your playlist is empty  :(",
-            style: primaryColorText.copyWith(fontSize: 24, fontWeight: bold),
+            style:
+                primaryUserColorText.copyWith(fontSize: 24, fontWeight: bold),
           ),
         ),
       );
