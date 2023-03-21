@@ -59,13 +59,18 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               child: Icon(
                 Icons.arrow_back,
-                color: primaryUserColor,
+                color: userProvider.user.role == "USER"
+                    ? primaryUserColor
+                    : primaryAdminColor,
               ),
             ),
             Text(
               "Settings",
-              style: primaryUserColorText.copyWith(
-                  fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
+              style: userProvider.user.role == "USER"
+                  ? primaryUserColorText.copyWith(
+                      fontWeight: bold, fontSize: 24, letterSpacing: 1.3)
+                  : primaryAdminColorText.copyWith(
+                      fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
             ),
           ],
         ),
@@ -95,12 +100,18 @@ class _SettingsPageState extends State<SettingsPage> {
                   children: [
                     Text(
                       userProvider.user.username,
-                      style: primaryUserColorText.copyWith(
-                          fontSize: 20, fontWeight: bold),
+                      style: userProvider.user.role == "USER"
+                          ? primaryUserColorText.copyWith(
+                              fontSize: 20, fontWeight: bold)
+                          : primaryAdminColorText.copyWith(
+                              fontSize: 20, fontWeight: bold),
                     ),
                     Text(
                       userProvider.user.email,
-                      style: primaryUserColorText.copyWith(fontSize: 12),
+                      style: userProvider.user.role == "USER"
+                          ? primaryUserColorText.copyWith(fontSize: 12)
+                          : primaryAdminColorText.copyWith(
+                              fontSize: 12, fontWeight: bold),
                     ),
                   ],
                 )
@@ -130,7 +141,9 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundUserColor,
+      backgroundColor: userProvider.user.role == "USER"
+          ? backgroundUserColor
+          : backgroundAdminColor,
       body: SafeArea(
         child: Column(
           children: [
