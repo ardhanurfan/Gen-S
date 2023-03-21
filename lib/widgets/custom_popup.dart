@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:provider/provider.dart';
 
 class CustomPopUp extends StatefulWidget {
   final String title;
@@ -21,8 +23,11 @@ bool isLoading = false;
 class _CustomPopUpState extends State<CustomPopUp> {
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     return AlertDialog(
-      backgroundColor: backgroundUserColor,
+      backgroundColor: userProvider.user.role == "USER"
+          ? backgroundUserColor
+          : const Color.fromARGB(255, 224, 224, 224),
       actions: [
         Visibility(
           visible: !isLoading,
@@ -32,7 +37,9 @@ class _CustomPopUpState extends State<CustomPopUp> {
             },
             child: Text(
               'CANCEL',
-              style: primaryUserColorText,
+              style: userProvider.user.role == "USER"
+                  ? primaryUserColorText
+                  : primaryAdminColorText,
             ),
           ),
         ),
@@ -52,7 +59,9 @@ class _CustomPopUpState extends State<CustomPopUp> {
             },
             child: Text(
               'SAVE',
-              style: primaryUserColorText,
+              style: userProvider.user.role == "USER"
+                  ? primaryUserColorText
+                  : primaryAdminColorText,
             ),
           ),
         )
@@ -61,7 +70,9 @@ class _CustomPopUpState extends State<CustomPopUp> {
         visible: !isLoading,
         child: Text(
           widget.title,
-          style: primaryUserColorText,
+          style: userProvider.user.role == "USER"
+              ? primaryUserColorText
+              : primaryAdminColorText,
         ),
       ),
       content: isLoading
@@ -70,15 +81,21 @@ class _CustomPopUpState extends State<CustomPopUp> {
               height: 30,
               child: Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: primaryUserColor,
+                  color: userProvider.user.role == "USER"
+                      ? primaryUserColor
+                      : primaryAdminColor,
                   size: 32,
                 ),
               ),
             )
           : TextField(
               controller: widget.controller,
-              style: primaryUserColorText.copyWith(fontSize: 14),
-              cursorColor: primaryUserColor,
+              style: userProvider.user.role == "USER"
+                  ? primaryUserColorText.copyWith(fontSize: 14)
+                  : primaryAdminColorText.copyWith(fontSize: 14),
+              cursorColor: userProvider.user.role == "USER"
+                  ? primaryUserColor
+                  : primaryAdminColor,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(defaultRadius),
@@ -86,7 +103,9 @@ class _CustomPopUpState extends State<CustomPopUp> {
                 enabledBorder: UnderlineInputBorder(
                   borderRadius: BorderRadius.circular(defaultRadius),
                   borderSide: BorderSide(
-                    color: primaryUserColor,
+                    color: userProvider.user.role == "USER"
+                        ? primaryUserColor
+                        : primaryAdminColor,
                     width: 3,
                     style: BorderStyle.solid,
                   ),

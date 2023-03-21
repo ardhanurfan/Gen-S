@@ -19,7 +19,10 @@ class GalleryGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
+<<<<<<< HEAD
     final itemWidth = MediaQuery.of(context).size.width;
+=======
+>>>>>>> 609880f4db4364dd44d7ba2ca3c5c373c7146d6f
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -37,8 +40,8 @@ class GalleryGrid extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   child: Image.asset(
                     "assets/ex_gallery.png",
-                    height: itemWidth,
-                    width: itemWidth,
+                    height: 160,
+                    width: 160,
                     fit: BoxFit.fill,
                   ),
                 )

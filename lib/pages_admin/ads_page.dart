@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/pages_admin/ads_content_page.dart';
 
 import '../shared/theme.dart';
 
@@ -36,27 +37,35 @@ class AdsPage extends StatelessWidget {
     Widget content() {
       return Column(
         children: [
-          Container(
-            padding:
-                EdgeInsets.symmetric(vertical: 17, horizontal: defaultMargin),
-            decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(color: secondaryColor, width: 1),
-                    bottom: BorderSide(color: secondaryColor, width: 1))),
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Ads Content",
-                  style: primaryAdminColorText.copyWith(fontSize: 16),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 20,
-                  color: primaryAdminColor,
-                )
-              ],
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AdsContentPage()));
+            },
+            child: Container(
+              padding:
+                  EdgeInsets.symmetric(vertical: 17, horizontal: defaultMargin),
+              decoration: BoxDecoration(
+                  border: Border(
+                      top: BorderSide(color: secondaryColor, width: 1),
+                      bottom: BorderSide(color: secondaryColor, width: 1))),
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Ads Content",
+                    style: primaryAdminColorText.copyWith(fontSize: 16),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 20,
+                    color: primaryAdminColor,
+                  )
+                ],
+              ),
             ),
           ),
           Container(

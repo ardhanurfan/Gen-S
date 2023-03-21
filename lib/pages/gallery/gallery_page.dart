@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_player/pages/gallery/empty_gallery_page.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/gallery_grid.dart';
 import 'package:music_player/widgets/setting_button.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class GalleryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    TextEditingController galleryController = TextEditingController(text: "");
 
     Widget header() {
       return SliverPadding(
@@ -48,10 +50,23 @@ class GalleryPage extends StatelessWidget {
                   const SizedBox(width: 16),
                   userProvider.user.role == "USER"
                       ? const SettingButton()
-                      : Icon(
-                          Icons.add,
-                          color: primaryAdminColor,
-                          size: 36,
+                      : GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              builder: (BuildContext context) {
+                                return CustomPopUp(
+                                    title: "Gallery Name",
+                                    add: () {},
+                                    controller: galleryController);
+                              },
+                              context: context,
+                            );
+                          },
+                          child: Icon(
+                            Icons.add,
+                            color: primaryAdminColor,
+                            size: 36,
+                          ),
                         ),
                 ],
               ),
