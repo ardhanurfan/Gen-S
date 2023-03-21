@@ -41,12 +41,18 @@ class GalleryPage extends StatelessWidget {
                   userProvider.user.role == "USER"
                       ? const SizedBox()
                       : Icon(
-                          Icons.add,
+                          Icons.delete_outline_outlined,
                           size: 36,
-                          color: primaryUserColor,
+                          color: primaryAdminColor,
                         ),
                   const SizedBox(width: 16),
-                  const SettingButton(),
+                  userProvider.user.role == "USER"
+                      ? const SettingButton()
+                      : Icon(
+                          Icons.add,
+                          color: primaryAdminColor,
+                          size: 36,
+                        ),
                 ],
               ),
             ],
