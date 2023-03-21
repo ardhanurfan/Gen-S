@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/sort_by_provider.dart';
@@ -17,21 +18,28 @@ class SortByTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SortByProvider sortByProvider = Provider.of<SortByProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: primaryUserColorText.copyWith(
-            fontSize: 12,
-          ),
+          style: userProvider.user.role == "USER"
+              ? primaryUserColorText.copyWith(
+                  fontSize: 12,
+                )
+              : primaryAdminColorText.copyWith(
+                  fontSize: 12,
+                ),
         ),
         Icon(
             sortByProvider.sortBy == index
                 ? Icons.check_circle_outline
                 : Icons.circle_outlined,
-            color: primaryUserColor)
+            color: userProvider.user.role == "USER"
+                ? primaryUserColor
+                : primaryAdminColor)
       ],
     );
   }

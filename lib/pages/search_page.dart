@@ -4,6 +4,7 @@ import 'package:music_player/models/gallery_model.dart';
 import 'package:music_player/models/playlist_model.dart';
 import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/providers/playlist_provider.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
 import 'package:music_player/widgets/playlist_tile.dart';
@@ -29,6 +30,7 @@ class _SearchPageState extends State<SearchPage> {
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     void updateFound(String value) {
       setState(() {
@@ -59,28 +61,32 @@ class _SearchPageState extends State<SearchPage> {
             horizontal: defaultMargin, vertical: defaultMargin),
         children: [
           // SEARCH BAR
-          TextFormField(
-            onChanged: (value) => updateFound(value),
-            style: darkGreyText.copyWith(fontSize: 14),
-            cursorColor: darkGreyColor,
-            decoration: InputDecoration(
-              hintText: "start searching",
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              fillColor: primaryUserColor,
-              filled: true,
-              hintStyle: darkGreyText.copyWith(
-                fontSize: 16,
-              ),
-              focusedBorder: OutlineInputBorder(
+          Material(
+            elevation: 10,
+            borderRadius: BorderRadius.circular(32),
+            child: TextFormField(
+              onChanged: (value) => updateFound(value),
+              style: darkGreyText.copyWith(fontSize: 14),
+              cursorColor: darkGreyColor,
+              decoration: InputDecoration(
+                hintText: "start searching",
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                fillColor: primaryUserColor,
+                filled: true,
+                hintStyle: darkGreyText.copyWith(
+                  fontSize: 16,
+                ),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(32),
+                    borderSide: BorderSide(color: primaryUserColor, width: 5)),
+                enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(32),
-                  borderSide: BorderSide(color: primaryUserColor, width: 5)),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(32),
-                borderSide: BorderSide(
-                  color: primaryUserColor,
-                  width: 3,
-                  style: BorderStyle.solid,
+                  borderSide: BorderSide(
+                    color: primaryUserColor,
+                    width: 3,
+                    style: BorderStyle.solid,
+                  ),
                 ),
               ),
             ),
@@ -128,7 +134,8 @@ class _SearchPageState extends State<SearchPage> {
                       .toList(),
                 ),
                 Visibility(
-                  visible: foundPlaylist.isNotEmpty,
+                  visible: foundPlaylist.isNotEmpty &&
+                      userProvider.user.role == "ADMIN",
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
@@ -138,14 +145,17 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                 ),
-                Column(
-                  children: foundPlaylist
-                      .map(
-                        (playlist) => PlaylistTile(
-                          playlist: playlist,
-                        ),
-                      )
-                      .toList(),
+                Visibility(
+                  visible: userProvider.user.role == "USER",
+                  child: Column(
+                    children: foundPlaylist
+                        .map(
+                          (playlist) => PlaylistTile(
+                            playlist: playlist,
+                          ),
+                        )
+                        .toList(),
+                  ),
                 ),
                 Visibility(
                   visible: foundGallery.isNotEmpty,
@@ -188,7 +198,9 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundUserColor,
+      backgroundColor: userProvider.user.role == "USER"
+          ? backgroundUserColor
+          : backgroundAdminColor,
       body: SafeArea(
         child: content(),
       ),
