@@ -17,24 +17,40 @@ class PlaylistProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addAudio(
+  Future<bool> addAudio(
       {required AudioModel audio, required int playlistId}) async {
-    _playlists
-        .where((element) => element.id == playlistId)
-        .first
-        .audios
-        .add(audio);
-    notifyListeners();
+    try {
+      await PlaylistService()
+          .addAudio(audioId: audio.id, playlistId: playlistId);
+      _playlists
+          .where((element) => element.id == playlistId)
+          .first
+          .audios
+          .add(audio);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
   }
 
-  Future<void> deleteAudio(
+  Future<bool> deleteAudio(
       {required AudioModel audio, required int playlistId}) async {
-    _playlists
-        .where((element) => element.id == playlistId)
-        .first
-        .audios
-        .remove(audio);
-    notifyListeners();
+    try {
+      await PlaylistService()
+          .deleteAudio(audioId: audio.id, playlistId: playlistId);
+      _playlists
+          .where((element) => element.id == playlistId)
+          .first
+          .audios
+          .remove(audio);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
   }
 
   Future<void> getPlaylist({required String token}) async {
@@ -118,6 +134,7 @@ class PlaylistProvider extends ChangeNotifier {
 
   Future<bool> deletePlaylist({required int playlistId}) async {
     try {
+      await PlaylistService().delete(playlistId: playlistId);
       var index = _playlists.indexOf(
         _playlists.firstWhere(
           (element) => element.id == playlistId,
@@ -126,7 +143,7 @@ class PlaylistProvider extends ChangeNotifier {
       _playlists.removeAt(index);
       notifyListeners();
 
-      return await PlaylistService().delete(playlistId: playlistId);
+      return true;
     } catch (e) {
       _errorMessage = e.toString();
       return false;

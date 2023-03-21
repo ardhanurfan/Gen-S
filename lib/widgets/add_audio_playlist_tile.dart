@@ -92,10 +92,34 @@ class AddAudioPlaylistTile extends StatelessWidget {
                     isAdded
                         ? GestureDetector(
                             onTap: () async {
-                              await playlistProvider.deleteAudio(
+                              if (await playlistProvider.deleteAudio(
                                 audio: audio,
                                 playlistId: playlistId,
-                              );
+                              )) {
+                                ScaffoldMessenger.of(context)
+                                    .removeCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: successColor,
+                                    content: const Text(
+                                      'Delete audio from playlist successfuly',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .removeCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: alertColor,
+                                    content: Text(
+                                      playlistProvider.errorMessage,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              }
                             },
                             child: Icon(
                               Icons.check_circle,
@@ -105,10 +129,34 @@ class AddAudioPlaylistTile extends StatelessWidget {
                           )
                         : GestureDetector(
                             onTap: () async {
-                              await playlistProvider.addAudio(
+                              if (await playlistProvider.addAudio(
                                 audio: audio,
                                 playlistId: playlistId,
-                              );
+                              )) {
+                                ScaffoldMessenger.of(context)
+                                    .removeCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: successColor,
+                                    content: const Text(
+                                      'Add audio to playlist successfuly',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .removeCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: alertColor,
+                                    content: Text(
+                                      playlistProvider.errorMessage,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              }
                             },
                             child: Icon(
                               Icons.add_circle_outline,

@@ -189,14 +189,25 @@ class AudioController extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        GestureDetector(
-          onTap: () {},
-          child: Icon(
-            Icons.shuffle,
-            color: primaryColor,
-            size: 28,
-          ),
-        ),
+        StreamBuilder<bool>(
+            stream: audioPlayerProvider.audioPlayer.shuffleModeEnabledStream,
+            builder: (context, snapshot) {
+              return GestureDetector(
+                onTap: () async {
+                  final enable = !(snapshot.data ?? false);
+                  if (enable) {
+                    await audioPlayerProvider.audioPlayer.shuffle();
+                  }
+                  await audioPlayerProvider.audioPlayer
+                      .setShuffleModeEnabled(enable);
+                },
+                child: Icon(
+                  Icons.shuffle,
+                  color: snapshot.data ?? false ? secondaryColor : primaryColor,
+                  size: 28,
+                ),
+              );
+            }),
         GestureDetector(
           onTap: () {
             audioPlayerProvider.audioPlayer.seekToPrevious();
@@ -218,14 +229,32 @@ class AudioController extends StatelessWidget {
             size: 34,
           ),
         ),
-        GestureDetector(
-          onTap: () {},
-          child: Icon(
-            Icons.replay,
-            color: primaryColor,
-            size: 28,
-          ),
-        ),
+        StreamBuilder<LoopMode>(
+            stream: audioPlayerProvider.audioPlayer.loopModeStream,
+            builder: (context, snapshot) {
+              return GestureDetector(
+                onTap: () async {
+                  final current = snapshot.data;
+                  if (current == LoopMode.all) {
+                    await audioPlayerProvider.audioPlayer
+                        .setLoopMode(LoopMode.one);
+                  }
+                  if (current == LoopMode.one) {
+                    await audioPlayerProvider.audioPlayer
+                        .setLoopMode(LoopMode.off);
+                  }
+                  if (current == LoopMode.off) {
+                    await audioPlayerProvider.audioPlayer
+                        .setLoopMode(LoopMode.all);
+                  }
+                },
+                child: Icon(
+                  Icons.replay,
+                  color: primaryColor,
+                  size: 28,
+                ),
+              );
+            }),
       ],
     );
   }

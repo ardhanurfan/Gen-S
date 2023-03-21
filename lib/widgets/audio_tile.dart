@@ -192,43 +192,36 @@ class AudioTile extends StatelessWidget {
                                 context: context,
                                 builder: (context) => DeletePopUp(
                                   delete: () async {
-                                    await playlistProvider.deleteAudio(
+                                    if (await playlistProvider.deleteAudio(
                                       audio: audio,
                                       playlistId: playlistId,
-                                    );
-                                    // if (await audioProvider.deleteAudio(
-                                    //     audioId: audio.id)) {
-                                    //   audioPlayerProvider.deleteAudio(
-                                    //       audioId: audio.id);
-                                    //   playlistProvider
-                                    //       .deleteAudioFromAllPlaylist(
-                                    //           audioId: audio.id);
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .removeCurrentSnackBar();
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .showSnackBar(
-                                    //     SnackBar(
-                                    //       backgroundColor: successColor,
-                                    //       content: const Text(
-                                    //         'Delete audio successfuly',
-                                    //         textAlign: TextAlign.center,
-                                    //       ),
-                                    //     ),
-                                    //   );
-                                    // } else {
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .removeCurrentSnackBar();
-                                    //   ScaffoldMessenger.of(context)
-                                    //       .showSnackBar(
-                                    //     SnackBar(
-                                    //       backgroundColor: alertColor,
-                                    //       content: Text(
-                                    //         audioProvider.errorMessage,
-                                    //         textAlign: TextAlign.center,
-                                    //       ),
-                                    //     ),
-                                    //   );
-                                    // }
+                                    )) {
+                                      ScaffoldMessenger.of(context)
+                                          .removeCurrentSnackBar();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: successColor,
+                                          content: const Text(
+                                            'Delete audio from playlist successfuly',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .removeCurrentSnackBar();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor: alertColor,
+                                          content: Text(
+                                            playlistProvider.errorMessage,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
+                                    }
                                   },
                                 ),
                               );

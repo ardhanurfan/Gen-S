@@ -91,6 +91,7 @@ class AudioProvider extends ChangeNotifier {
 
   Future<bool> deleteAudio({required int audioId}) async {
     try {
+      await AudioService().delete(audioId: audioId);
       var index = _audios.indexOf(
         _audios.firstWhere(
           (element) => element.id == audioId,
@@ -99,7 +100,7 @@ class AudioProvider extends ChangeNotifier {
       _audios.removeAt(index);
       notifyListeners();
 
-      return await AudioService().delete(audioId: audioId);
+      return true;
     } catch (e) {
       _errorMessage = e.toString();
       return false;

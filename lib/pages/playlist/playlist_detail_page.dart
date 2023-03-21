@@ -5,6 +5,7 @@ import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/playing_tile.dart';
 import 'add_song_page.dart';
 
 class PlaylistDetailPage extends StatelessWidget {
@@ -178,11 +179,20 @@ class PlaylistDetailPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: Column(
+        child: Stack(
+          alignment: AlignmentDirectional.bottomCenter,
           children: [
-            header(),
-            playlistInfo(),
-            audioList(),
+            Column(
+              children: [
+                header(),
+                playlistInfo(),
+                audioList(),
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              child: const PlayingTile(),
+            ),
           ],
         ),
       ),

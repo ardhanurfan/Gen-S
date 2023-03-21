@@ -46,11 +46,12 @@ class SuggestedHomeContent extends StatelessWidget {
                 children: audioProvider.historyRecents
                     .map(
                       (audio) => GestureDetector(
-                        onTap: () {
-                          audioPlayerProvider.setPlay(
+                        onTap: () async {
+                          await audioPlayerProvider.setPlay(
                             audioProvider.historyRecents,
                             audioProvider.historyRecents.indexOf(audio),
                           );
+                          audioProvider.updateHistory(audioId: audio.id);
                         },
                         child: AudioSuggestedTile(
                           title: audio.title,
@@ -85,11 +86,12 @@ class SuggestedHomeContent extends StatelessWidget {
                 children: audioProvider.historyMosts
                     .map(
                       (audio) => GestureDetector(
-                        onTap: () {
-                          audioPlayerProvider.setPlay(
+                        onTap: () async {
+                          await audioPlayerProvider.setPlay(
                             audioProvider.historyMosts,
                             audioProvider.historyMosts.indexOf(audio),
                           );
+                          audioProvider.updateHistory(audioId: audio.id);
                         },
                         child: AudioSuggestedTile(
                           title: audio.title,

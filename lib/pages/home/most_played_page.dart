@@ -3,6 +3,7 @@ import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/shared/theme.dart';
 
 import '../../widgets/audio_tile.dart';
+import '../../widgets/playing_tile.dart';
 
 class MostPlayedPage extends StatelessWidget {
   const MostPlayedPage({super.key, required this.historyMosts});
@@ -62,14 +63,23 @@ class MostPlayedPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              header(),
-            ];
-          },
-          body: listOfSong(),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            NestedScrollView(
+              floatHeaderSlivers: true,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  header(),
+                ];
+              },
+              body: listOfSong(),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              child: const PlayingTile(),
+            ),
+          ],
         ),
       ),
     );

@@ -176,4 +176,55 @@ class PlaylistService {
       throw "Delete playlist failed";
     }
   }
+
+  Future<bool> addAudio({required int audioId, required int playlistId}) async {
+    late Uri url = UrlService().api('add-audio-playlist');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'audioId': audioId,
+      'playlistId': playlistId,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "Add audio to playlist failed";
+    }
+  }
+
+  Future<bool> deleteAudio(
+      {required int audioId, required int playlistId}) async {
+    late Uri url = UrlService().api('delete-audio-playlist');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'audioId': audioId,
+      'playlistId': playlistId,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "Delete audio from playlist failed";
+    }
+  }
 }

@@ -5,6 +5,7 @@ import 'package:music_player/widgets/audio_tile.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/audio_player_provider.dart';
+import '../../widgets/playing_tile.dart';
 
 class RecentlyPlayedPage extends StatelessWidget {
   const RecentlyPlayedPage({super.key, required this.historyRecents});
@@ -52,37 +53,47 @@ class RecentlyPlayedPage extends StatelessWidget {
 
     Widget listOfSong() {
       return ListView(
-          padding: EdgeInsets.symmetric(horizontal: defaultMargin),
-          children: historyRecents
-              .map(
-                (audio) => GestureDetector(
-                  onTap: () {
-                    audioPlayerProvider.setPlay(
-                      historyRecents,
-                      historyRecents.indexOf(audio),
-                    );
-                  },
-                  child: AudioTile(
-                    audio: audio,
-                    isHistory: true,
-                    playlist: historyRecents,
-                  ),
+        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+        children: historyRecents
+            .map(
+              (audio) => GestureDetector(
+                onTap: () {
+                  audioPlayerProvider.setPlay(
+                    historyRecents,
+                    historyRecents.indexOf(audio),
+                  );
+                },
+                child: AudioTile(
+                  audio: audio,
+                  isHistory: true,
+                  playlist: historyRecents,
                 ),
-              )
-              .toList());
+              ),
+            )
+            .toList(),
+      );
     }
 
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
-        child: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              header(),
-            ];
-          },
-          body: listOfSong(),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            NestedScrollView(
+              floatHeaderSlivers: true,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  header(),
+                ];
+              },
+              body: listOfSong(),
+            ),
+            Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              child: const PlayingTile(),
+            ),
+          ],
         ),
       ),
     );
