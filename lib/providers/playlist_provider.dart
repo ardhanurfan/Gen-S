@@ -134,7 +134,7 @@ class PlaylistProvider extends ChangeNotifier {
 
   Future<bool> deletePlaylist({required int playlistId}) async {
     try {
-      await PlaylistService().delete(playlistId: playlistId);
+      await PlaylistService().deletePlaylist(playlistId: playlistId);
       var index = _playlists.indexOf(
         _playlists.firstWhere(
           (element) => element.id == playlistId,

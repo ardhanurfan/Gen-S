@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_player/models/image_model.dart';
 
 import '../models/audio_model.dart';
 
@@ -49,7 +51,7 @@ class AudioPlayerProvider extends ChangeNotifier {
     }
   }
 
-  void deleteAudio({required int audioId}) {
+  Future<void> deleteAudio({required int audioId}) async {
     if (_currentPlaylist.isNotEmpty) {
       var found = _currentPlaylist.where(
         (element) => element.id == audioId,
@@ -58,9 +60,14 @@ class AudioPlayerProvider extends ChangeNotifier {
       if (found.isNotEmpty) {
         var index = _currentPlaylist.indexOf(found.first);
         _playlist.removeAt(index);
+        notifyListeners();
       }
-      notifyListeners();
     }
+  }
+
+  Future<void> addImage(
+      {required ImageModel image, required int audioIndex}) async {
+    _currentPlaylist[audioIndex].images.add(image);
   }
 
   @override

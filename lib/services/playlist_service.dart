@@ -153,7 +153,7 @@ class PlaylistService {
     }
   }
 
-  Future<bool> delete({required int playlistId}) async {
+  Future<bool> deletePlaylist({required int playlistId}) async {
     late Uri url = UrlService().api('delete-playlist');
     var headers = {
       'Content-Type': 'application/json',

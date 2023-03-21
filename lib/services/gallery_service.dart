@@ -34,4 +34,53 @@ class GalleryService {
       throw "Get gallery failed";
     }
   }
+
+  Future<GalleryModel> addGallery({required String name}) async {
+    late Uri url = UrlService().api('create-gallery');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'name': name,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'];
+      return GalleryModel.fromJson(data);
+    } else {
+      throw "Add gallery failed";
+    }
+  }
+
+  Future<bool> deleteGallery({required int playlistId}) async {
+    late Uri url = UrlService().api('delete-gallery');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'id': playlistId,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw "Delete gallery failed";
+    }
+  }
 }

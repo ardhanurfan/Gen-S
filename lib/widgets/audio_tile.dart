@@ -153,13 +153,12 @@ class AudioTile extends StatelessWidget {
                                 context: context,
                                 builder: (context) => DeletePopUp(
                                   delete: () async {
+                                    audioPlayerProvider.deleteAudio(
+                                        audioId: audio.id);
+                                    playlistProvider.deleteAudioFromAllPlaylist(
+                                        audioId: audio.id);
                                     if (await audioProvider.deleteAudio(
                                         audioId: audio.id)) {
-                                      audioPlayerProvider.deleteAudio(
-                                          audioId: audio.id);
-                                      playlistProvider
-                                          .deleteAudioFromAllPlaylist(
-                                              audioId: audio.id);
                                       ScaffoldMessenger.of(context)
                                           .removeCurrentSnackBar();
                                       ScaffoldMessenger.of(context)
@@ -194,6 +193,8 @@ class AudioTile extends StatelessWidget {
                                 context: context,
                                 builder: (context) => DeletePopUp(
                                   delete: () async {
+                                    audioPlayerProvider.deleteAudio(
+                                        audioId: audio.id);
                                     if (await playlistProvider.deleteAudio(
                                       audio: audio,
                                       playlistId: playlistId,
