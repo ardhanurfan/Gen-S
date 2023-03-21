@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/home/empty_state_page.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/setting_button.dart';
@@ -23,6 +24,7 @@ class HomePage extends StatelessWidget {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
     SortByProvider sortByProvider = Provider.of<SortByProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     TextEditingController controller = TextEditingController(text: '');
 
     handleAddAudio() async {
@@ -97,14 +99,18 @@ class HomePage extends StatelessWidget {
                 child: Icon(
                   Icons.add,
                   size: 36,
-                  color: primaryUserColor,
+                  color: userProvider.user.role == "USER"
+                      ? primaryUserColor
+                      : primaryAdminColor,
                 ),
               ),
               const SizedBox(width: 16),
               const SettingButton(),
             ],
           ),
-          backgroundColor: backgroundUserColor,
+          backgroundColor: userProvider.user.role == "USER"
+              ? backgroundUserColor
+              : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -131,13 +137,15 @@ class HomePage extends StatelessWidget {
               child: PopupMenuButton(
                 icon: RotatedBox(
                   quarterTurns: 1,
-                  child: Icon(
-                    Icons.compare_arrows,
-                    size: 28,
-                    color: primaryUserColor,
-                  ),
+                  child: Icon(Icons.compare_arrows,
+                      size: 28,
+                      color: userProvider.user.role == "USER"
+                          ? primaryUserColor
+                          : primaryAdminColor),
                 ),
-                color: dropDownColor,
+                color: userProvider.user.role == "USER"
+                    ? dropDownColor
+                    : const Color.fromARGB(255, 223, 223, 223),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(defaultRadius),
                 ),
@@ -206,7 +214,9 @@ class HomePage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundUserColor,
+      backgroundColor: userProvider.user.role == "USER"
+          ? backgroundUserColor
+          : backgroundAdminColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,
@@ -238,6 +248,7 @@ class HomePageNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return GestureDetector(
       onTap: () {
@@ -253,10 +264,15 @@ class HomePageNav extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: medium,
                   )
-                : primaryUserColorText.copyWith(
-                    fontSize: 12,
-                    fontWeight: medium,
-                  ),
+                : userProvider.user.role == "USER"
+                    ? primaryUserColorText.copyWith(
+                        fontSize: 12,
+                        fontWeight: medium,
+                      )
+                    : primaryAdminColorText.copyWith(
+                        fontSize: 12,
+                        fontWeight: medium,
+                      ),
           ),
           Container(
             margin: const EdgeInsets.only(top: 14),
