@@ -97,14 +97,14 @@ class HomePage extends StatelessWidget {
                 child: Icon(
                   Icons.add,
                   size: 36,
-                  color: primaryColor,
+                  color: primaryUserColor,
                 ),
               ),
               const SizedBox(width: 16),
               const SettingButton(),
             ],
           ),
-          backgroundColor: backgroundColor,
+          backgroundColor: backgroundUserColor,
           floating: true,
           snap: true,
         ),
@@ -134,7 +134,7 @@ class HomePage extends StatelessWidget {
                   child: Icon(
                     Icons.compare_arrows,
                     size: 28,
-                    color: primaryColor,
+                    color: primaryUserColor,
                   ),
                 ),
                 color: dropDownColor,
@@ -206,7 +206,7 @@ class HomePage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,
@@ -253,7 +253,7 @@ class HomePageNav extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: medium,
                   )
-                : primaryColorText.copyWith(
+                : primaryUserColorText.copyWith(
                     fontSize: 12,
                     fontWeight: medium,
                   ),

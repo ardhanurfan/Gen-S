@@ -24,7 +24,8 @@ class SectionTitle extends StatelessWidget {
         children: [
           Text(
             title,
-            style: primaryColorText.copyWith(fontSize: 24, fontWeight: bold),
+            style:
+                primaryUserColorText.copyWith(fontSize: 24, fontWeight: bold),
           ),
           GestureDetector(
             onTap: onTap,

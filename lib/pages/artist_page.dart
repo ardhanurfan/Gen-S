@@ -25,17 +25,17 @@ class ArtistPage extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: primaryColor,
+                  color: primaryUserColor,
                 ),
               ),
               Text(
                 "Artist",
-                style: primaryColorText.copyWith(
+                style: primaryUserColorText.copyWith(
                     fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
               ),
             ],
           ),
-          backgroundColor: backgroundColor,
+          backgroundColor: backgroundUserColor,
           floating: true,
           snap: true,
         ),
@@ -52,8 +52,8 @@ class ArtistPage extends StatelessWidget {
               children: [
                 Text(
                   "12 Artists",
-                  style:
-                      primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
+                  style: primaryUserColorText.copyWith(
+                      fontSize: 16, fontWeight: bold),
                 ),
                 GestureDetector(
                   onTap: () {},
@@ -62,7 +62,7 @@ class ArtistPage extends StatelessWidget {
                     child: Icon(
                       Icons.compare_arrows,
                       size: 28,
-                      color: primaryColor,
+                      color: primaryUserColor,
                     ),
                   ),
                 ),
@@ -72,7 +72,7 @@ class ArtistPage extends StatelessWidget {
               width: double.infinity,
               margin: const EdgeInsets.only(top: 14),
               height: 1,
-              decoration: BoxDecoration(color: primaryColor),
+              decoration: BoxDecoration(color: primaryUserColor),
             )
           ],
         ),
@@ -102,7 +102,7 @@ class ArtistPage extends StatelessWidget {
                   Text(
                     "Ariana Grande",
                     overflow: TextOverflow.ellipsis,
-                    style: primaryColorText.copyWith(
+                    style: primaryUserColorText.copyWith(
                         fontSize: 14, fontWeight: bold),
                   ),
                   const SizedBox(
@@ -111,7 +111,7 @@ class ArtistPage extends StatelessWidget {
                   Text(
                     "1 Album | 12 songs",
                     overflow: TextOverflow.clip,
-                    style: primaryColorText.copyWith(
+                    style: primaryUserColorText.copyWith(
                         fontSize: 12, fontWeight: light),
                   )
                 ],
@@ -149,7 +149,7 @@ class ArtistPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,

@@ -49,11 +49,12 @@ class GalleryGrid extends StatelessWidget {
                 ),
           Text(
             gallery.name,
-            style: primaryColorText.copyWith(fontSize: 16, fontWeight: medium),
+            style:
+                primaryUserColorText.copyWith(fontSize: 16, fontWeight: medium),
           ),
           Text(
             gallery.images.length.toString(),
-            style: primaryColorText.copyWith(fontSize: 12),
+            style: primaryUserColorText.copyWith(fontSize: 12),
           ),
         ],
       ),

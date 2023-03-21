@@ -32,19 +32,28 @@ class DetailGalleryPage extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: primaryColor,
+                  color: userProvider.user.role == "USER"
+                      ? primaryUserColor
+                      : primaryAdminColor,
                 ),
               ),
               Text(
                 gallery.name,
-                style: primaryColorText.copyWith(
-                  fontWeight: bold,
-                  fontSize: 20,
-                ),
+                style: userProvider.user.role == "USER"
+                    ? primaryUserColorText.copyWith(
+                        fontWeight: bold,
+                        fontSize: 20,
+                      )
+                    : primaryAdminColorText.copyWith(
+                        fontWeight: bold,
+                        fontSize: 20,
+                      ),
               ),
             ],
           ),
-          backgroundColor: backgroundColor,
+          backgroundColor: userProvider.user.role == "USER"
+              ? backgroundUserColor
+              : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -107,7 +116,9 @@ class DetailGalleryPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: userProvider.user.role == "USER"
+          ? backgroundUserColor
+          : backgroundAdminColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,

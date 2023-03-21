@@ -19,7 +19,7 @@ class _DeletePopUpState extends State<DeletePopUp> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       actions: [
         Visibility(
           visible: !isLoading,
@@ -29,7 +29,7 @@ class _DeletePopUpState extends State<DeletePopUp> {
             },
             child: Text(
               'CANCEL',
-              style: primaryColorText,
+              style: primaryUserColorText,
             ),
           ),
         ),
@@ -49,7 +49,7 @@ class _DeletePopUpState extends State<DeletePopUp> {
             },
             child: Text(
               'YES',
-              style: primaryColorText,
+              style: primaryUserColorText,
             ),
           ),
         )
@@ -58,7 +58,7 @@ class _DeletePopUpState extends State<DeletePopUp> {
         visible: !isLoading,
         child: Text(
           'Are you sure?',
-          style: primaryColorText,
+          style: primaryUserColorText,
         ),
       ),
       content: Visibility(
@@ -68,7 +68,7 @@ class _DeletePopUpState extends State<DeletePopUp> {
           height: 30,
           child: Center(
             child: LoadingAnimationWidget.staggeredDotsWave(
-              color: primaryColor,
+              color: primaryUserColor,
               size: 32,
             ),
           ),

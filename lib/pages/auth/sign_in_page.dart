@@ -74,14 +74,14 @@ class _SignInPageState extends State<SignInPage> {
           children: [
             Text(
               "Sign in",
-              style: primaryColorText.copyWith(fontSize: 30),
+              style: primaryUserColorText.copyWith(fontSize: 30),
             ),
             const SizedBox(
               height: 22,
             ),
             Text(
               "If you don't have an account register",
-              style: primaryColorText.copyWith(fontSize: 16),
+              style: primaryUserColorText.copyWith(fontSize: 16),
             ),
             const SizedBox(
               height: 6,
@@ -90,7 +90,7 @@ class _SignInPageState extends State<SignInPage> {
               children: [
                 Text(
                   "You can   ",
-                  style: primaryColorText.copyWith(fontSize: 16),
+                  style: primaryUserColorText.copyWith(fontSize: 16),
                 ),
                 GestureDetector(
                   onTap: () => Navigator.pushNamed(context, '/sign-up'),
@@ -161,7 +161,7 @@ class _SignInPageState extends State<SignInPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(child: content()),
     );
   }

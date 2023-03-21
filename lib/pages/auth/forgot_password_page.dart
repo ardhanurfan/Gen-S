@@ -54,7 +54,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.symmetric(horizontal: defaultMargin),
@@ -69,7 +69,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             const SizedBox(height: 47),
             Text(
               'Forgot Password',
-              style: primaryColorText.copyWith(
+              style: primaryUserColorText.copyWith(
                 fontSize: 24,
                 fontWeight: bold,
               ),
@@ -77,20 +77,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             const SizedBox(height: 16),
             Text(
               'Don\'t worry! It happens. Please enter the phone number we will send the OTP in this phone number.',
-              style: primaryColorText.copyWith(
+              style: primaryUserColorText.copyWith(
                 fontSize: 16,
               ),
             ),
             const SizedBox(height: 48),
             TextFormField(
               controller: emailController,
-              style: primaryColorText.copyWith(fontSize: 14),
-              cursorColor: primaryColor,
+              style: primaryUserColorText.copyWith(fontSize: 14),
+              cursorColor: primaryUserColor,
               decoration: InputDecoration(
                 isCollapsed: true,
                 contentPadding: const EdgeInsets.all(16),
                 hintText: 'Enter your email address',
-                hintStyle: primaryColorText.copyWith(
+                hintStyle: primaryUserColorText.copyWith(
                   fontSize: 12,
                   fontWeight: light,
                 ),
@@ -105,7 +105,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(32),
                   borderSide: BorderSide(
-                    color: primaryColor,
+                    color: primaryUserColor,
                     width: 2,
                     style: BorderStyle.solid,
                   ),

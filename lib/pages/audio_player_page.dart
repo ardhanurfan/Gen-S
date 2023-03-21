@@ -36,18 +36,18 @@ class AudioPlayerPage extends StatelessWidget {
             onTap: () => Navigator.pop(context),
             child: Icon(
               Icons.keyboard_arrow_down_rounded,
-              color: primaryColor,
+              color: primaryUserColor,
             ),
           ),
           Text(
             "playing from playlist",
             textAlign: TextAlign.center,
-            style: primaryColorText.copyWith(fontSize: 12),
+            style: primaryUserColorText.copyWith(fontSize: 12),
           ),
           GestureDetector(
             child: Icon(
               Icons.more_vert,
-              color: primaryColor,
+              color: primaryUserColor,
             ),
           )
         ],
@@ -61,7 +61,8 @@ class AudioPlayerPage extends StatelessWidget {
           children: [
             Text(
               "Favourite of Maliq & D'Essentials",
-              style: primaryColorText.copyWith(fontSize: 16, fontWeight: bold),
+              style:
+                  primaryUserColorText.copyWith(fontSize: 16, fontWeight: bold),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
             ),
@@ -118,7 +119,7 @@ class AudioPlayerPage extends StatelessWidget {
                     ),
                     Text(
                       audio.title,
-                      style: primaryColorText.copyWith(
+                      style: primaryUserColorText.copyWith(
                         fontSize: 16,
                         fontWeight: bold,
                       ),
@@ -141,7 +142,7 @@ class AudioPlayerPage extends StatelessWidget {
                       timeLabelLocation: TimeLabelLocation.above,
                       timeLabelPadding: 8,
                       timeLabelTextStyle:
-                          primaryColorText.copyWith(fontSize: 12),
+                          primaryUserColorText.copyWith(fontSize: 12),
                       barHeight: 8,
                       baseBarColor: backgroundProgressIndicatorColor,
                       bufferedBarColor: Colors.transparent,
@@ -172,7 +173,7 @@ class AudioPlayerPage extends StatelessWidget {
     }
 
     return Scaffold(
-        backgroundColor: backgroundColor, body: SafeArea(child: content()));
+        backgroundColor: backgroundUserColor, body: SafeArea(child: content()));
   }
 }
 
@@ -193,7 +194,7 @@ class AudioController extends StatelessWidget {
           onTap: () {},
           child: Icon(
             Icons.shuffle,
-            color: primaryColor,
+            color: primaryUserColor,
             size: 28,
           ),
         ),
@@ -203,7 +204,7 @@ class AudioController extends StatelessWidget {
           },
           child: Icon(
             Icons.fast_rewind_outlined,
-            color: primaryColor,
+            color: primaryUserColor,
             size: 34,
           ),
         ),
@@ -214,7 +215,7 @@ class AudioController extends StatelessWidget {
           },
           child: Icon(
             Icons.fast_forward_outlined,
-            color: primaryColor,
+            color: primaryUserColor,
             size: 34,
           ),
         ),
@@ -222,7 +223,7 @@ class AudioController extends StatelessWidget {
           onTap: () {},
           child: Icon(
             Icons.replay,
-            color: primaryColor,
+            color: primaryUserColor,
             size: 28,
           ),
         ),

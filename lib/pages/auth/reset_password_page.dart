@@ -77,14 +77,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
           children: [
             Text(
               "Reset Password",
-              style: primaryColorText.copyWith(fontSize: 30),
+              style: primaryUserColorText.copyWith(fontSize: 30),
             ),
             const SizedBox(
               height: 22,
             ),
             Text(
               "Enter your new password",
-              style: primaryColorText.copyWith(fontSize: 16),
+              style: primaryUserColorText.copyWith(fontSize: 16),
             ),
           ],
         ),
@@ -132,7 +132,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(child: content()),
     );
   }

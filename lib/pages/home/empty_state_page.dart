@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/user_provider.dart';
 
 class EmptyStatePage extends StatelessWidget {
   const EmptyStatePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     Widget mainIcon() {
       return Container(
         margin: const EdgeInsets.only(top: 80),
@@ -24,7 +28,10 @@ class EmptyStatePage extends StatelessWidget {
           margin: const EdgeInsets.only(top: 49, bottom: 24),
           child: Text(
             "Your library is empty  :(",
-            style: primaryColorText.copyWith(fontSize: 24, fontWeight: bold),
+            style: userProvider.user.role == "USER"
+                ? primaryUserColorText.copyWith(fontSize: 24, fontWeight: bold)
+                : primaryAdminColorText.copyWith(
+                    fontSize: 24, fontWeight: bold),
           ),
         ),
       );

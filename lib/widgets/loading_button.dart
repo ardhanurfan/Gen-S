@@ -36,14 +36,14 @@ class LoadingButton extends StatelessWidget {
             width: 16,
             height: 16,
             child: CircularProgressIndicator(
-              color: primaryColor,
+              color: primaryUserColor,
               strokeWidth: 2,
             ),
           ),
           const SizedBox(width: 4),
           Text(
             'Loading',
-            style: primaryColorText.copyWith(
+            style: primaryUserColorText.copyWith(
               fontSize: 16,
               fontWeight: medium,
             ),

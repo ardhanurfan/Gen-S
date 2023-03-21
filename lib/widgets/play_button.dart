@@ -24,21 +24,21 @@ class PlayButton extends StatelessWidget {
           return IconButton(
             onPressed: audioPlayerProvider.audioPlayer.play,
             iconSize: size,
-            color: primaryColor,
+            color: primaryUserColor,
             icon: const Icon(Icons.play_circle),
           );
         } else if (processingState != ProcessingState.completed) {
           return IconButton(
             onPressed: audioPlayerProvider.audioPlayer.pause,
             iconSize: size,
-            color: primaryColor,
+            color: primaryUserColor,
             icon: const Icon(Icons.pause_circle),
           );
         }
         return Icon(
           Icons.play_circle,
           size: size,
-          color: primaryColor,
+          color: primaryUserColor,
         );
       },
     );

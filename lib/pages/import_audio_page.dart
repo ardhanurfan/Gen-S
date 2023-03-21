@@ -17,7 +17,7 @@ class ImportAudioPage extends StatelessWidget {
               icon: Icon(
                 Icons.arrow_back_rounded,
                 size: 30,
-                color: primaryColor,
+                color: primaryUserColor,
               )),
         ),
       );
@@ -41,7 +41,8 @@ class ImportAudioPage extends StatelessWidget {
           margin: const EdgeInsets.only(top: 49, bottom: 24),
           child: Text(
             "Too little? Add more!",
-            style: primaryColorText.copyWith(fontSize: 24, fontWeight: bold),
+            style:
+                primaryUserColorText.copyWith(fontSize: 24, fontWeight: bold),
           ),
         ),
       );
@@ -63,8 +64,8 @@ class ImportAudioPage extends StatelessWidget {
             children: [
               Text(
                 "import from",
-                style:
-                    primaryColorText.copyWith(fontSize: 12, fontWeight: medium),
+                style: primaryUserColorText.copyWith(
+                    fontSize: 12, fontWeight: medium),
               ),
               const SizedBox(
                 height: 16,
@@ -95,7 +96,7 @@ class ImportAudioPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(child: content()),
     );
   }

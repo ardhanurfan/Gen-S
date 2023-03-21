@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 double defaultRadius = 12.0;
 double defaultMargin = 36.0;
 
-Color backgroundColor = const Color(0xff282727);
-Color primaryColor = const Color(0xffFFFFFF);
+Color backgroundUserColor = const Color(0xff282727);
+Color primaryUserColor = const Color(0xffFFFFFF);
 Color secondaryColor = const Color(0xff7B6AE1);
 Color greyColor = const Color(0xffBDBDBD);
 Color darkGreyColor = const Color(0xff6A6767);
@@ -20,10 +20,12 @@ Color addSongsColor = const Color(0xFF363636);
 Color backgroundAdminColor = const Color(0xffFFFFFF);
 Color primaryAdminColor = const Color(0xff282727);
 
-TextStyle primaryColorText = GoogleFonts.poppins(color: primaryColor);
+TextStyle primaryUserColorText = GoogleFonts.poppins(color: primaryUserColor);
 TextStyle secondaryColorText = GoogleFonts.poppins(color: secondaryColor);
 TextStyle greyColorText = GoogleFonts.poppins(color: greyColor);
 TextStyle darkGreyText = GoogleFonts.poppins(color: darkGreyColor);
+
+TextStyle primaryAdminColorText = GoogleFonts.poppins(color: primaryAdminColor);
 
 FontWeight light = FontWeight.w300;
 FontWeight regular = FontWeight.w400;

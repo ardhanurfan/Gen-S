@@ -55,7 +55,7 @@ class _AddSongPageState extends State<AddSongPage> {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: primaryColor,
+                  color: primaryUserColor,
                 ),
               ),
             ],
@@ -72,18 +72,18 @@ class _AddSongPageState extends State<AddSongPage> {
               hintText: "start searching",
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              fillColor: primaryColor,
+              fillColor: primaryUserColor,
               filled: true,
               hintStyle: darkGreyText.copyWith(
                 fontSize: 16,
               ),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(32),
-                  borderSide: BorderSide(color: primaryColor, width: 5)),
+                  borderSide: BorderSide(color: primaryUserColor, width: 5)),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(32),
                 borderSide: BorderSide(
-                  color: primaryColor,
+                  color: primaryUserColor,
                   width: 3,
                   style: BorderStyle.solid,
                 ),
@@ -127,7 +127,7 @@ class _AddSongPageState extends State<AddSongPage> {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(child: content()),
     );
   }

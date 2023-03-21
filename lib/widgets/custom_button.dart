@@ -37,7 +37,7 @@ class CustomButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(radiusButton))),
         child: Text(
           buttonText,
-          style: primaryColorText.copyWith(
+          style: primaryUserColorText.copyWith(
             fontSize: 16,
             fontWeight: medium,
           ),

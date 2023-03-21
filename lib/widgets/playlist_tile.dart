@@ -24,7 +24,7 @@ class PlaylistTile extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 12),
-      color: backgroundColor,
+      color: backgroundUserColor,
       child: GestureDetector(
         onTap: () {
           playlistProvider.setAudios = playlist.audios;
@@ -82,7 +82,7 @@ class PlaylistTile extends StatelessWidget {
                   Text(
                     playlist.name,
                     overflow: TextOverflow.ellipsis,
-                    style: primaryColorText.copyWith(
+                    style: primaryUserColorText.copyWith(
                         fontSize: 16, fontWeight: bold),
                   ),
                   const SizedBox(
@@ -91,7 +91,7 @@ class PlaylistTile extends StatelessWidget {
                   Text(
                     playlist.audios.length.toString(),
                     overflow: TextOverflow.ellipsis,
-                    style: primaryColorText.copyWith(
+                    style: primaryUserColorText.copyWith(
                         fontSize: 16, fontWeight: regular),
                   ),
                 ],
@@ -100,7 +100,7 @@ class PlaylistTile extends StatelessWidget {
             PopupMenuButton(
               icon: Icon(
                 Icons.more_vert,
-                color: primaryColor,
+                color: primaryUserColor,
               ),
               color: dropDownColor,
               shape: RoundedRectangleBorder(
@@ -183,7 +183,7 @@ class PlaylistTile extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Rename',
-                      style: primaryColorText.copyWith(fontSize: 14),
+                      style: primaryUserColorText.copyWith(fontSize: 14),
                     ),
                   ),
                 ),
@@ -192,7 +192,7 @@ class PlaylistTile extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Delete',
-                      style: primaryColorText.copyWith(fontSize: 14),
+                      style: primaryUserColorText.copyWith(fontSize: 14),
                     ),
                   ),
                 ),

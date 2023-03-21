@@ -28,17 +28,17 @@ class MostPlayedPage extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: primaryColor,
+                  color: primaryUserColor,
                 ),
               ),
               Text(
                 "Most Played",
-                style: primaryColorText.copyWith(
+                style: primaryUserColorText.copyWith(
                     fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
               ),
             ],
           ),
-          backgroundColor: backgroundColor,
+          backgroundColor: backgroundUserColor,
           floating: true,
           snap: true,
         ),
@@ -60,7 +60,7 @@ class MostPlayedPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,

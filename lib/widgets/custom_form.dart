@@ -34,15 +34,16 @@ class _CustomFormState extends State<CustomForm> {
           margin: const EdgeInsets.only(top: 42),
           child: Text(
             widget.title,
-            style: primaryColorText.copyWith(fontSize: 14, fontWeight: medium),
+            style:
+                primaryUserColorText.copyWith(fontSize: 14, fontWeight: medium),
           ),
         ),
         const SizedBox(height: 3),
         TextFormField(
           controller: widget.textController,
           obscureText: widget.isPassword ? isObscure : false,
-          style: primaryColorText.copyWith(fontSize: 14),
-          cursorColor: primaryColor,
+          style: primaryUserColorText.copyWith(fontSize: 14),
+          cursorColor: primaryUserColor,
           decoration: InputDecoration(
             suffixIcon: Visibility(
               visible: widget.isPassword,
@@ -54,24 +55,24 @@ class _CustomFormState extends State<CustomForm> {
                 },
                 child: Icon(
                   isObscure ? Icons.visibility_off : Icons.visibility,
-                  color: primaryColor,
+                  color: primaryUserColor,
                 ),
               ),
             ),
             prefixIcon: Icon(
               widget.prefixIcon,
-              color: primaryColor,
+              color: primaryUserColor,
               size: 21,
             ),
             hintText: widget.hintText,
-            hintStyle: primaryColorText.copyWith(fontSize: 16),
+            hintStyle: primaryUserColorText.copyWith(fontSize: 16),
             focusedBorder: UnderlineInputBorder(
                 borderRadius: BorderRadius.circular(defaultRadius),
                 borderSide: BorderSide(color: secondaryColor, width: 5)),
             enabledBorder: UnderlineInputBorder(
               borderRadius: BorderRadius.circular(defaultRadius),
               borderSide: BorderSide(
-                color: primaryColor,
+                color: primaryUserColor,
                 width: 3,
                 style: BorderStyle.solid,
               ),
