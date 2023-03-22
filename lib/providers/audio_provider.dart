@@ -41,7 +41,7 @@ class AudioProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateHistory({required AudioModel audio}) async {
+  Future<bool> updateHistory({required AudioModel audio}) async {
     try {
       if (_currAudio == null || _currAudio != audio) {
         _currAudio = audio;
@@ -57,8 +57,9 @@ class AudioProvider extends ChangeNotifier {
           notifyListeners();
         }
       }
+      return true;
     } catch (e) {
-      rethrow;
+      return false;
     }
   }
 

@@ -44,9 +44,13 @@ class AudioPlayerProvider extends ChangeNotifier {
     _audioPlayer.play();
   }
 
-  void addAudio({required AudioModel audio}) {
+  void addAudio({required AudioModel audio, isPlaylist = false}) {
     if (_currentPlaylist.isNotEmpty) {
-      _playlist.insert(0, AudioSource.uri(Uri.parse(audio.url), tag: audio));
+      if (isPlaylist) {
+        _playlist.add(AudioSource.uri(Uri.parse(audio.url), tag: audio));
+      } else {
+        _playlist.insert(0, AudioSource.uri(Uri.parse(audio.url), tag: audio));
+      }
       notifyListeners();
     }
   }

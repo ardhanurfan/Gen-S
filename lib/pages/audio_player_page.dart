@@ -114,7 +114,7 @@ class AudioPlayerPage extends StatelessWidget {
                               height: 280,
                               autoPlayAnimationDuration:
                                   const Duration(milliseconds: 2000),
-                              autoPlayInterval: const Duration(seconds: 10),
+                              autoPlayInterval: const Duration(seconds: 5),
                             ),
                           ),
                     const SizedBox(
@@ -176,7 +176,18 @@ class AudioPlayerPage extends StatelessWidget {
     }
 
     return Scaffold(
-        backgroundColor: backgroundUserColor, body: SafeArea(child: content()));
+      backgroundColor: backgroundUserColor,
+      body: GestureDetector(
+        onVerticalDragUpdate: (details) {
+          if (details.delta.direction > 0) {
+            Navigator.of(context).pop(true);
+          }
+        },
+        child: SafeArea(
+          child: content(),
+        ),
+      ),
+    );
   }
 }
 
@@ -238,9 +249,9 @@ class AudioController extends StatelessWidget {
         StreamBuilder<LoopMode>(
             stream: audioPlayerProvider.audioPlayer.loopModeStream,
             builder: (context, snapshot) {
+              final current = snapshot.data;
               return GestureDetector(
                 onTap: () async {
-                  final current = snapshot.data;
                   if (current == LoopMode.all) {
                     await audioPlayerProvider.audioPlayer
                         .setLoopMode(LoopMode.one);
@@ -255,8 +266,10 @@ class AudioController extends StatelessWidget {
                   }
                 },
                 child: Icon(
-                  Icons.replay,
-                  color: primaryUserColor,
+                  current == LoopMode.one ? Icons.repeat_one : Icons.repeat,
+                  color: current == LoopMode.off
+                      ? primaryUserColor
+                      : secondaryColor,
                   size: 28,
                 ),
               );

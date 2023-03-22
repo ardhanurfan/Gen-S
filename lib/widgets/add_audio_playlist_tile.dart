@@ -136,6 +136,8 @@ class AddAudioPlaylistTile extends StatelessWidget {
                                 audio: audio,
                                 playlistId: playlistId,
                               )) {
+                                audioPlayerProvider.addAudio(
+                                    audio: audio, isPlaylist: true);
                                 ScaffoldMessenger.of(context)
                                     .removeCurrentSnackBar();
                                 ScaffoldMessenger.of(context).showSnackBar(
