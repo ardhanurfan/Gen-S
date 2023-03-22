@@ -60,14 +60,14 @@ class GalleryService {
     }
   }
 
-  Future<bool> deleteGallery({required int playlistId}) async {
+  Future<bool> deleteGallery({required int galleryId}) async {
     late Uri url = UrlService().api('delete-gallery');
     var headers = {
       'Content-Type': 'application/json',
     };
 
     var body = {
-      'id': playlistId,
+      'id': galleryId,
     };
 
     var response = await http.post(

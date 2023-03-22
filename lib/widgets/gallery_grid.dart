@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/gallery_model.dart';
+import 'package:music_player/providers/gallery_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/widgets/delete_popup.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,8 @@ class GalleryGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -54,6 +57,7 @@ class GalleryGrid extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     gallery.name,
@@ -72,7 +76,8 @@ class GalleryGrid extends StatelessWidget {
                 ],
               ),
               Visibility(
-                visible: userProvider.user.role == "ADMIN",
+                visible:
+                    userProvider.user.role == "ADMIN" && gallery.name != "root",
                 child: PopupMenuButton(
                   icon: Icon(
                     Icons.more_vert,
@@ -86,8 +91,38 @@ class GalleryGrid extends StatelessWidget {
                   onSelected: (value) {
                     if (value == 0) {
                       showDialog(
-                          context: context,
-                          builder: (context) => DeletePopUp(delete: () {}));
+                        context: context,
+                        builder: (context) => DeletePopUp(
+                          delete: () async {
+                            if (await galleryProvider.deleteGallery(
+                                galleryId: gallery.id)) {
+                              ScaffoldMessenger.of(context)
+                                  .removeCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: successColor,
+                                  content: const Text(
+                                    'Delete gallery successfuly',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .removeCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: alertColor,
+                                  content: Text(
+                                    galleryProvider.errorMessage,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      );
                     }
                   },
                   itemBuilder: (BuildContext context) => [

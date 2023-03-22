@@ -17,39 +17,42 @@ class DetailGalleryPage extends StatelessWidget {
     UserProvider userProvider = Provider.of<UserProvider>(context);
     Widget header() {
       return SliverPadding(
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         sliver: SliverAppBar(
           stretch: true,
           elevation: 0,
           automaticallyImplyLeading: false,
           titleSpacing: 0,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  color: userProvider.user.role == "USER"
-                      ? primaryUserColor
-                      : primaryAdminColor,
+          title: Padding(
+            padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: userProvider.user.role == "USER"
+                        ? primaryUserColor
+                        : primaryAdminColor,
+                  ),
                 ),
-              ),
-              Text(
-                gallery.name,
-                style: userProvider.user.role == "USER"
-                    ? primaryUserColorText.copyWith(
-                        fontWeight: bold,
-                        fontSize: 20,
-                      )
-                    : primaryAdminColorText.copyWith(
-                        fontWeight: bold,
-                        fontSize: 20,
-                      ),
-              ),
-            ],
+                Text(
+                  gallery.name,
+                  style: userProvider.user.role == "USER"
+                      ? primaryUserColorText.copyWith(
+                          fontWeight: bold,
+                          fontSize: 20,
+                        )
+                      : primaryAdminColorText.copyWith(
+                          fontWeight: bold,
+                          fontSize: 20,
+                        ),
+                ),
+              ],
+            ),
           ),
           backgroundColor: userProvider.user.role == "USER"
               ? backgroundUserColor

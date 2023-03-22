@@ -20,57 +20,89 @@ class GalleryPage extends StatelessWidget {
 
     Widget header() {
       return SliverPadding(
-        padding:
-            EdgeInsets.only(right: defaultMargin, left: defaultMargin, top: 24),
+        padding: const EdgeInsets.only(top: 24),
         sliver: SliverAppBar(
           stretch: true,
           elevation: 0,
           automaticallyImplyLeading: false,
           titleSpacing: 0,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Gallery",
-                style: userProvider.user.role == "USER"
-                    ? primaryUserColorText.copyWith(
-                        fontSize: 24, fontWeight: bold)
-                    : primaryAdminColorText.copyWith(
-                        fontSize: 24, fontWeight: bold),
-              ),
-              Row(
-                children: [
-                  userProvider.user.role == "USER"
-                      ? const SizedBox()
-                      : Icon(
-                          Icons.delete_outline_outlined,
-                          size: 36,
-                          color: primaryAdminColor,
-                        ),
-                  const SizedBox(width: 16),
-                  userProvider.user.role == "USER"
-                      ? const SettingButton()
-                      : GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              builder: (BuildContext context) {
-                                return CustomPopUp(
-                                    title: "Gallery Name",
-                                    add: () {},
-                                    controller: galleryController);
-                              },
-                              context: context,
-                            );
-                          },
-                          child: Icon(
-                            Icons.add,
-                            color: primaryAdminColor,
+          title: Padding(
+            padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Gallery",
+                  style: userProvider.user.role == "USER"
+                      ? primaryUserColorText.copyWith(
+                          fontSize: 24, fontWeight: bold)
+                      : primaryAdminColorText.copyWith(
+                          fontSize: 24, fontWeight: bold),
+                ),
+                Row(
+                  children: [
+                    userProvider.user.role == "USER"
+                        ? const SizedBox()
+                        : Icon(
+                            Icons.delete_outline_outlined,
                             size: 36,
+                            color: primaryAdminColor,
                           ),
-                        ),
-                ],
-              ),
-            ],
+                    const SizedBox(width: 16),
+                    userProvider.user.role == "USER"
+                        ? const SettingButton()
+                        : GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return CustomPopUp(
+                                    controller: galleryController,
+                                    title: "Gallery Name",
+                                    add: () async {
+                                      if (await galleryProvider.addGallery(
+                                          name: galleryController.text)) {
+                                        ScaffoldMessenger.of(context)
+                                            .removeCurrentSnackBar();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: successColor,
+                                            content: const Text(
+                                              'Add gallery successfuly',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .removeCurrentSnackBar();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: alertColor,
+                                            content: Text(
+                                              galleryProvider.errorMessage,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: Icon(
+                              Icons.add,
+                              color: primaryAdminColor,
+                              size: 36,
+                            ),
+                          ),
+                  ],
+                ),
+              ],
+            ),
           ),
           backgroundColor: userProvider.user.role == "USER"
               ? backgroundUserColor
@@ -84,7 +116,7 @@ class GalleryPage extends StatelessWidget {
     Widget content() {
       return GridView(
         padding:
-            const EdgeInsets.only(top: 24, bottom: 100, left: 20, right: 20),
+            const EdgeInsets.only(top: 24, bottom: 200, left: 20, right: 20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1 / 1.4,
