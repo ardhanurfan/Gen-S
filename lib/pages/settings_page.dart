@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/widgets/custom_button.dart';
 import 'package:music_player/widgets/loading_button.dart';
@@ -20,15 +21,17 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    AudioPlayerProvider audioPlayerProvider =
+        Provider.of<AudioPlayerProvider>(context, listen: false);
 
     handleLogout() async {
       setState(() {
         isLoading = true;
       });
-
       if (await userProvider.logout(token: userProvider.user.token)) {
         Navigator.pushNamedAndRemoveUntil(
             context, '/sign-in', (route) => false);
+        await audioPlayerProvider.playlist.clear();
       } else {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
