@@ -47,7 +47,7 @@ class MainPage extends StatelessWidget {
       }
     }
 
-    Widget customBottomNavigation() {
+    Widget customBottomNavigationUser() {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 24),
         width: double.infinity,
@@ -63,33 +63,72 @@ class MainPage extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const NavigationItem(
+          children: const [
+            NavigationItem(
               icon: Icons.home_outlined,
               label: 'Home',
               index: 0,
             ),
-            const NavigationItem(
+            NavigationItem(
               icon: Icons.perm_media_outlined,
               label: 'Gallery',
               index: 1,
             ),
-            const NavigationItem(
+            NavigationItem(
               icon: Icons.search,
               label: 'Search',
               index: 2,
             ),
-            userProvider.user.role == "USER"
-                ? const NavigationItem(
-                    icon: Icons.library_books_outlined,
-                    label: 'Playlist',
-                    index: 3,
-                  )
-                : const NavigationItem(
-                    icon: Icons.ads_click,
-                    label: 'Ads',
-                    index: 3,
-                  ),
+            NavigationItem(
+              icon: Icons.library_books_outlined,
+              label: 'Playlist',
+              index: 3,
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget customBottomNavigationAdmin() {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 23),
+        margin: const EdgeInsets.only(left: 20, right: 20, bottom: 34),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: backgroundAdminColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: const Offset(0, 3), // changes position of shadow
+            ),
+          ],
+          borderRadius: BorderRadius.circular(32),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: const [
+            NavigationItem(
+              icon: Icons.home_outlined,
+              label: 'Home',
+              index: 0,
+            ),
+            NavigationItem(
+              icon: Icons.perm_media_outlined,
+              label: 'Gallery',
+              index: 1,
+            ),
+            NavigationItem(
+              icon: Icons.search,
+              label: 'Search',
+              index: 2,
+            ),
+            NavigationItem(
+              icon: Icons.ads_click,
+              label: 'Ads',
+              index: 3,
+            ),
           ],
         ),
       );
@@ -106,7 +145,9 @@ class MainPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const PlayingTile(),
-              customBottomNavigation(),
+              userProvider.user.role == "USER"
+                  ? customBottomNavigationUser()
+                  : customBottomNavigationAdmin(),
             ],
           ),
         ],
@@ -130,6 +171,7 @@ class NavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return GestureDetector(
       onTap: () {
@@ -144,8 +186,11 @@ class NavigationItem extends StatelessWidget {
           Icon(
             icon,
             size: 32,
-            color:
-                pageProvider.page == index ? secondaryColor : primaryUserColor,
+            color: pageProvider.page == index
+                ? secondaryColor
+                : (userProvider.user.role == "USER"
+                    ? primaryUserColor
+                    : primaryAdminColor),
           ),
           Text(
             label,
@@ -154,10 +199,15 @@ class NavigationItem extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: semibold,
                   )
-                : primaryUserColorText.copyWith(
-                    fontSize: 12,
-                    fontWeight: semibold,
-                  ),
+                : (userProvider.user.role == "USER"
+                    ? primaryUserColorText.copyWith(
+                        fontSize: 12,
+                        fontWeight: semibold,
+                      )
+                    : primaryAdminColorText.copyWith(
+                        fontSize: 12,
+                        fontWeight: semibold,
+                      )),
           ),
         ],
       ),
