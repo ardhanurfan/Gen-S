@@ -10,6 +10,7 @@ class AudioProvider extends ChangeNotifier {
   List<AudioModel> _historyRecents = [];
   String _audioPickedPath = '';
   String _errorMessage = '';
+  AudioModel? _currAudio;
 
   List<AudioModel> get audios => _audios;
   List<AudioModel> get historyMosts => _historyMosts;
@@ -40,18 +41,21 @@ class AudioProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateHistory({required int audioId}) async {
+  Future<void> updateHistory({required AudioModel audio}) async {
     try {
-      if (await AudioService().updateHistory(audioId: audioId)) {
-        var token = await UserService().getTokenPreference() ?? '';
-        List<AudioModel> historyMosts =
-            await AudioService().getHistory(token: token, isMost: true);
-        List<AudioModel> historyRecents =
-            await AudioService().getHistory(token: token);
+      if (_currAudio == null || _currAudio != audio) {
+        _currAudio = audio;
+        if (await AudioService().updateHistory(audioId: audio.id)) {
+          var token = await UserService().getTokenPreference() ?? '';
+          List<AudioModel> historyMosts =
+              await AudioService().getHistory(token: token, isMost: true);
+          List<AudioModel> historyRecents =
+              await AudioService().getHistory(token: token);
 
-        _historyMosts = historyMosts;
-        _historyRecents = historyRecents;
-        notifyListeners();
+          _historyMosts = historyMosts;
+          _historyRecents = historyRecents;
+          notifyListeners();
+        }
       }
     } catch (e) {
       rethrow;
@@ -92,12 +96,12 @@ class AudioProvider extends ChangeNotifier {
   Future<bool> deleteAudio({required int audioId}) async {
     try {
       await AudioService().deleteAudio(audioId: audioId);
-      var index = _audios.indexOf(
-        _audios.firstWhere(
-          (element) => element.id == audioId,
-        ),
+      var audioDel = _audios.firstWhere(
+        (element) => element.id == audioId,
       );
-      _audios.removeAt(index);
+      _audios.remove(audioDel);
+      _historyMosts.remove(audioDel);
+      _historyRecents.remove(audioDel);
       notifyListeners();
 
       return true;

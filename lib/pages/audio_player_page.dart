@@ -6,6 +6,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/models/position_data_model.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
+import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/play_button.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class AudioPlayerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
+    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
 
     Stream<PositionDataModel> positionDataStream =
         Rx.combineLatest3<Duration, Duration, Duration?, PositionDataModel>(
@@ -77,6 +79,7 @@ class AudioPlayerPage extends StatelessWidget {
                   return const SizedBox();
                 }
                 AudioModel audio = state!.currentSource!.tag;
+                audioProvider.updateHistory(audio: audio);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [

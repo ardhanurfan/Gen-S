@@ -46,7 +46,7 @@ class AudioTile extends StatelessWidget {
           playlist,
           index,
         );
-        audioProvider.updateHistory(audioId: audio.id);
+        audioProvider.updateHistory(audio: audio);
       },
       child: StreamBuilder<SequenceState?>(
           stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
