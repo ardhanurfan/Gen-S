@@ -51,7 +51,11 @@ class MostPlayedPage extends StatelessWidget {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+        padding: EdgeInsets.only(
+          left: defaultMargin,
+          right: defaultMargin,
+          bottom: 100,
+        ),
         children: historyMosts
             .map((audio) => AudioTile(
                   audio: audio,

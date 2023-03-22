@@ -56,7 +56,11 @@ class RecentlyPlayedPage extends StatelessWidget {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+        padding: EdgeInsets.only(
+          left: defaultMargin,
+          right: defaultMargin,
+          bottom: 100,
+        ),
         children: historyRecents
             .map(
               (audio) => GestureDetector(

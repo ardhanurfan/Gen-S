@@ -7,10 +7,17 @@ class PlaylistProvider extends ChangeNotifier {
   List<PlaylistModel> _playlists = [];
   List<AudioModel> _audios = [];
   String _errorMessage = '';
+  String _currentPlaylistName = '';
 
   String get errorMessage => _errorMessage;
   List<PlaylistModel> get playlists => _playlists;
   List<AudioModel> get audios => _audios;
+  String get currentPlaylistName => _currentPlaylistName;
+
+  set setCurrentPlaylistName(String name) {
+    _currentPlaylistName = name;
+    notifyListeners();
+  }
 
   set setAudios(List<AudioModel> audios) {
     _audios = audios;

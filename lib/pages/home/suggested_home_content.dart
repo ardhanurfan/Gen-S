@@ -3,6 +3,7 @@ import 'package:music_player/pages/home/most_played_page.dart';
 import 'package:music_player/pages/home/recently_played_page.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/audio_provider.dart';
+import 'package:music_player/providers/playlist_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../shared/theme.dart';
@@ -17,6 +18,7 @@ class SuggestedHomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+    PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
 
@@ -58,6 +60,7 @@ class SuggestedHomeContent extends StatelessWidget {
                             audioProvider.historyRecents.indexOf(audio),
                           );
                           audioProvider.updateHistory(audio: audio);
+                          playlistProvider.setCurrentPlaylistName = 'Audios';
                         },
                         child: AudioSuggestedTile(
                           title: audio.title,
@@ -101,6 +104,7 @@ class SuggestedHomeContent extends StatelessWidget {
                             audioProvider.historyMosts.indexOf(audio),
                           );
                           audioProvider.updateHistory(audio: audio);
+                          playlistProvider.setCurrentPlaylistName = 'Audios';
                         },
                         child: AudioSuggestedTile(
                           title: audio.title,

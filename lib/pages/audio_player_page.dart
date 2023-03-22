@@ -7,6 +7,8 @@ import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/models/position_data_model.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/audio_provider.dart';
+import 'package:music_player/providers/playlist_provider.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/play_button.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +22,8 @@ class AudioPlayerPage extends StatelessWidget {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+    PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     Stream<PositionDataModel> positionDataStream =
         Rx.combineLatest3<Duration, Duration, Duration?, PositionDataModel>(
@@ -42,14 +46,18 @@ class AudioPlayerPage extends StatelessWidget {
             ),
           ),
           Text(
-            "playing from playlist",
+            "Playing From",
             textAlign: TextAlign.center,
             style: primaryUserColorText.copyWith(fontSize: 12),
           ),
-          GestureDetector(
-            child: Icon(
-              Icons.more_vert,
-              color: primaryUserColor,
+          Visibility(
+            visible: userProvider.user.role == "ADMIN",
+            child: GestureDetector(
+              onTap: () {},
+              child: Icon(
+                Icons.add_a_photo,
+                color: primaryUserColor,
+              ),
             ),
           )
         ],
@@ -62,7 +70,7 @@ class AudioPlayerPage extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              "Favourite of Maliq & D'Essentials",
+              "${playlistProvider.currentPlaylistName} Playlist",
               style:
                   primaryUserColorText.copyWith(fontSize: 16, fontWeight: bold),
               textAlign: TextAlign.center,

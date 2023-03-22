@@ -35,10 +35,11 @@ class PlayButton extends StatelessWidget {
             icon: const Icon(Icons.pause_circle),
           );
         }
-        return Icon(
-          Icons.play_circle,
-          size: size,
+        return IconButton(
+          onPressed: audioPlayerProvider.audioPlayer.play,
+          iconSize: size,
           color: primaryUserColor,
+          icon: const Icon(Icons.play_circle),
         );
       },
     );

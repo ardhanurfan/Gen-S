@@ -42,11 +42,6 @@ class AudioSuggestedTile extends StatelessWidget {
             style: primaryUserColorText.copyWith(fontSize: 12),
             overflow: TextOverflow.ellipsis,
           ),
-          // Text(
-          //   'Bruno Mars',
-          //   style: primaryColorText.copyWith(fontSize: 12),
-          //   overflow: TextOverflow.ellipsis,
-          // ),
         ],
       ),
     );

@@ -47,6 +47,9 @@ class AudioTile extends StatelessWidget {
           index,
         );
         audioProvider.updateHistory(audio: audio);
+        if (!isPlaylist) {
+          playlistProvider.setCurrentPlaylistName = 'Audios';
+        }
       },
       child: StreamBuilder<SequenceState?>(
           stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
@@ -70,7 +73,7 @@ class AudioTile extends StatelessWidget {
                       child: Text(
                         index + 1 < 10
                             ? "0${index + 1}"
-                            : {index + 1}.toString(),
+                            : (index + 1).toString(),
                         style: (isSelect
                                 ? secondaryColorText
                                 : primaryUserColorText)
