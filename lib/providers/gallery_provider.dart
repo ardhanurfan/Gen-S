@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:music_player/models/gallery_model.dart';
 import 'package:music_player/services/gallery_service.dart';
+import 'package:music_player/services/image_service.dart';
+
+import '../models/image_model.dart';
 
 class GalleryProvider extends ChangeNotifier {
   List<GalleryModel> _galleries = [];
@@ -40,6 +43,25 @@ class GalleryProvider extends ChangeNotifier {
       _galleries.removeAt(index);
       notifyListeners();
 
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
+
+  Future<bool> addImageGallery(
+      {required String imagePath, required int galleryId}) async {
+    try {
+      ImageModel newImage = await ImageService()
+          .addImage(galleryId: galleryId, imagePath: imagePath);
+      _galleries
+          .firstWhere(
+            (element) => element.id == galleryId,
+          )
+          .images
+          .add(newImage);
+      notifyListeners();
       return true;
     } catch (e) {
       _errorMessage = e.toString();

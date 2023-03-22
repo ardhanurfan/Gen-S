@@ -13,6 +13,9 @@ class SongsHomeContent extends StatelessWidget {
 
     return Expanded(
       child: ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: EdgeInsets.only(
             right: defaultMargin, left: defaultMargin, top: 24, bottom: 180),
         children: audioProvider.audios

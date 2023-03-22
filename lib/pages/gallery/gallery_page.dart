@@ -115,6 +115,9 @@ class GalleryPage extends StatelessWidget {
 
     Widget content() {
       return GridView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding:
             const EdgeInsets.only(top: 24, bottom: 200, left: 20, right: 20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

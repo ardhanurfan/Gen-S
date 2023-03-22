@@ -48,6 +48,9 @@ class MostPlayedPage extends StatelessWidget {
 
     Widget listOfSong() {
       return ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: historyMosts
             .map((audio) => AudioTile(

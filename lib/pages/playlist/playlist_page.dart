@@ -116,6 +116,9 @@ class PlaylistPage extends StatelessWidget {
 
     Widget content() {
       return ReorderableListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         proxyDecorator: proxyDecorator,
         padding: EdgeInsets.only(
             right: defaultMargin, left: defaultMargin, top: 24, bottom: 180),

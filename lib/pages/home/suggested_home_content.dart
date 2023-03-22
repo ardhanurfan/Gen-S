@@ -22,6 +22,9 @@ class SuggestedHomeContent extends StatelessWidget {
 
     return Expanded(
       child: ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: const EdgeInsets.only(top: 24, bottom: 100),
         children: [
           SectionTitle(
@@ -38,6 +41,9 @@ class SuggestedHomeContent extends StatelessWidget {
             title: 'Recently Played',
           ),
           SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             scrollDirection: Axis.horizontal,
             child: Container(
               margin: EdgeInsets.only(
@@ -78,6 +84,9 @@ class SuggestedHomeContent extends StatelessWidget {
             title: 'Most Played',
           ),
           SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             scrollDirection: Axis.horizontal,
             child: Container(
               margin: EdgeInsets.only(

@@ -53,6 +53,9 @@ class RecentlyPlayedPage extends StatelessWidget {
 
     Widget listOfSong() {
       return ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: historyRecents
             .map(

@@ -10,31 +10,33 @@ class AdsContentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget header() {
       return SliverPadding(
-        padding: EdgeInsets.only(
-            right: defaultMargin, left: defaultMargin, top: 24, bottom: 42),
+        padding: const EdgeInsets.only(top: 24, bottom: 42),
         sliver: SliverAppBar(
           stretch: true,
           elevation: 0,
           automaticallyImplyLeading: false,
           titleSpacing: 0,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.arrow_back,
-                  color: primaryAdminColor,
+          title: Padding(
+            padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: primaryAdminColor,
+                  ),
                 ),
-              ),
-              Text(
-                "Ads Content",
-                style: primaryAdminColorText.copyWith(
-                    fontSize: 24, fontWeight: bold),
-              )
-            ],
+                Text(
+                  "Ads Content",
+                  style: primaryAdminColorText.copyWith(
+                      fontSize: 24, fontWeight: bold),
+                )
+              ],
+            ),
           ),
           backgroundColor: backgroundAdminColor,
           floating: true,
@@ -45,6 +47,9 @@ class AdsContentPage extends StatelessWidget {
 
     Widget content() {
       return GridView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding:
             const EdgeInsets.only(top: 24, bottom: 100, left: 20, right: 20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -129,6 +134,7 @@ class AdsContentPage extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: backgroundAdminColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,

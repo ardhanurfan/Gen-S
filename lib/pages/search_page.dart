@@ -57,6 +57,9 @@ class _SearchPageState extends State<SearchPage> {
 
     Widget content() {
       return ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: EdgeInsets.symmetric(
             horizontal: defaultMargin, vertical: defaultMargin),
         children: [
@@ -118,8 +121,10 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       "Audio",
-                      style: primaryUserColorText.copyWith(
-                          fontSize: 20, fontWeight: bold),
+                      style: (userProvider.user.role == "USER"
+                              ? primaryUserColorText
+                              : primaryAdminColorText)
+                          .copyWith(fontSize: 20, fontWeight: bold),
                     ),
                   ),
                 ),
@@ -140,8 +145,10 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       "Playlist",
-                      style: primaryUserColorText.copyWith(
-                          fontSize: 20, fontWeight: bold),
+                      style: (userProvider.user.role == "USER"
+                              ? primaryUserColorText
+                              : primaryAdminColorText)
+                          .copyWith(fontSize: 20, fontWeight: bold),
                     ),
                   ),
                 ),
@@ -163,8 +170,10 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       "Gallery",
-                      style: primaryUserColorText.copyWith(
-                          fontSize: 20, fontWeight: bold),
+                      style: (userProvider.user.role == "USER"
+                              ? primaryUserColorText
+                              : primaryAdminColorText)
+                          .copyWith(fontSize: 20, fontWeight: bold),
                     ),
                   ),
                 ),

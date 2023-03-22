@@ -119,6 +119,7 @@ class AdsPage extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: backgroundAdminColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,

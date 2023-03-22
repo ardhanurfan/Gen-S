@@ -132,6 +132,9 @@ class PlaylistDetailPage extends StatelessWidget {
     Widget audioList() {
       return Expanded(
         child: ReorderableListView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           proxyDecorator: proxyDecorator,
           padding: EdgeInsets.only(
               right: defaultMargin, left: defaultMargin, bottom: 100),

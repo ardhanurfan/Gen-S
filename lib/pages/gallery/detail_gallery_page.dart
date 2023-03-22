@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/gallery_model.dart';
+import 'package:music_player/providers/gallery_provider.dart';
+import 'package:music_player/providers/images_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/image_popup.dart';
 import 'package:provider/provider.dart';
 
 import 'photo_view_page.dart';
@@ -15,6 +18,46 @@ class DetailGalleryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
+    ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
+
+    Future<void> handleAddImage() async {
+      await imagesProvider.pickImage();
+      await imagesProvider.cropImage(imageFile: imagesProvider.imageFile);
+      showDialog(
+        context: context,
+        builder: (context) => ImagePopUp(
+          add: () async {
+            if (await galleryProvider.addImageGallery(
+                galleryId: gallery.id,
+                imagePath: imagesProvider.croppedImagePath)) {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: successColor,
+                  content: const Text(
+                    'Add image successfuly',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: alertColor,
+                  content: Text(
+                    galleryProvider.errorMessage,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+      );
+    }
+
     Widget header() {
       return SliverPadding(
         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -99,23 +142,6 @@ class DetailGalleryPage extends StatelessWidget {
           );
         }),
       );
-
-      // return GridView(
-      //   gridDelegate:
-      //       const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-      //   children: gallery.images
-      //       .map(
-      //         (image) => ClipRRect(
-      //           child: CachedNetworkImage(
-      //             imageUrl: image.url,
-      //             height: itemWidth,
-      //             width: itemWidth,
-      //             fit: BoxFit.fill,
-      //           ),
-      //         ),
-      //       )
-      //       .toList(),
-      // );
     }
 
     return Scaffold(
@@ -136,7 +162,9 @@ class DetailGalleryPage extends StatelessWidget {
       floatingActionButton: Visibility(
         visible: userProvider.user.role != "USER",
         child: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () async {
+            await handleAddImage();
+          },
           backgroundColor: secondaryColor,
           child: const Icon(
             Icons.add,

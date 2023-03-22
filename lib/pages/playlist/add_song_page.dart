@@ -44,6 +44,9 @@ class _AddSongPageState extends State<AddSongPage> {
 
     Widget content() {
       return ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: EdgeInsets.symmetric(
             horizontal: defaultMargin, vertical: defaultMargin),
         children: [

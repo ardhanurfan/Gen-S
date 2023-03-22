@@ -1,7 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:music_player/models/audio_model.dart';
+import 'package:music_player/models/image_model.dart';
 import 'package:music_player/services/audio_service.dart';
+import 'package:music_player/services/image_service.dart';
 import 'package:music_player/services/user_service.dart';
 
 class AudioProvider extends ChangeNotifier {
@@ -11,12 +13,39 @@ class AudioProvider extends ChangeNotifier {
   String _audioPickedPath = '';
   String _errorMessage = '';
   AudioModel? _currAudio;
+  List<ImageModel> _images = [];
 
   List<AudioModel> get audios => _audios;
   List<AudioModel> get historyMosts => _historyMosts;
   List<AudioModel> get historyRecents => _historyRecents;
   String get audioPickedPath => _audioPickedPath;
   String get errorMessage => _errorMessage;
+  List<ImageModel> get images => _images;
+
+  set setImages(List<ImageModel> images) {
+    _images = images;
+    notifyListeners();
+  }
+
+  Future<bool> addImageAudio(
+      {required String imagePath, required int audioId}) async {
+    try {
+      ImageModel newImage =
+          await ImageService().addImage(audioId: audioId, imagePath: imagePath);
+      _images.add(newImage);
+      _audios
+          .firstWhere(
+            (element) => element.id == audioId,
+          )
+          .images
+          .add(newImage);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
 
   Future<void> getAudios({required String token}) async {
     try {
