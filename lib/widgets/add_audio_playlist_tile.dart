@@ -93,6 +93,8 @@ class AddAudioPlaylistTile extends StatelessWidget {
                     isAdded
                         ? GestureDetector(
                             onTap: () async {
+                              audioPlayerProvider.deleteAudio(
+                                  audioId: audio.id);
                               if (await playlistProvider.deleteAudio(
                                 audio: audio,
                                 playlistId: playlistId,

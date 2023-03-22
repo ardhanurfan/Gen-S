@@ -108,7 +108,7 @@ class AudioService {
     }
   }
 
-  Future<bool> delete({required int audioId}) async {
+  Future<bool> deleteAudio({required int audioId}) async {
     late Uri url = UrlService().api('delete-audio');
     var headers = {
       'Content-Type': 'application/json',

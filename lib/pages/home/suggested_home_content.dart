@@ -51,7 +51,7 @@ class SuggestedHomeContent extends StatelessWidget {
                             audioProvider.historyRecents,
                             audioProvider.historyRecents.indexOf(audio),
                           );
-                          audioProvider.updateHistory(audioId: audio.id);
+                          audioProvider.updateHistory(audio: audio);
                         },
                         child: AudioSuggestedTile(
                           title: audio.title,
@@ -91,7 +91,7 @@ class SuggestedHomeContent extends StatelessWidget {
                             audioProvider.historyMosts,
                             audioProvider.historyMosts.indexOf(audio),
                           );
-                          audioProvider.updateHistory(audioId: audio.id);
+                          audioProvider.updateHistory(audio: audio);
                         },
                         child: AudioSuggestedTile(
                           title: audio.title,
