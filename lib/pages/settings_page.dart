@@ -31,7 +31,9 @@ class _SettingsPageState extends State<SettingsPage> {
       if (await userProvider.logout(token: userProvider.user.token)) {
         Navigator.pushNamedAndRemoveUntil(
             context, '/sign-in', (route) => false);
-        await audioPlayerProvider.playlist.clear();
+        if (audioPlayerProvider.currentPlaylist.isNotEmpty) {
+          await audioPlayerProvider.playlist.clear();
+        }
       } else {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(

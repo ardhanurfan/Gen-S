@@ -71,31 +71,34 @@ class GalleryGrid extends StatelessWidget {
                   ),
                 ],
               ),
-              PopupMenuButton(
-                icon: Icon(
-                  Icons.more_vert,
-                  color: primaryAdminColor,
+              Visibility(
+                visible: userProvider.user.role == "ADMIN",
+                child: PopupMenuButton(
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: primaryAdminColor,
+                  ),
+                  color: const Color.fromARGB(255, 223, 223, 223),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(defaultRadius),
+                  ),
+                  elevation: 4,
+                  onSelected: (value) {
+                    if (value == 0) {
+                      showDialog(
+                          context: context,
+                          builder: (context) => DeletePopUp(delete: () {}));
+                    }
+                  },
+                  itemBuilder: (BuildContext context) => [
+                    PopupMenuItem(
+                        value: 0,
+                        child: Text(
+                          "Delete",
+                          style: primaryAdminColorText,
+                        ))
+                  ],
                 ),
-                color: const Color.fromARGB(255, 223, 223, 223),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                ),
-                elevation: 4,
-                onSelected: (value) {
-                  if (value == 0) {
-                    showDialog(
-                        context: context,
-                        builder: (context) => DeletePopUp(delete: () {}));
-                  }
-                },
-                itemBuilder: (BuildContext context) => [
-                  PopupMenuItem(
-                      value: 0,
-                      child: Text(
-                        "Delete",
-                        style: primaryAdminColorText,
-                      ))
-                ],
               )
             ],
           ),
