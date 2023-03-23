@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/pages_admin/ads_content_page.dart';
+import 'package:music_player/pages_admin/ads_detail_page.dart';
 
 import '../shared/theme.dart';
+import '../widgets/delete_popup.dart';
 
 class AdsPage extends StatelessWidget {
   const AdsPage({super.key});
@@ -10,22 +11,24 @@ class AdsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget header() {
       return SliverPadding(
-        padding: EdgeInsets.only(
-            right: defaultMargin, left: defaultMargin, top: 24, bottom: 42),
+        padding: const EdgeInsets.only(top: 24, bottom: 42),
         sliver: SliverAppBar(
           stretch: true,
           elevation: 0,
           automaticallyImplyLeading: false,
           titleSpacing: 0,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                "Ads Settings",
-                style: primaryAdminColorText.copyWith(
-                    fontSize: 24, fontWeight: bold),
-              )
-            ],
+          title: Padding(
+            padding: EdgeInsets.symmetric(horizontal: defaultMargin),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "Ads Content",
+                  style: primaryAdminColorText.copyWith(
+                      fontSize: 24, fontWeight: bold),
+                )
+              ],
+            ),
           ),
           backgroundColor: backgroundAdminColor,
           floating: true,
@@ -35,85 +38,97 @@ class AdsPage extends StatelessWidget {
     }
 
     Widget content() {
-      return Column(
+      return GridView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
+        padding:
+            const EdgeInsets.only(top: 24, bottom: 100, left: 20, right: 20),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1 / 1.4,
+          crossAxisSpacing: 30,
+        ),
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AdsContentPage()));
-            },
-            child: Container(
-              padding:
-                  EdgeInsets.symmetric(vertical: 17, horizontal: defaultMargin),
-              decoration: BoxDecoration(
-                  border: Border(
-                      top: BorderSide(color: secondaryColor, width: 1),
-                      bottom: BorderSide(color: secondaryColor, width: 1))),
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Ads Content",
-                    style: primaryAdminColorText.copyWith(fontSize: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AdsDetailPage()));
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: Image.asset(
+                    "assets/ex_gallery.png",
+                    height: 160,
+                    width: 160,
+                    fit: BoxFit.fill,
                   ),
-                  Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 20,
-                    color: primaryAdminColor,
-                  )
-                ],
+                ),
               ),
-            ),
-          ),
-          Container(
-            padding:
-                EdgeInsets.symmetric(vertical: 17, horizontal: defaultMargin),
-            decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(color: secondaryColor, width: 0),
-                    bottom: BorderSide(color: secondaryColor, width: 1))),
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Time & Ads Location",
-                  style: primaryAdminColorText.copyWith(fontSize: 16),
+              Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Keripik Tempe",
+                            overflow: TextOverflow.ellipsis,
+                            style: primaryAdminColorText.copyWith(
+                                fontSize: 16, fontWeight: medium),
+                          ),
+                          Text(
+                            "11.00 - 17.00",
+                            overflow: TextOverflow.ellipsis,
+                            style: primaryAdminColorText.copyWith(fontSize: 12),
+                          ),
+                          Text(
+                            "Below, Pop Up",
+                            overflow: TextOverflow.ellipsis,
+                            style: primaryAdminColorText.copyWith(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                    PopupMenuButton(
+                      icon: Icon(
+                        Icons.more_vert,
+                        color: primaryAdminColor,
+                      ),
+                      color: const Color.fromARGB(255, 223, 223, 223),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(defaultRadius),
+                      ),
+                      elevation: 4,
+                      onSelected: (value) {
+                        if (value == 0) {
+                          showDialog(
+                              context: context,
+                              builder: (context) => DeletePopUp(delete: () {}));
+                        }
+                      },
+                      itemBuilder: (BuildContext context) => [
+                        PopupMenuItem(
+                            value: 0,
+                            child: Text(
+                              "Delete",
+                              style: primaryAdminColorText,
+                            ))
+                      ],
+                    )
+                  ],
                 ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 20,
-                  color: primaryAdminColor,
-                )
-              ],
-            ),
+              ),
+            ],
           ),
-          Container(
-            padding:
-                EdgeInsets.symmetric(vertical: 17, horizontal: defaultMargin),
-            decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(color: secondaryColor, width: 0),
-                    bottom: BorderSide(color: secondaryColor, width: 1))),
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Ads Shows Frequency",
-                  style: primaryAdminColorText.copyWith(fontSize: 16),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 20,
-                  color: primaryAdminColor,
-                )
-              ],
-            ),
-          )
         ],
       );
     }
