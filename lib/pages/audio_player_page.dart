@@ -4,12 +4,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_player/models/audio_model.dart';
+import 'package:music_player/models/image_model.dart';
 import 'package:music_player/models/position_data_model.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/audio_provider.dart';
+import 'package:music_player/providers/gallery_provider.dart';
+import 'package:music_player/providers/images_provider.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/delete_popup.dart';
+import 'package:music_player/widgets/image_popup.dart';
 import 'package:music_player/widgets/play_button.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,6 +29,8 @@ class AudioPlayerPage extends StatelessWidget {
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
+    GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
 
     Stream<PositionDataModel> positionDataStream =
         Rx.combineLatest3<Duration, Duration, Duration?, PositionDataModel>(
@@ -33,6 +40,85 @@ class AudioPlayerPage extends StatelessWidget {
       (position, bufferedPosition, duration) => PositionDataModel(
           position, bufferedPosition, duration ?? Duration.zero),
     );
+
+    Future<void> handleAddImage() async {
+      imagesProvider.setCroppedImageFile = null;
+      await imagesProvider.pickImage();
+      await imagesProvider.cropImage(imageFile: imagesProvider.imageFile);
+      if (imagesProvider.croppedImageFile != null) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => ImagePopUp(
+            add: () async {
+              if (await audioProvider.addImageAudio(
+                  imagePath: imagesProvider.croppedImagePath,
+                  audioId: audioProvider.currAudio!.id)) {
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: successColor,
+                    content: const Text(
+                      'Add image successfuly',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+                galleryProvider.addImageGalleryFromAudio(
+                    image: audioProvider.currAudio!.images.last);
+              } else {
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: alertColor,
+                    content: Text(
+                      audioProvider.errorMessage,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        );
+      }
+    }
+
+    Future<void> handleDeleteImage(ImageModel imageDel) async {
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => DeletePopUp(
+          delete: () async {
+            if (await audioProvider.deleteImageAudio(
+                audioId: audioProvider.currAudio!.id, imageId: imageDel.id)) {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: successColor,
+                  content: const Text(
+                    'Delete image successfuly',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+              galleryProvider.deleteImageGalleryFromAudio(image: imageDel);
+            } else {
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: alertColor,
+                  content: Text(
+                    galleryProvider.errorMessage,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+      );
+    }
 
     Widget header() {
       return Row(
@@ -53,7 +139,9 @@ class AudioPlayerPage extends StatelessWidget {
           Visibility(
             visible: userProvider.user.role == "ADMIN",
             child: GestureDetector(
-              onTap: () {},
+              onTap: () async {
+                await handleAddImage();
+              },
               child: Icon(
                 Icons.add_a_photo,
                 color: primaryUserColor,
@@ -91,7 +179,7 @@ class AudioPlayerPage extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    audio.images.isEmpty
+                    audioProvider.currAudio!.images.isEmpty
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(32),
                             child: Image.asset(
@@ -102,18 +190,52 @@ class AudioPlayerPage extends StatelessWidget {
                             ),
                           )
                         : CarouselSlider(
-                            items: audio.images
-                                .map(
-                                  (image) => ClipRRect(
+                            items: audioProvider.currAudio!.images.map((image) {
+                              return Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  ClipRRect(
                                     borderRadius: BorderRadius.circular(32),
                                     child: CachedNetworkImage(
                                       imageUrl: image.url,
                                       width: 280,
+                                      height: 280,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                )
-                                .toList(),
+                                  Visibility(
+                                    visible: userProvider.user.role == "ADMIN",
+                                    child: PopupMenuButton(
+                                      icon: Icon(
+                                        Icons.more_vert,
+                                        color: primaryUserColor,
+                                      ),
+                                      color: const Color.fromARGB(
+                                          255, 223, 223, 223),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            defaultRadius),
+                                      ),
+                                      elevation: 4,
+                                      onSelected: (value) {
+                                        if (value == 0) {
+                                          handleDeleteImage(image);
+                                        }
+                                      },
+                                      itemBuilder: (BuildContext context) => [
+                                        PopupMenuItem(
+                                          value: 0,
+                                          child: Text(
+                                            "Delete",
+                                            style: primaryAdminColorText,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }).toList(),
                             options: CarouselOptions(
                               autoPlay: audio.images.length > 1,
                               enableInfiniteScroll: audio.images.length > 1,

@@ -13,39 +13,13 @@ class AudioProvider extends ChangeNotifier {
   String _audioPickedPath = '';
   String _errorMessage = '';
   AudioModel? _currAudio;
-  List<ImageModel> _images = [];
 
   List<AudioModel> get audios => _audios;
   List<AudioModel> get historyMosts => _historyMosts;
   List<AudioModel> get historyRecents => _historyRecents;
   String get audioPickedPath => _audioPickedPath;
   String get errorMessage => _errorMessage;
-  List<ImageModel> get images => _images;
-
-  set setImages(List<ImageModel> images) {
-    _images = images;
-    notifyListeners();
-  }
-
-  Future<bool> addImageAudio(
-      {required String imagePath, required int audioId}) async {
-    try {
-      ImageModel newImage =
-          await ImageService().addImage(audioId: audioId, imagePath: imagePath);
-      _images.add(newImage);
-      _audios
-          .firstWhere(
-            (element) => element.id == audioId,
-          )
-          .images
-          .add(newImage);
-      notifyListeners();
-      return true;
-    } catch (e) {
-      _errorMessage = e.toString();
-      return false;
-    }
-  }
+  AudioModel? get currAudio => _currAudio;
 
   Future<void> getAudios({required String token}) async {
     try {
@@ -160,5 +134,114 @@ class AudioProvider extends ChangeNotifier {
       (a, b) => b.title.compareTo(a.title),
     );
     notifyListeners();
+  }
+
+  Future<bool> addImageAudio(
+      {required String imagePath, required int audioId}) async {
+    try {
+      ImageModel newImage =
+          await ImageService().addImage(audioId: audioId, imagePath: imagePath);
+
+      _currAudio!.images.add(newImage);
+
+      _audios
+          .firstWhere((element) => element.id == audioId)
+          .images
+          .add(newImage);
+
+      // kalau sudah diplay otomatis ada di history
+      _historyMosts
+          .firstWhere((element) => element.id == audioId)
+          .images
+          .add(newImage);
+
+      _historyRecents
+          .firstWhere((element) => element.id == audioId)
+          .images
+          .add(newImage);
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
+
+  Future<bool> deleteImageAudio(
+      {required int imageId, required int audioId}) async {
+    try {
+      await ImageService().deleteImage(imageId: imageId);
+
+      _currAudio!.images.removeWhere((element) => element.id == imageId);
+
+      _audios
+          .firstWhere((element) => element.id == audioId)
+          .images
+          .removeWhere((element) => element.id == imageId);
+
+      // kalau sudah diplay otomatis ada di history
+      _historyMosts
+          .firstWhere((element) => element.id == audioId)
+          .images
+          .removeWhere((element) => element.id == imageId);
+
+      _historyRecents
+          .firstWhere((element) => element.id == audioId)
+          .images
+          .removeWhere((element) => element.id == imageId);
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
+
+  void deleteImageFromGallery({required List<ImageModel> imagesDel}) {
+    for (var image in imagesDel) {
+      var currFound = currAudio!.images.contains(image);
+      if (currFound) {
+        currAudio!.images.remove(image);
+      }
+
+      var found = _audios.where((element) => element.images.contains(image));
+      if (found.isNotEmpty) {
+        int audioId = found.first.id;
+        _audios
+            .firstWhere(
+              (element) => element.id == audioId,
+            )
+            .images
+            .remove(image);
+      }
+
+      var foundMost =
+          _historyMosts.where((element) => element.images.contains(image));
+      if (foundMost.isNotEmpty) {
+        int audioId = foundMost.first.id;
+        _historyMosts
+            .firstWhere(
+              (element) => element.id == audioId,
+            )
+            .images
+            .remove(image);
+      }
+
+      var foundRecent =
+          _historyRecents.where((element) => element.images.contains(image));
+      if (foundRecent.isNotEmpty) {
+        int audioId = foundRecent.first.id;
+        _historyRecents
+            .firstWhere(
+              (element) => element.id == audioId,
+            )
+            .images
+            .remove(image);
+      }
+
+      notifyListeners();
+    }
   }
 }

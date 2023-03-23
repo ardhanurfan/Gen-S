@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
+import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/play_button.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ class PlayingTile extends StatelessWidget {
   Widget build(BuildContext context) {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
+    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
 
     return StreamBuilder<SequenceState?>(
         stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
@@ -22,7 +24,11 @@ class PlayingTile extends StatelessWidget {
           if (state?.sequence.isEmpty ?? true) {
             return const SizedBox();
           }
+
           AudioModel audio = state!.currentSource!.tag;
+          if (audioProvider.currAudio != null) {
+            audio = audioProvider.currAudio!;
+          }
           return GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/player'),
             child: Container(

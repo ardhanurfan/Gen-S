@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/gallery_model.dart';
 import 'package:music_player/models/image_model.dart';
+import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/providers/gallery_provider.dart';
 import 'package:music_player/providers/images_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
@@ -30,6 +31,7 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
     UserProvider userProvider = Provider.of<UserProvider>(context);
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
     ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
+    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
 
     Future<void> handleAddImage() async {
       imagesProvider.setCroppedImageFile = null;
@@ -90,6 +92,7 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                   ),
                 ),
               );
+              audioProvider.deleteImageFromGallery(imagesDel: imagesDel);
               setState(() {
                 isDelete = false;
                 imagesDel = [];
@@ -193,7 +196,7 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                 }
               },
               child: Hero(
-                tag: widget.gallery.images[index],
+                tag: widget.gallery.images[index].id,
                 child: Stack(
                   children: [
                     CachedNetworkImage(

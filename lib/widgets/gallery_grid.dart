@@ -41,7 +41,7 @@ class GalleryGrid extends StatelessWidget {
                     "assets/ex_gallery.png",
                     height: 160,
                     width: 160,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 )
               : ClipRRect(
@@ -50,7 +50,7 @@ class GalleryGrid extends StatelessWidget {
                     imageUrl: gallery.images[0].url,
                     height: 160,
                     width: 160,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                   ),
                 ),
           Row(

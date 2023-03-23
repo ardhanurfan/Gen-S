@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../shared/theme.dart';
 
@@ -16,6 +18,8 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
+
     return Container(
       margin: EdgeInsets.only(bottom: 24, top: marginTop),
       padding: EdgeInsets.symmetric(horizontal: defaultMargin),
@@ -24,8 +28,10 @@ class SectionTitle extends StatelessWidget {
         children: [
           Text(
             title,
-            style:
-                primaryUserColorText.copyWith(fontSize: 24, fontWeight: bold),
+            style: (userProvider.user.role == "USER"
+                    ? primaryUserColorText
+                    : primaryAdminColorText)
+                .copyWith(fontSize: 24, fontWeight: bold),
           ),
           GestureDetector(
             onTap: onTap,

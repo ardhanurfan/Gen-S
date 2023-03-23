@@ -88,4 +88,20 @@ class GalleryProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  void addImageGalleryFromAudio({required ImageModel image}) {
+    _galleries
+        .firstWhere((element) => element.name == 'root')
+        .images
+        .add(image);
+    notifyListeners();
+  }
+
+  void deleteImageGalleryFromAudio({required ImageModel image}) {
+    var root = _galleries.where((element) => element.name == 'root').first;
+    if (root.images.contains(image)) {
+      root.images.remove(image);
+      notifyListeners();
+    }
+  }
 }
