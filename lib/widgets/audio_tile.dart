@@ -62,7 +62,9 @@ class AudioTile extends StatelessWidget {
             }
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 12),
-              color: backgroundUserColor,
+              color: userProvider.user.role == "USER"
+                  ? backgroundUserColor
+                  : backgroundAdminColor,
               child: Row(
                 children: [
                   Visibility(
@@ -111,9 +113,12 @@ class AudioTile extends StatelessWidget {
                     child: Text(
                       audio.title,
                       overflow: TextOverflow.ellipsis,
-                      style:
-                          (isSelect ? secondaryColorText : primaryUserColorText)
-                              .copyWith(
+                      style: (isSelect
+                              ? secondaryColorText
+                              : (userProvider.user.role == "USER"
+                                  ? primaryUserColorText
+                                  : primaryAdminColorText))
+                          .copyWith(
                         fontSize: 16,
                         fontWeight: bold,
                       ),
