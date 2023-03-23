@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../shared/theme.dart';
 
-class AdsDetailPage extends StatelessWidget {
+class AdsDetailPage extends StatefulWidget {
   const AdsDetailPage({super.key});
 
   @override
+  State<AdsDetailPage> createState() => _AdsDetailPageState();
+}
+
+class _AdsDetailPageState extends State<AdsDetailPage> {
+  DateTime dateTime = DateTime.now();
+  TextEditingController titleController = TextEditingController(text: "");
+  @override
   Widget build(BuildContext context) {
-    TextEditingController titleController = TextEditingController(text: "");
+    final hours = dateTime.hour.toString().padLeft(2, '0');
+    final minutes = dateTime.minute.toString().padLeft(2, '0');
     Widget header() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,35 +65,55 @@ class AdsDetailPage extends StatelessWidget {
           const SizedBox(
             height: 3,
           ),
-          TextFormField(
+          TextField(
             controller: titleController,
             style: primaryAdminColorText.copyWith(fontSize: 14),
             cursorColor: primaryAdminColor,
             decoration: InputDecoration(
-              hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
-              focusedBorder: UnderlineInputBorder(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                  borderSide: BorderSide(color: secondaryColor, width: 5)),
-              enabledBorder: UnderlineInputBorder(
-                borderRadius: BorderRadius.circular(defaultRadius),
-                borderSide: BorderSide(
-                  color: primaryAdminColor,
-                  width: 3,
-                  style: BorderStyle.solid,
-                ),
-              ),
-            ),
+                hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: primaryAdminColor))),
           ),
           const SizedBox(
-            height: 16,
+            height: 24,
           ),
           Text(
-            "Set time",
+            "Time",
             style: primaryAdminColorText,
           ),
-          TimePickerDialog(
-            initialTime: TimeOfDay.now(),
-          )
+          const SizedBox(
+            height: 10,
+          ),
+          GestureDetector(
+            onTap: pickDateTime,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today_rounded,
+                      color: primaryAdminColor,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Column(
+                      children: [
+                        Text(DateFormat('yyyy/MM/dd - hh:mm').format(dateTime),
+                            style: primaryAdminColorText.copyWith()),
+                      ],
+                    )
+                  ],
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  width: double.infinity,
+                  height: 0.85,
+                  color: primaryAdminColor,
+                )
+              ],
+            ),
+          ),
         ],
       );
     }
@@ -93,4 +122,29 @@ class AdsDetailPage extends StatelessWidget {
       body: SafeArea(child: content()),
     );
   }
+
+  Future pickDateTime() async {
+    DateTime? date = await pickDate();
+    if (date == null) return;
+
+    TimeOfDay? time = await pickTime();
+    if (time == null) return;
+
+    final pickedDateTime =
+        DateTime(date.year, date.month, date.second, time.hour, time.minute);
+
+    setState(() {
+      dateTime = pickedDateTime;
+    });
+  }
+
+  Future<DateTime?> pickDate() => showDatePicker(
+      context: context,
+      initialDate: dateTime,
+      firstDate: dateTime,
+      lastDate: DateTime(dateTime.year + 100));
+
+  Future<TimeOfDay?> pickTime() => showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: dateTime.hour, minute: dateTime.minute));
 }
