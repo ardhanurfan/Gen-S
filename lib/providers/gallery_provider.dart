@@ -68,4 +68,24 @@ class GalleryProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> deleteImageGallery(
+      {required List<ImageModel> imagesDel, required int galleryId}) async {
+    try {
+      for (var image in imagesDel) {
+        _galleries
+            .firstWhere(
+              (element) => element.id == galleryId,
+            )
+            .images
+            .remove(image);
+        await ImageService().deleteImage(imageId: image.id);
+        notifyListeners();
+      }
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
 }
