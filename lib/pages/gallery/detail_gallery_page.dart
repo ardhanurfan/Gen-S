@@ -139,7 +139,7 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                   ),
                 ),
                 Text(
-                  isDelete ? 'Delete Images' : widget.gallery.name,
+                  isDelete ? 'Select Images' : widget.gallery.name,
                   style: userProvider.user.role == "USER"
                       ? primaryUserColorText.copyWith(
                           fontWeight: bold,
@@ -262,11 +262,16 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                   });
                 }
               },
-              backgroundColor: isDelete ? alertColor : secondaryColor,
-              child: const Icon(
-                Icons.delete,
-                size: 30,
-              ),
+              backgroundColor: isDelete ? alertColor : successColor,
+              child: isDelete
+                  ? const Icon(
+                      Icons.delete,
+                      size: 30,
+                    )
+                  : const Icon(
+                      Icons.edit,
+                      size: 30,
+                    ),
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
@@ -281,10 +286,11 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                   await handleAddImage();
                 }
               },
-              backgroundColor: isDelete ? successColor : secondaryColor,
+              backgroundColor: isDelete ? primaryUserColor : secondaryColor,
               child: isDelete
-                  ? const Icon(
+                  ? Icon(
                       Icons.close,
+                      color: primaryAdminColor,
                       size: 30,
                     )
                   : const Icon(
