@@ -4,12 +4,14 @@ class AdsModel extends Equatable {
   final int id;
   final String title;
   final DateTime uploadTime;
+  final int frequency;
   final String url;
 
   const AdsModel({
     required this.id,
     required this.title,
     required this.uploadTime,
+    required this.frequency,
     required this.url,
   });
 
@@ -18,10 +20,11 @@ class AdsModel extends Equatable {
       id: json['id'],
       title: json['title'],
       uploadTime: DateTime.parse(json['upload_time']),
+      frequency: json['frequency'],
       url: json['url'],
     );
   }
 
   @override
-  List<Object?> get props => [id, title, uploadTime, url];
+  List<Object?> get props => [id, title, uploadTime, url, frequency];
 }
