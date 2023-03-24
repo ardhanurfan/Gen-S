@@ -32,6 +32,7 @@ class AdsService {
   Future<AdsModel> addAds({
     required int frequency,
     required String contentPath,
+    required String link,
   }) async {
     late Uri url = UrlService().api('add-ads');
 
@@ -46,6 +47,8 @@ class AdsService {
 
     // add freq
     request.fields['frequency'] = frequency.toString();
+    // add link
+    request.fields['link'] = link.toString();
 
     // add content
     request.files
