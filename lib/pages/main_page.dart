@@ -18,7 +18,6 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
-
     Widget buildContent() {
       int newPage = pageProvider.page;
       switch (newPage) {

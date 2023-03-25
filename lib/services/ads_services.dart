@@ -30,8 +30,9 @@ class AdsService {
   }
 
   Future<AdsModel> addAds({
-    required int frequency,
+    required String frequency,
     required String contentPath,
+    required String title,
     required String link,
   }) async {
     late Uri url = UrlService().api('add-ads');
@@ -46,9 +47,11 @@ class AdsService {
     request.headers.addAll(headers);
 
     // add freq
-    request.fields['frequency'] = frequency.toString();
+    request.fields['frequency'] = frequency;
     // add link
-    request.fields['link'] = link.toString();
+    request.fields['link'] = link;
+    // add title
+    request.fields['title'] = title;
 
     // add content
     request.files
@@ -66,7 +69,7 @@ class AdsService {
     }
   }
 
-  Future<bool> deleteAudio({required int adsId}) async {
+  Future<bool> deleteAds({required int adsId}) async {
     late Uri url = UrlService().api('delete-ads');
     var headers = {
       'Content-Type': 'application/json',
@@ -87,6 +90,39 @@ class AdsService {
       return true;
     } else {
       throw "Delete ads failed";
+    }
+  }
+
+  Future<AdsModel> editAds({
+    required String frequency,
+    required int adsId,
+    required String link,
+    required String title,
+  }) async {
+    late Uri url = UrlService().api('edit-ads');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'id': adsId,
+      'frequency': int.parse(frequency),
+      'link': link,
+      'title': title,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'];
+      return AdsModel.fromJson(data);
+    } else {
+      throw "Edit ads failed";
     }
   }
 }

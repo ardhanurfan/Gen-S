@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/models/ads_model.dart';
 import 'package:music_player/pages_admin/ads_detail_page.dart';
+import 'package:music_player/providers/ads_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../shared/theme.dart';
 import '../widgets/delete_popup.dart';
@@ -9,6 +12,8 @@ class AdsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AdsProvider adsProvider = Provider.of<AdsProvider>(context);
+
     Widget header() {
       return SliverPadding(
         padding: const EdgeInsets.only(top: 24, bottom: 42),
@@ -20,13 +25,26 @@ class AdsPage extends StatelessWidget {
           title: Padding(
             padding: EdgeInsets.symmetric(horizontal: defaultMargin),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Ads Content",
                   style: primaryAdminColorText.copyWith(
                       fontSize: 24, fontWeight: bold),
-                )
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AdsDetailPage(),
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    color: primaryAdminColor,
+                    size: 36,
+                  ),
+                ),
               ],
             ),
           ),
@@ -49,87 +67,7 @@ class AdsPage extends StatelessWidget {
           childAspectRatio: 1 / 1.4,
           crossAxisSpacing: 30,
         ),
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AdsDetailPage()));
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: Image.asset(
-                    "assets/ex_gallery.png",
-                    height: 160,
-                    width: 160,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Keripik Tempe",
-                            overflow: TextOverflow.ellipsis,
-                            style: primaryAdminColorText.copyWith(
-                                fontSize: 16, fontWeight: medium),
-                          ),
-                          Text(
-                            "11.00 - 17.00",
-                            overflow: TextOverflow.ellipsis,
-                            style: primaryAdminColorText.copyWith(fontSize: 12),
-                          ),
-                          Text(
-                            "Below, Pop Up",
-                            overflow: TextOverflow.ellipsis,
-                            style: primaryAdminColorText.copyWith(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PopupMenuButton(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: primaryAdminColor,
-                      ),
-                      color: const Color.fromARGB(255, 223, 223, 223),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(defaultRadius),
-                      ),
-                      elevation: 4,
-                      onSelected: (value) {
-                        if (value == 0) {
-                          showDialog(
-                              context: context,
-                              builder: (context) => DeletePopUp(delete: () {}));
-                        }
-                      },
-                      itemBuilder: (BuildContext context) => [
-                        PopupMenuItem(
-                            value: 0,
-                            child: Text(
-                              "Delete",
-                              style: primaryAdminColorText,
-                            ))
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
+        children: adsProvider.defAds.map((ads) => AdsGrid(ads: ads)).toList(),
       );
     }
 
@@ -146,6 +84,133 @@ class AdsPage extends StatelessWidget {
           body: content(),
         ),
       ),
+    );
+  }
+}
+
+class AdsGrid extends StatelessWidget {
+  const AdsGrid({
+    required this.ads,
+    Key? key,
+  }) : super(key: key);
+
+  final AdsModel ads;
+
+  @override
+  Widget build(BuildContext context) {
+    AdsProvider adsProvider = Provider.of<AdsProvider>(context);
+
+    Future<void> handleDelete() async {
+      if (await adsProvider.deleteAds(adsId: ads.id)) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: successColor,
+            content: const Text(
+              'Delete ads successfuly',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: Text(
+              adsProvider.errorMessage,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AdsDetailPage(
+                  title: ads.title,
+                  link: ads.link,
+                  frequency: ads.frequency.toString(),
+                  adsId: ads.id,
+                ),
+              ),
+            );
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: Image.asset(
+              "assets/ex_gallery.png",
+              height: 160,
+              width: 160,
+              fit: BoxFit.fill,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      ads.title,
+                      overflow: TextOverflow.ellipsis,
+                      style: primaryAdminColorText.copyWith(
+                          fontSize: 16, fontWeight: medium),
+                    ),
+                    Text(
+                      "${ads.frequency} frequency",
+                      overflow: TextOverflow.ellipsis,
+                      style: primaryAdminColorText.copyWith(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              PopupMenuButton(
+                icon: Icon(
+                  Icons.more_vert,
+                  color: primaryAdminColor,
+                ),
+                color: const Color.fromARGB(255, 223, 223, 223),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(defaultRadius),
+                ),
+                elevation: 4,
+                onSelected: (value) {
+                  if (value == 0) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => DeletePopUp(
+                        delete: () async {
+                          await handleDelete();
+                        },
+                      ),
+                    );
+                  }
+                },
+                itemBuilder: (BuildContext context) => [
+                  PopupMenuItem(
+                      value: 0,
+                      child: Text(
+                        "Delete",
+                        style: primaryAdminColorText,
+                      ))
+                ],
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
