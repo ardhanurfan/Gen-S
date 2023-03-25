@@ -107,7 +107,7 @@ class AdsProvider extends ChangeNotifier {
 
   Future<bool> videoPicker() async {
     try {
-      var result = await FilePicker.platform.pickFiles(type: FileType.image);
+      var result = await FilePicker.platform.pickFiles(type: FileType.video);
       _videoPickedPath = result!.files.first.path!;
       return true;
     } catch (e) {
