@@ -148,7 +148,9 @@ class MainPage extends StatelessWidget {
               userProvider.user.role == "USER"
                   ? customBottomNavigationUser()
                   : customBottomNavigationAdmin(),
-              AdsBanner()
+              Visibility(
+                  visible: userProvider.user.role == "USER",
+                  child: const AdsBanner())
             ],
           ),
         ],

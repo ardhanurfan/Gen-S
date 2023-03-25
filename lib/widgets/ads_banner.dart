@@ -37,7 +37,10 @@ class _AdsBannerState extends State<AdsBanner> {
 
   @override
   Widget build(BuildContext context) {
+    Uri link = Uri.parse("google.com");
     return Container(
+      height: 59,
+      width: double.infinity,
       child: curr != null ? Text(curr!) : Text('kosong'),
     );
   }
