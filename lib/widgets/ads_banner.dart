@@ -25,20 +25,18 @@ class _AdsBannerState extends State<AdsBanner> {
 
   @override
   void initState() {
-    super.initState();
     AdsProvider adsProvider = Provider.of<AdsProvider>(context, listen: false);
     _controller = VideoPlayerController.network(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _controller.setVolume(0);
-          _controller.play(); // auto play
-        });
-      });
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4');
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(true);
+    _controller.initialize().then((_) => setState(() {}));
+    _controller.play();
 
     Future<void> setAds(Timer timer) async {}
+    super.initState();
 
     _timer = Timer.periodic(const Duration(seconds: 1), setAds);
   }
@@ -51,20 +49,22 @@ class _AdsBannerState extends State<AdsBanner> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 59,
-      width: double.infinity,
-      child: Stack(children: [
-        GestureDetector(onTap: _launchURL, child: VideoPlayer(_controller)),
-        Align(
-          alignment: Alignment.topRight,
-          child: Icon(
-            Icons.close,
-            color: backgroundUserColor,
-          ),
-        )
-      ]),
-    );
+    return _controller.value.isInitialized
+        ? Container(
+            height: 59,
+            width: double.infinity,
+            child: Stack(children: [
+              GestureDetector(
+                  onTap: _launchURL, child: VideoPlayer(_controller)),
+              Align(
+                alignment: Alignment.topRight,
+                child: Icon(
+                  Icons.close,
+                  color: backgroundUserColor,
+                ),
+              )
+            ]))
+        : Text("{{{{}}}}");
   }
 
   _launchURL() async {
