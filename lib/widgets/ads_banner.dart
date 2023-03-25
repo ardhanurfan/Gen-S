@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:music_player/shared/theme.dart';
-import 'package:video_player/video_player.dart';
+import 'package:music_player/models/ads_model.dart';
+import 'package:music_player/providers/ads_provider.dart';
+import 'package:provider/provider.dart';
 
 class AdsBanner extends StatefulWidget {
   const AdsBanner({super.key});
@@ -10,66 +14,31 @@ class AdsBanner extends StatefulWidget {
 }
 
 class _AdsBannerState extends State<AdsBanner> {
-  Stream<String> getUrl() async* {
-    await Future.delayed(Duration(seconds: 3));
-    yield 'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4';
-  }
-
-  late VideoPlayerController _controller;
+  AdsModel? currAds;
+  String? curr;
+  late Timer _timer;
+  int _counter = 0;
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
-      ..initialize().then((_) {
-        // _controller.initialize().then((value) => _controller.play());
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // mutes the video
-      _controller.setVolume(0);
-      // Plays the video once the widget is build and loaded.
-      _controller.play();
-    });
+    AdsProvider adsProvider = Provider.of<AdsProvider>(context, listen: false);
+
+    Future<void> setAds(Timer timer) async {}
+
+    _timer = Timer.periodic(const Duration(seconds: 1), setAds);
     super.initState();
   }
 
   @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Uri url = Uri.parse("google.com");
-    return StreamBuilder(
-      stream: getUrl(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
-          return Visibility(
-            visible: _controller.value.isInitialized &&
-                _controller.value.isPlaying &&
-                _controller.value.position < _controller.value.duration,
-            child: Container(
-                height: 59,
-                width: double.infinity,
-                color: greyColor,
-                child: Stack(children: [
-                  VideoPlayer(_controller),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        color: backgroundUserColor,
-                        child: Icon(
-                          Icons.close,
-                          color: primaryUserColor,
-                        ),
-                      ),
-                    ],
-                  )
-                ])),
-          );
-        } else {
-          return SizedBox();
-        }
-      },
+    return Container(
+      child: curr != null ? Text(curr!) : Text('kosong'),
     );
   }
 }

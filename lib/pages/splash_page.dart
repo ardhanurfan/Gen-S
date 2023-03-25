@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/ads_provider.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/providers/gallery_provider.dart';
@@ -35,10 +36,12 @@ class _SplashPageState extends State<SplashPage> {
         Provider.of<PlaylistProvider>(context, listen: false);
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context, listen: false);
+    AdsProvider adsProvider = Provider.of<AdsProvider>(context, listen: false);
     final String? token = await UserService().getTokenPreference();
 
     // Get general data
     await galleryProvider.getGallery();
+    await adsProvider.getAds();
     audioPlayerProvider.init();
 
     if (token == null) {
