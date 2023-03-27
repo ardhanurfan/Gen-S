@@ -104,4 +104,24 @@ class GalleryProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<bool> renameGallery(
+      {required String name, required int galleryId}) async {
+    try {
+      GalleryModel newPlaylist =
+          await GalleryService().rename(name: name, galleryId: galleryId);
+      var index = _galleries.indexOf(
+        _galleries.firstWhere(
+          (element) => element.id == galleryId,
+        ),
+      );
+      _galleries.removeAt(index);
+      _galleries.insert(index, newPlaylist);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
 }

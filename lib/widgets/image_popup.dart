@@ -85,32 +85,11 @@ class _ImagePopUpState extends State<ImagePopUp> {
                 ),
               ),
             )
-          : Visibility(
-              visible: imagesProvider.croppedImageFile != null,
-              child: Container(
-                height: 220,
-                width: 220,
-                alignment: Alignment.topRight,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: FileImage(imagesProvider.croppedImageFile!),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: GestureDetector(
-                  onTap: () async {
-                    await imagesProvider.cropImage(
-                        imageFile: imagesProvider.imageFile);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.crop,
-                      color: primaryUserColor,
-                    ),
-                  ),
-                ),
-              ),
+          : Image.file(
+              imagesProvider.croppedImageFile!,
+              width: 220,
+              height: 220,
+              fit: BoxFit.cover,
             ),
     );
   }

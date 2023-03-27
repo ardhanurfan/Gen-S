@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:music_player/models/gallery_model.dart';
 import 'package:music_player/providers/gallery_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
+import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/delete_popup.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,8 @@ class GalleryGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
+    TextEditingController galleryController =
+        TextEditingController(text: gallery.name);
 
     return GestureDetector(
       onTap: () {
@@ -92,6 +95,43 @@ class GalleryGrid extends StatelessWidget {
                     if (value == 0) {
                       showDialog(
                         context: context,
+                        builder: (context) => CustomPopUp(
+                          title: "Playlist Name",
+                          controller: galleryController,
+                          add: () async {
+                            if (await galleryProvider.renameGallery(
+                                name: galleryController.text,
+                                galleryId: gallery.id)) {
+                              ScaffoldMessenger.of(context)
+                                  .removeCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: successColor,
+                                  content: const Text(
+                                    'Rename gallery successfuly',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .removeCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: alertColor,
+                                  content: Text(
+                                    galleryProvider.errorMessage,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    } else {
+                      showDialog(
+                        context: context,
                         builder: (context) => DeletePopUp(
                           delete: () async {
                             if (await galleryProvider.deleteGallery(
@@ -127,7 +167,16 @@ class GalleryGrid extends StatelessWidget {
                   },
                   itemBuilder: (BuildContext context) => [
                     PopupMenuItem(
-                        value: 0,
+                      value: 0,
+                      child: Center(
+                        child: Text(
+                          'Rename',
+                          style: primaryUserColorText.copyWith(fontSize: 14),
+                        ),
+                      ),
+                    ),
+                    PopupMenuItem(
+                        value: 1,
                         child: Text(
                           "Delete",
                           style: primaryAdminColorText,

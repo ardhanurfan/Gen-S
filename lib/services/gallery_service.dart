@@ -83,4 +83,31 @@ class GalleryService {
       throw "Delete gallery failed";
     }
   }
+
+  Future<GalleryModel> rename(
+      {required int galleryId, required String name}) async {
+    late Uri url = UrlService().api('rename-gallery');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'id': galleryId,
+      'name': name,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'];
+      return GalleryModel.fromJson(data);
+    } else {
+      throw "Rename gallery failed";
+    }
+  }
 }
