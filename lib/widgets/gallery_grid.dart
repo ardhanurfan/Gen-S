@@ -179,15 +179,17 @@ class GalleryGrid extends StatelessWidget {
                       child: Center(
                         child: Text(
                           'Rename',
-                          style: primaryUserColorText.copyWith(fontSize: 14),
+                          style: primaryAdminColorText,
                         ),
                       ),
                     ),
                     PopupMenuItem(
                         value: 1,
-                        child: Text(
-                          "Delete",
-                          style: primaryAdminColorText,
+                        child: Center(
+                          child: Text(
+                            "Delete",
+                            style: primaryAdminColorText,
+                          ),
                         ))
                   ],
                 ),
