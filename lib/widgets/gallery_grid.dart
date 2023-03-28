@@ -59,24 +59,32 @@ class GalleryGrid extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    gallery.name,
-                    style: userProvider.user.role == "USER"
-                        ? primaryUserColorText.copyWith(
-                            fontSize: 16, fontWeight: medium)
-                        : primaryAdminColorText.copyWith(
-                            fontSize: 16, fontWeight: medium),
-                  ),
-                  Text(
-                    gallery.images.length.toString(),
-                    style: userProvider.user.role == "USER"
-                        ? primaryUserColorText.copyWith(fontSize: 12)
-                        : primaryAdminColorText.copyWith(fontSize: 12),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      gallery.name,
+                      style: userProvider.user.role == "USER"
+                          ? primaryUserColorText.copyWith(
+                              fontSize: 16,
+                              fontWeight: medium,
+                              overflow: TextOverflow.ellipsis)
+                          : primaryAdminColorText.copyWith(
+                              fontSize: 16,
+                              fontWeight: medium,
+                              overflow: TextOverflow.ellipsis),
+                    ),
+                    Text(
+                      gallery.images.length.toString(),
+                      style: userProvider.user.role == "USER"
+                          ? primaryUserColorText.copyWith(
+                              fontSize: 12, overflow: TextOverflow.ellipsis)
+                          : primaryAdminColorText.copyWith(
+                              fontSize: 12, overflow: TextOverflow.ellipsis),
+                    ),
+                  ],
+                ),
               ),
               Visibility(
                 visible:
