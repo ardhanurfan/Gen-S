@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../shared/theme.dart';
 
@@ -15,6 +17,7 @@ class AudioSuggestedTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     return Container(
       margin: const EdgeInsets.only(right: 24),
       width: 120,
@@ -39,7 +42,10 @@ class AudioSuggestedTile extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             title,
-            style: primaryUserColorText.copyWith(fontSize: 12),
+            style: (userProvider.user.role == "USER"
+                    ? primaryUserColorText
+                    : primaryAdminColorText)
+                .copyWith(fontSize: 12),
             overflow: TextOverflow.ellipsis,
           ),
         ],
