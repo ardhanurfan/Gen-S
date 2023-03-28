@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/models/audio_model.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/audio_tile.dart';
 import '../../widgets/playing_tile.dart';
@@ -12,6 +14,7 @@ class MostPlayedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     Widget header() {
       return SliverPadding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
@@ -29,17 +32,24 @@ class MostPlayedPage extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: primaryUserColor,
+                  color: userProvider.user.role == "USER"
+                      ? primaryUserColor
+                      : primaryAdminColor,
                 ),
               ),
               Text(
                 "Most Played",
-                style: primaryUserColorText.copyWith(
-                    fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
+                style: (userProvider.user.role == "USER"
+                        ? primaryUserColorText
+                        : primaryAdminColorText)
+                    .copyWith(
+                        fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
               ),
             ],
           ),
-          backgroundColor: backgroundUserColor,
+          backgroundColor: userProvider.user.role == "USER"
+              ? backgroundUserColor
+              : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -68,7 +78,9 @@ class MostPlayedPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundUserColor,
+      backgroundColor: userProvider.user.role == "USER"
+          ? backgroundUserColor
+          : backgroundAdminColor,
       body: SafeArea(
         child: Stack(
           alignment: Alignment.bottomCenter,

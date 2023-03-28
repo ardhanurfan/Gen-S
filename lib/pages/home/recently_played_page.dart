@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/models/audio_model.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class RecentlyPlayedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     Widget header() {
       return SliverPadding(
@@ -34,17 +36,24 @@ class RecentlyPlayedPage extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: primaryUserColor,
+                  color: userProvider.user.role == "USER"
+                      ? primaryUserColor
+                      : primaryAdminColor,
                 ),
               ),
               Text(
                 "Recently Played",
-                style: primaryUserColorText.copyWith(
-                    fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
+                style: (userProvider.user.role == "USER"
+                        ? primaryUserColorText
+                        : primaryAdminColorText)
+                    .copyWith(
+                        fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
               ),
             ],
           ),
-          backgroundColor: backgroundUserColor,
+          backgroundColor: userProvider.user.role == "USER"
+              ? backgroundUserColor
+              : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -82,7 +91,9 @@ class RecentlyPlayedPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundUserColor,
+      backgroundColor: userProvider.user.role == "USER"
+          ? backgroundUserColor
+          : backgroundAdminColor,
       body: SafeArea(
         child: Stack(
           alignment: Alignment.bottomCenter,

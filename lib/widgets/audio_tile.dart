@@ -78,7 +78,9 @@ class AudioTile extends StatelessWidget {
                             : (index + 1).toString(),
                         style: (isSelect
                                 ? secondaryColorText
-                                : primaryUserColorText)
+                                : (userProvider.user.role == "USER"
+                                    ? primaryUserColorText
+                                    : primaryAdminColorText))
                             .copyWith(
                                 fontWeight: bold,
                                 fontSize: 20,
