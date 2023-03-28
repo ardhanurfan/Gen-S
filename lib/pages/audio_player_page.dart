@@ -128,13 +128,18 @@ class AudioPlayerPage extends StatelessWidget {
             onTap: () => Navigator.pop(context),
             child: Icon(
               Icons.keyboard_arrow_down_rounded,
-              color: primaryUserColor,
+              color: userProvider.user.role == "USER"
+                  ? primaryUserColor
+                  : primaryAdminColor,
             ),
           ),
           Text(
             "Playing From",
             textAlign: TextAlign.center,
-            style: primaryUserColorText.copyWith(fontSize: 12),
+            style: (userProvider.user.role == "USER"
+                    ? primaryUserColorText
+                    : primaryAdminColorText)
+                .copyWith(fontSize: 12),
           ),
           Visibility(
             visible: userProvider.user.role == "ADMIN",
@@ -144,7 +149,7 @@ class AudioPlayerPage extends StatelessWidget {
               },
               child: Icon(
                 Icons.add_a_photo,
-                color: primaryUserColor,
+                color: primaryAdminColor,
               ),
             ),
           )
@@ -159,8 +164,10 @@ class AudioPlayerPage extends StatelessWidget {
           children: [
             Text(
               "${playlistProvider.currentPlaylistName} Playlist",
-              style:
-                  primaryUserColorText.copyWith(fontSize: 16, fontWeight: bold),
+              style: (userProvider.user.role == "USER"
+                      ? primaryUserColorText
+                      : primaryAdminColorText)
+                  .copyWith(fontSize: 16, fontWeight: bold),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
             ),
@@ -252,7 +259,10 @@ class AudioPlayerPage extends StatelessWidget {
                     ),
                     Text(
                       audio.title,
-                      style: primaryUserColorText.copyWith(
+                      style: (userProvider.user.role == "USER"
+                              ? primaryUserColorText
+                              : primaryAdminColorText)
+                          .copyWith(
                         fontSize: 16,
                         fontWeight: bold,
                       ),
@@ -274,8 +284,10 @@ class AudioPlayerPage extends StatelessWidget {
                     child: ProgressBar(
                       timeLabelLocation: TimeLabelLocation.above,
                       timeLabelPadding: 8,
-                      timeLabelTextStyle:
-                          primaryUserColorText.copyWith(fontSize: 12),
+                      timeLabelTextStyle: (userProvider.user.role == "USER"
+                              ? primaryUserColorText
+                              : primaryAdminColorText)
+                          .copyWith(fontSize: 12),
                       barHeight: 8,
                       baseBarColor: backgroundProgressIndicatorColor,
                       bufferedBarColor: Colors.transparent,
@@ -306,7 +318,9 @@ class AudioPlayerPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: backgroundUserColor,
+      backgroundColor: userProvider.user.role == "USER"
+          ? backgroundUserColor
+          : backgroundAdminColor,
       body: GestureDetector(
         onVerticalDragUpdate: (details) {
           if (details.delta.direction > 0) {
@@ -330,6 +344,7 @@ class AudioController extends StatelessWidget {
   Widget build(BuildContext context) {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -350,7 +365,9 @@ class AudioController extends StatelessWidget {
                   Icons.shuffle,
                   color: snapshot.data ?? false
                       ? secondaryColor
-                      : primaryUserColor,
+                      : (userProvider.user.role == "USER"
+                          ? primaryUserColor
+                          : primaryAdminColor),
                   size: 28,
                 ),
               );
@@ -361,7 +378,9 @@ class AudioController extends StatelessWidget {
           },
           child: Icon(
             Icons.fast_rewind_outlined,
-            color: primaryUserColor,
+            color: userProvider.user.role == "USER"
+                ? primaryUserColor
+                : primaryAdminColor,
             size: 34,
           ),
         ),
@@ -372,7 +391,9 @@ class AudioController extends StatelessWidget {
           },
           child: Icon(
             Icons.fast_forward_outlined,
-            color: primaryUserColor,
+            color: userProvider.user.role == "USER"
+                ? primaryUserColor
+                : primaryAdminColor,
             size: 34,
           ),
         ),
@@ -398,7 +419,9 @@ class AudioController extends StatelessWidget {
                 child: Icon(
                   current == LoopMode.one ? Icons.repeat_one : Icons.repeat,
                   color: current == LoopMode.off
-                      ? primaryUserColor
+                      ? (userProvider.user.role == "USER"
+                          ? primaryUserColor
+                          : primaryAdminColor)
                       : secondaryColor,
                   size: 28,
                 ),
