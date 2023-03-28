@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:just_audio/just_audio.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class PlayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     return StreamBuilder<PlayerState>(
       stream: audioPlayerProvider.audioPlayer.playerStateStream,
       builder: (context, snapshot) {
@@ -24,21 +26,27 @@ class PlayButton extends StatelessWidget {
           return IconButton(
             onPressed: audioPlayerProvider.audioPlayer.play,
             iconSize: size,
-            color: primaryUserColor,
+            color: userProvider.user.role == "USER"
+                ? primaryUserColor
+                : primaryAdminColor,
             icon: const Icon(Icons.play_circle),
           );
         } else if (processingState != ProcessingState.completed) {
           return IconButton(
             onPressed: audioPlayerProvider.audioPlayer.pause,
             iconSize: size,
-            color: primaryUserColor,
+            color: userProvider.user.role == "USER"
+                ? primaryUserColor
+                : primaryAdminColor,
             icon: const Icon(Icons.pause_circle),
           );
         }
         return IconButton(
           onPressed: audioPlayerProvider.audioPlayer.play,
           iconSize: size,
-          color: primaryUserColor,
+          color: userProvider.user.role == "USER"
+              ? primaryUserColor
+              : primaryAdminColor,
           icon: const Icon(Icons.play_circle),
         );
       },

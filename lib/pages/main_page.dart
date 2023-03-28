@@ -147,7 +147,10 @@ class MainPage extends StatelessWidget {
               const PlayingTile(),
               userProvider.user.role == "USER"
                   ? customBottomNavigationUser()
-                  : customBottomNavigationAdmin(),
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: customBottomNavigationAdmin(),
+                    ),
               // Visibility(
               //   visible: userProvider.user.role == "USER",
               //   child: const AdsBanner(),

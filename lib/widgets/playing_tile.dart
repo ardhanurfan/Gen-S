@@ -4,6 +4,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/audio_provider.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/play_button.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class PlayingTile extends StatelessWidget {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return StreamBuilder<SequenceState?>(
         stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
@@ -36,7 +38,16 @@ class PlayingTile extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: const Color(0xFF464343),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7, // changes position of shadow
+                  ),
+                ],
+                color: userProvider.user.role == "USER"
+                    ? const Color(0xFF464343)
+                    : const Color(0xffFFFFFF),
               ),
               child: Row(
                 children: [
@@ -63,13 +74,18 @@ class PlayingTile extends StatelessWidget {
                                 ),
                               ),
                         const SizedBox(width: 24),
-                        Text(
-                          audio.title,
-                          style: primaryUserColorText.copyWith(
-                            fontSize: 16,
-                            fontWeight: bold,
+                        Expanded(
+                          child: Text(
+                            audio.title,
+                            style: (userProvider.user.role == "USER"
+                                    ? primaryUserColorText
+                                    : primaryAdminColorText)
+                                .copyWith(
+                              fontSize: 16,
+                              fontWeight: bold,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
