@@ -1,5 +1,5 @@
 class UrlService {
-  String baseUrl = 'http://10.0.2.2/music-app/public/api/';
+  String baseUrl = 'http://gens.my.id:8000/api/';
   Uri api(String param) {
     return Uri.parse(baseUrl + param);
   }
