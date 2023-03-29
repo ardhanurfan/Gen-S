@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/models/image_model.dart';
 import 'package:music_player/models/position_data_model.dart';
@@ -181,7 +182,8 @@ class AudioPlayerPage extends StatelessWidget {
                 if (state?.sequence.isEmpty ?? true) {
                   return const SizedBox();
                 }
-                AudioModel audio = state!.currentSource!.tag;
+                MediaItem audioJson = state!.currentSource!.tag;
+                AudioModel audio = AudioModel.fromJson(audioJson.extras!);
                 audioProvider.updateHistory(audio: audio);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

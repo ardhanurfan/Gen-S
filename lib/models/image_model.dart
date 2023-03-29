@@ -16,6 +16,13 @@ class ImageModel extends Equatable {
     );
   }
 
+  toJson() {
+    return {
+      'id': id,
+      'url': url,
+    };
+  }
+
   @override
   List<Object?> get props => [url, id];
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 import 'image_model.dart';
 
@@ -32,6 +33,19 @@ class AudioModel extends Equatable {
     );
   }
 
+  toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'url': url,
+      'uploaderId': uploaderId,
+      'created_at': createdAt.toString(),
+      'images': List<Map<String, dynamic>>.from(
+        images.map((x) => x.toJson()),
+      ),
+    };
+  }
+
   @override
-  List<Object?> get props => [id, title, url, images];
+  List<Object?> get props => [id, title, url, uploaderId, createdAt, images];
 }

@@ -1,5 +1,5 @@
 class UrlService {
-  String baseUrl = 'http://gens.my.id:8000/api/';
+  String baseUrl = 'https://gens.my.id/api/';
   Uri api(String param) {
     return Uri.parse(baseUrl + param);
   }

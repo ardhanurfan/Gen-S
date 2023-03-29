@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/providers/playlist_provider.dart';
@@ -57,7 +58,8 @@ class AudioTile extends StatelessWidget {
             final state = snapshot.data;
             bool isSelect = false;
             if (state?.sequence.isNotEmpty ?? false) {
-              AudioModel curraudio = state!.currentSource!.tag;
+              MediaItem audioJson = state!.currentSource!.tag;
+              AudioModel curraudio = AudioModel.fromJson(audioJson.extras!);
               isSelect = curraudio.id == audio.id;
             }
             return Container(

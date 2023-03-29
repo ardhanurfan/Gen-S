@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:music_player/models/image_model.dart';
 
 import '../models/audio_model.dart';
@@ -24,13 +25,20 @@ class AudioPlayerProvider extends ChangeNotifier {
           .map(
             (audio) => AudioSource.uri(
               Uri.parse(audio.url),
-              tag: AudioModel(
-                id: audio.id,
+              tag: MediaItem(
+                id: audio.id.toString(),
                 title: audio.title,
-                url: audio.url,
-                uploaderId: audio.uploaderId,
-                createdAt: audio.createdAt,
-                images: audio.images,
+                artUri: audio.images.isEmpty
+                    ? null
+                    : Uri.parse(audio.images[0].url),
+                extras: AudioModel(
+                  id: audio.id,
+                  title: audio.title,
+                  url: audio.url,
+                  uploaderId: audio.uploaderId,
+                  createdAt: audio.createdAt,
+                  images: audio.images,
+                ).toJson(),
               ),
             ),
           )
@@ -47,9 +55,32 @@ class AudioPlayerProvider extends ChangeNotifier {
   void addAudio({required AudioModel audio, isPlaylist = false}) {
     if (_currentPlaylist.isNotEmpty) {
       if (isPlaylist) {
-        _playlist.add(AudioSource.uri(Uri.parse(audio.url), tag: audio));
+        _playlist.add(
+          AudioSource.uri(
+            Uri.parse(audio.url),
+            tag: MediaItem(
+              id: audio.id.toString(),
+              title: audio.title,
+              artUri:
+                  audio.images.isEmpty ? null : Uri.parse(audio.images[0].url),
+              extras: audio.toJson(),
+            ),
+          ),
+        );
       } else {
-        _playlist.insert(0, AudioSource.uri(Uri.parse(audio.url), tag: audio));
+        _playlist.insert(
+          0,
+          AudioSource.uri(
+            Uri.parse(audio.url),
+            tag: MediaItem(
+              id: audio.id.toString(),
+              title: audio.title,
+              artUri:
+                  audio.images.isEmpty ? null : Uri.parse(audio.images[0].url),
+              extras: audio.toJson(),
+            ),
+          ),
+        );
       }
       notifyListeners();
     }
