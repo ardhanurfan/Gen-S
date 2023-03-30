@@ -122,6 +122,9 @@ class _SignInPageState extends State<SignInPage> {
 
     Widget content() {
       return ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: [
           header(),
