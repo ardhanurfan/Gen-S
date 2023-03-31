@@ -48,11 +48,9 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>To play and upload audios</string>
+	<string>Explain why your app uses music</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To add and show photos</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>To ears the audios</string>
+	<string>Explain why your app uses photo library</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
