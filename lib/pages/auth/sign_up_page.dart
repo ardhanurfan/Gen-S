@@ -45,7 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
           SnackBar(
             backgroundColor: successColor,
             content: const Text(
-              'Register success check your email verification',
+              'Register success check your inbox or spam email verification',
               textAlign: TextAlign.center,
             ),
           ),

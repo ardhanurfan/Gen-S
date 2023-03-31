@@ -89,7 +89,9 @@ class AudioTile extends StatelessWidget {
                                 foreground: Paint()
                                   ..style = PaintingStyle.stroke
                                   ..strokeWidth = 0.1
-                                  ..color = primaryUserColor),
+                                  ..color = userProvider.user.role == "USER"
+                                      ? primaryUserColor
+                                      : primaryAdminColor),
                       ),
                     ),
                   ),

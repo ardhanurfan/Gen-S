@@ -5,7 +5,6 @@ import 'package:music_player/pages/search_page.dart';
 import 'package:music_player/pages_admin/ads_page.dart';
 import 'package:music_player/providers/page_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
-import 'package:music_player/widgets/ads_banner.dart';
 import 'package:music_player/widgets/playing_tile.dart';
 import 'package:provider/provider.dart';
 

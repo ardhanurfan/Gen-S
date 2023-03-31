@@ -46,7 +46,7 @@ class AudioProvider extends ChangeNotifier {
 
   Future<bool> updateHistory({required AudioModel audio}) async {
     try {
-      if (_currAudio == null || _currAudio != audio) {
+      if (_currAudio == null || _currAudio!.id != audio.id) {
         _currAudio = audio;
         if (await AudioService().updateHistory(audioId: audio.id)) {
           var token = await UserService().getTokenPreference() ?? '';
@@ -68,7 +68,8 @@ class AudioProvider extends ChangeNotifier {
 
   Future<bool> audioPicker() async {
     try {
-      var result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['mp3']);
+      var result = await FilePicker.platform
+          .pickFiles(type: FileType.custom, allowedExtensions: ['mp3']);
       _audioPickedPath = result!.files.first.path!;
       return true;
     } catch (e) {
@@ -201,9 +202,9 @@ class AudioProvider extends ChangeNotifier {
 
   void deleteImageFromGallery({required List<ImageModel> imagesDel}) {
     for (var image in imagesDel) {
-      var currFound = currAudio!.images.contains(image);
+      var currFound = _currAudio!.images.contains(image);
       if (currFound) {
-        currAudio!.images.remove(image);
+        _currAudio!.images.remove(image);
       }
 
       var found = _audios.where((element) => element.images.contains(image));

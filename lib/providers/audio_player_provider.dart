@@ -45,7 +45,6 @@ class AudioPlayerProvider extends ChangeNotifier {
           .toList(),
     );
     _currentPlaylist = playlist;
-    notifyListeners();
     await _audioPlayer.setAudioSource(_playlist, initialIndex: index);
 
     await _audioPlayer.seek(const Duration(seconds: 0), index: index);

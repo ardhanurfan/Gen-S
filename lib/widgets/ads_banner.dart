@@ -9,7 +9,7 @@ class AdsBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
         height: 59,
         width: double.infinity,
         child: Stack(children: [
