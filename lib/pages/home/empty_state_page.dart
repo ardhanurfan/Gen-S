@@ -37,7 +37,7 @@ class EmptyStatePage extends StatelessWidget {
       );
     }
 
-    return Column(
+    return ListView(
       children: [
         mainIcon(),
         mainText(),
