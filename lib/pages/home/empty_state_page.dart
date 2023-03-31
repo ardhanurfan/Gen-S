@@ -37,11 +37,16 @@ class EmptyStatePage extends StatelessWidget {
       );
     }
 
-    return ListView(
-      children: [
-        mainIcon(),
-        mainText(),
-      ],
+    return Expanded(
+      child: ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
+        children: [
+          mainIcon(),
+          mainText(),
+        ],
+      ),
     );
   }
 }

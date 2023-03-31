@@ -54,6 +54,9 @@ class OtpPage extends StatelessWidget {
       backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: ListView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           padding: EdgeInsets.symmetric(horizontal: defaultMargin),
           children: [
             Container(

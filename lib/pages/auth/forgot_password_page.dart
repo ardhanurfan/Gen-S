@@ -57,6 +57,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       backgroundColor: backgroundUserColor,
       body: SafeArea(
         child: ListView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           padding: EdgeInsets.symmetric(horizontal: defaultMargin),
           children: [
             Container(

@@ -114,6 +114,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Widget content() {
       return ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         children: [
           header(),

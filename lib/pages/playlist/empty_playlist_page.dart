@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/widgets/custom_popup.dart';
+import 'package:provider/provider.dart';
 
 import '../../../shared/theme.dart';
 import '../../../widgets/custom_button.dart';
+import '../../providers/playlist_provider.dart';
 
 class EmptyPlaylistPage extends StatelessWidget {
   const EmptyPlaylistPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    TextEditingController controller = TextEditingController(text: '');
+
     Widget mainIcon() {
       return Container(
         margin: const EdgeInsets.only(top: 120),
@@ -42,15 +48,51 @@ class EmptyPlaylistPage extends StatelessWidget {
           radiusButton: 32,
           buttonColor: secondaryColor,
           buttonText: "Create Playlist",
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => CustomPopUp(
+                controller: controller,
+                title: "Playlist Name",
+                add: () async {
+                  if (await playlistProvider.addPlaylist(
+                      name: controller.text)) {
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: successColor,
+                        content: const Text(
+                          'Add playlist successfuly',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: alertColor,
+                        content: Text(
+                          playlistProvider.errorMessage,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            );
+          },
           heightButton: 53,
         ),
       );
     }
 
     Widget content() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+      return ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         children: [
           mainIcon(),
           mainText(),
