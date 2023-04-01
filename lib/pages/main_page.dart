@@ -3,8 +3,10 @@ import 'package:music_player/pages/gallery/gallery_page.dart';
 import 'package:music_player/pages/playlist/playlist_page.dart';
 import 'package:music_player/pages/search_page.dart';
 import 'package:music_player/pages_admin/ads_page.dart';
+import 'package:music_player/providers/ads_provider.dart';
 import 'package:music_player/providers/page_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
+import 'package:music_player/widgets/ads_banner.dart';
 import 'package:music_player/widgets/playing_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +20,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    AdsProvider adsProvider = Provider.of<AdsProvider>(context);
     Widget buildContent() {
       int newPage = pageProvider.page;
       switch (newPage) {
@@ -150,10 +153,9 @@ class MainPage extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 10),
                       child: customBottomNavigationAdmin(),
                     ),
-              // Visibility(
-              //   visible: userProvider.user.role == "USER",
-              //   child: const AdsBanner(),
-              // )
+              Visibility(
+                  visible: userProvider.user.role == "USER",
+                  child: AdsBanner(listOfAds: adsProvider.ads))
             ],
           ),
         ],

@@ -1,23 +1,27 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/ads_model.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdsBanner extends StatelessWidget {
-  const AdsBanner({super.key, required this.ads});
-  final AdsModel ads;
+  const AdsBanner({super.key, required this.listOfAds});
+  final List<AdsModel> listOfAds;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: 59,
-        width: double.infinity,
-        child: Stack(children: [
+    return CarouselSlider(
+      disableGesture: true,
+      items: listOfAds.map((e) {
+        return Stack(children: [
           GestureDetector(
               onTap: () async {
-                await _launchURL(ads.url);
+                await _launchURL(e.link);
               },
-              child: Image.network(ads.url)),
+              child: Image.network(
+                e.url,
+                fit: BoxFit.cover,
+              )),
           Align(
             alignment: Alignment.topRight,
             child: Icon(
@@ -25,7 +29,18 @@ class AdsBanner extends StatelessWidget {
               color: backgroundUserColor,
             ),
           )
-        ]));
+        ]);
+      }).toList(),
+      options: CarouselOptions(
+        autoPlay: true,
+        enableInfiniteScroll: true,
+        viewportFraction: 1,
+        enlargeCenterPage: false,
+        height: 59,
+        autoPlayAnimationDuration: const Duration(milliseconds: 2000),
+        autoPlayInterval: const Duration(seconds: 6),
+      ),
+    );
   }
 
   _launchURL(String url) async {
