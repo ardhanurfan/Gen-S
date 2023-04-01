@@ -82,30 +82,39 @@ class HomePage extends StatelessWidget {
 
     Widget header() {
       return SliverPadding(
-        padding:
-            EdgeInsets.only(right: defaultMargin, left: defaultMargin, top: 24),
+        padding: EdgeInsets.only(
+            right: defaultMargin, left: defaultMargin, top: 24, bottom: 10),
         sliver: SliverAppBar(
           stretch: true,
           elevation: 0,
           automaticallyImplyLeading: false,
           titleSpacing: 0,
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
-                onTap: () async {
-                  handleAddAudio();
-                },
-                child: Icon(
-                  Icons.add,
-                  size: 36,
-                  color: userProvider.user.role == "USER"
-                      ? primaryUserColor
-                      : primaryAdminColor,
-                ),
+              Image.asset(
+                "assets/logo.png",
+                fit: BoxFit.cover,
+                height: 70,
               ),
-              const SizedBox(width: 16),
-              const SettingButton(),
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      handleAddAudio();
+                    },
+                    child: Icon(
+                      Icons.add,
+                      size: 36,
+                      color: userProvider.user.role == "USER"
+                          ? primaryUserColor
+                          : primaryAdminColor,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const SettingButton(),
+                ],
+              )
             ],
           ),
           backgroundColor: userProvider.user.role == "USER"

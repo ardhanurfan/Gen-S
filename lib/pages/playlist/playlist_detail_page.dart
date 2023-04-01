@@ -21,7 +21,8 @@ class PlaylistDetailPage extends StatelessWidget {
 
     Widget playlistInfo() {
       return Padding(
-        padding: const EdgeInsets.only(top: 16, bottom: 8),
+        padding: EdgeInsets.only(
+            top: 16, bottom: 8, right: defaultMargin, left: defaultMargin),
         child: Column(
           children: [
             playlistProvider.audios.isEmpty
