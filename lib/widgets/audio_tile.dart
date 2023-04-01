@@ -154,7 +154,11 @@ class AudioTile extends StatelessWidget {
                         child: PopupMenuButton(
                           icon: Icon(
                             Icons.more_vert,
-                            color: isSelect ? secondaryColor : primaryUserColor,
+                            color: isSelect
+                                ? secondaryColor
+                                : (userProvider.user.role == "USER"
+                                    ? primaryUserColor
+                                    : primaryAdminColor),
                           ),
                           color: dropDownColor,
                           shape: RoundedRectangleBorder(
