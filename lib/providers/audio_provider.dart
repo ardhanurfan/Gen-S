@@ -125,14 +125,14 @@ class AudioProvider extends ChangeNotifier {
 
   void sortAscending() {
     _audios.sort(
-      (a, b) => a.title.compareTo(b.title),
+      (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()),
     );
     notifyListeners();
   }
 
   void sortDescending() {
     _audios.sort(
-      (a, b) => b.title.compareTo(a.title),
+      (a, b) => b.title.toLowerCase().compareTo(a.title.toLowerCase()),
     );
     notifyListeners();
   }
