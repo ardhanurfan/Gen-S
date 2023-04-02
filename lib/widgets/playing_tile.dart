@@ -7,6 +7,7 @@ import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/play_button.dart';
 import 'package:provider/provider.dart';
 
@@ -43,8 +44,10 @@ class PlayingTile extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7, // changes position of shadow
+                    spreadRadius: userProvider.user.role == "USER" ? 0 : 5,
+                    blurRadius: userProvider.user.role == "USER"
+                        ? 0
+                        : 7, // changes position of shadow
                   ),
                 ],
                 color: userProvider.user.role == "USER"
@@ -66,15 +69,8 @@ class PlayingTile extends StatelessWidget {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.asset(
-                                  'assets/ex_gallery1.png',
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                            : const DefaultImage(
+                                type: ImageType.audio, size: 60),
                         const SizedBox(width: 24),
                         Expanded(
                           child: Text(

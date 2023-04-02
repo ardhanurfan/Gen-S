@@ -154,7 +154,8 @@ class MainPage extends StatelessWidget {
                       child: customBottomNavigationAdmin(),
                     ),
               Visibility(
-                  visible: userProvider.user.role == "USER",
+                  visible: userProvider.user.role == "USER" &&
+                      adsProvider.ads.isNotEmpty,
                   child: AdsBanner(listOfAds: adsProvider.ads))
             ],
           ),

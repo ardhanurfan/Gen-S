@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/providers/ads_provider.dart';
+import 'package:music_player/providers/images_provider.dart';
 import 'package:music_player/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +23,14 @@ class AdsDetailPage extends StatefulWidget {
   State<AdsDetailPage> createState() => _AdsDetailPageState();
 }
 
+String contentPath = '';
+
 class _AdsDetailPageState extends State<AdsDetailPage> {
-  String contentPath = '';
+  @override
+  void initState() {
+    super.initState();
+    contentPath = '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,65 +41,61 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
     TextEditingController linkController =
         TextEditingController(text: widget.link);
     AdsProvider adsProvider = Provider.of<AdsProvider>(context);
+    ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
 
     bool isEdit = widget.frequency.isNotEmpty &&
         widget.title.isNotEmpty &&
         widget.link.isNotEmpty;
 
     Future<void> handlePicker() async {
-      if (await adsProvider.videoPicker()) {
-        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: successColor,
-            content: const Text(
-              'Pick Content Successfuly',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-        setState(() {
-          contentPath = adsProvider.videoPickedPath;
-        });
-      } else {
-        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: alertColor,
-            content: Text(
-              adsProvider.errorMessage,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        );
-      }
+      imagesProvider.setCroppedImageFile = null;
+      await imagesProvider.pickImage();
+      await imagesProvider.cropImage(imageFile: imagesProvider.imageFile);
+      setState(() {
+        if (imagesProvider.croppedImagePath.isNotEmpty) {
+          contentPath = imagesProvider.croppedImagePath;
+        }
+      });
     }
 
     Future<void> handleSave() async {
-      if (await adsProvider.addAds(
-        contentPath: contentPath,
-        frequency: frequencyController.text,
-        link: linkController.text,
-        title: titleController.text,
-      )) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: successColor,
-            content: const Text(
-              'Add Ads Successfuly',
-              textAlign: TextAlign.center,
+      if (contentPath.isNotEmpty) {
+        if (await adsProvider.addAds(
+          contentPath: contentPath,
+          frequency: frequencyController.text,
+          link: linkController.text,
+          title: titleController.text,
+        )) {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: successColor,
+              content: const Text(
+                'Add Ads Successfuly',
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: alertColor,
+              content: Text(
+                adsProvider.errorMessage,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: alertColor,
-            content: Text(
-              adsProvider.errorMessage,
+            content: const Text(
+              "Content is empty",
               textAlign: TextAlign.center,
             ),
           ),
@@ -169,20 +172,25 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
               Visibility(
                 visible: !isEdit,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 60, left: 50, right: 50),
+                  padding: const EdgeInsets.only(top: 60),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        Image.asset(
-                          "assets/ex_gallery.png",
-                          height: 220,
-                          fit: BoxFit.fill,
-                        ),
+                        contentPath.isNotEmpty
+                            ? Image.asset(
+                                contentPath,
+                                height: 60,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
+                                color: const Color.fromARGB(255, 223, 223, 223),
+                              ),
                         Container(
-                          height: 220,
-                          width: 220,
+                          height: 60,
+                          width: double.infinity,
                           color: Colors.black45,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -193,7 +201,7 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                                 },
                                 child: Icon(
                                   Icons.upload,
-                                  size: 40,
+                                  size: 24,
                                   color: primaryUserColor,
                                 ),
                               ),
@@ -202,7 +210,8 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                                 child: Text(
                                   'Content Picked',
                                   style: primaryUserColorText.copyWith(
-                                      fontSize: 16),
+                                    fontSize: 12,
+                                  ),
                                 ),
                               )
                             ],
@@ -295,29 +304,4 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
       body: SafeArea(child: content()),
     );
   }
-
-//   Future pickDateTime() async {
-//     DateTime? date = await pickDate();
-//     if (date == null) return;
-
-//     TimeOfDay? time = await pickTime();
-//     if (time == null) return;
-
-//     final pickedDateTime =
-//         DateTime(date.year, date.month, date.day, time.hour, time.minute);
-
-//     setState(() {
-//       dateTime = pickedDateTime;
-//     });
-//   }
-
-//   Future<DateTime?> pickDate() => showDatePicker(
-//       context: context,
-//       initialDate: dateTime,
-//       firstDate: DateTime.now(),
-//       lastDate: DateTime(2500));
-
-//   Future<TimeOfDay?> pickTime() => showTimePicker(
-//       context: context,
-//       initialTime: TimeOfDay(hour: dateTime.hour, minute: dateTime.minute));
 }

@@ -5,6 +5,7 @@ import 'package:music_player/pages/playlist/playlist_detail_page.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_popup.dart';
+import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/delete_popup.dart';
 import 'package:provider/provider.dart';
 
@@ -46,32 +47,14 @@ class PlaylistTile extends StatelessWidget {
               margin: const EdgeInsets.only(right: 24),
               width: 60,
               child: playlist.audios.isEmpty
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: Image.asset(
-                        "assets/ex_playlist.png",
-                        width: 200,
-                        height: 200,
-                        alignment: Alignment.center,
-                      ),
-                    )
+                  ? const DefaultImage(type: ImageType.playlist, size: 60)
                   : playlist.audios[0].images.isEmpty
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: Image.asset(
-                            "assets/ex_playlist.png",
-                            width: 200,
-                            height: 200,
-                            alignment: Alignment.center,
-                          ),
-                        )
+                      ? const DefaultImage(type: ImageType.playlist, size: 60)
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(4),
                           child: CachedNetworkImage(
                             imageUrl: playlist.audios[0].images[0].url,
                             fit: BoxFit.cover,
-                            width: 200,
-                            height: 200,
                             alignment: Alignment.center,
                           ),
                         ),

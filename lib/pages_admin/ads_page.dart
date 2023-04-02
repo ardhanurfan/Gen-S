@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/ads_model.dart';
 import 'package:music_player/pages_admin/ads_detail_page.dart';
@@ -144,14 +145,13 @@ class AdsGrid extends StatelessWidget {
             );
           },
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: Image.asset(
-              "assets/ex_gallery.png",
-              height: 160,
-              width: 160,
-              fit: BoxFit.fill,
-            ),
-          ),
+              borderRadius: BorderRadius.circular(4),
+              child: CachedNetworkImage(
+                imageUrl: ads.url,
+                height: 160,
+                width: 160,
+                fit: BoxFit.cover,
+              )),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 4),

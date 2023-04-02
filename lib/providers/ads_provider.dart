@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:music_player/models/ads_model.dart';
 import 'package:music_player/services/ads_services.dart';
@@ -7,12 +6,10 @@ class AdsProvider extends ChangeNotifier {
   List<AdsModel> _ads = [];
   List<AdsModel> _defAds = [];
   String _errorMessage = '';
-  String _videoPickedPath = '';
 
   List<AdsModel> get ads => _ads;
   List<AdsModel> get defAds => _defAds;
   String get errorMessage => _errorMessage;
-  String get videoPickedPath => _videoPickedPath;
 
   Future<void> getAds() async {
     try {
@@ -101,17 +98,6 @@ class AdsProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _errorMessage = e.toString();
-      return false;
-    }
-  }
-
-  Future<bool> videoPicker() async {
-    try {
-      var result = await FilePicker.platform.pickFiles(type: FileType.video);
-      _videoPickedPath = result!.files.first.path!;
-      return true;
-    } catch (e) {
-      _errorMessage = "Pick content canceled";
       return false;
     }
   }

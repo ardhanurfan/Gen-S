@@ -4,6 +4,7 @@ import 'package:music_player/models/gallery_model.dart';
 import 'package:music_player/providers/gallery_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/widgets/custom_popup.dart';
+import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/delete_popup.dart';
 import 'package:provider/provider.dart';
 
@@ -38,15 +39,7 @@ class GalleryGrid extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           gallery.images.isEmpty
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: Image.asset(
-                    "assets/ex_gallery.png",
-                    height: 160,
-                    width: 160,
-                    fit: BoxFit.cover,
-                  ),
-                )
+              ? const DefaultImage(type: ImageType.gallery, size: 160)
               : ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: CachedNetworkImage(

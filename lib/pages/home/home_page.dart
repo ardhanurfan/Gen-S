@@ -93,9 +93,11 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Image.asset(
-                "assets/logo.png",
+                userProvider.user.role == "ADMIN"
+                    ? "assets/logo-black-font.png"
+                    : "assets/logo-white-font.png",
                 fit: BoxFit.cover,
-                height: 70,
+                width: 100,
               ),
               Row(
                 children: [

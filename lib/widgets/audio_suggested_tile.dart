@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/providers/user_provider.dart';
+import 'package:music_player/widgets/default_image.dart';
 import 'package:provider/provider.dart';
 
 import '../shared/theme.dart';
@@ -26,12 +27,7 @@ class AudioSuggestedTile extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: coverUrl.isEmpty
-                ? Image.asset(
-                    'assets/bg_song_example.png',
-                    width: 120,
-                    height: 120,
-                    fit: BoxFit.cover,
-                  )
+                ? const DefaultImage(type: ImageType.audio, size: 120)
                 : CachedNetworkImage(
                     imageUrl: coverUrl,
                     width: 120,

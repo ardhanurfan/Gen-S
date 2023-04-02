@@ -5,6 +5,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/providers/playlist_provider.dart';
+import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/delete_popup.dart';
 import 'package:provider/provider.dart';
 
@@ -100,13 +101,7 @@ class AudioTile extends StatelessWidget {
                     margin: const EdgeInsets.only(right: 24),
                     width: 60,
                     child: audio.images.isEmpty
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.asset(
-                              "assets/bg_song_example.png",
-                              fit: BoxFit.cover,
-                            ),
-                          )
+                        ? const DefaultImage(type: ImageType.audio, size: 60)
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: CachedNetworkImage(

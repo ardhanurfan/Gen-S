@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
+import 'package:music_player/widgets/default_image.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/playing_tile.dart';
@@ -26,25 +27,9 @@ class PlaylistDetailPage extends StatelessWidget {
         child: Column(
           children: [
             playlistProvider.audios.isEmpty
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: Image.asset(
-                      "assets/ex_playlist.png",
-                      width: 200,
-                      height: 200,
-                      alignment: Alignment.center,
-                    ),
-                  )
+                ? const DefaultImage(type: ImageType.playlist, size: 200)
                 : playlistProvider.audios[0].images.isEmpty
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: Image.asset(
-                          "assets/ex_playlist.png",
-                          width: 200,
-                          height: 200,
-                          alignment: Alignment.center,
-                        ),
-                      )
+                    ? const DefaultImage(type: ImageType.playlist, size: 200)
                     : ClipRRect(
                         borderRadius: BorderRadius.circular(4),
                         child: CachedNetworkImage(

@@ -65,7 +65,7 @@ class AdsService {
       var data = jsonDecode(responsed.body)['data'];
       return AdsModel.fromJson(data);
     } else {
-      throw "Add ads failed";
+      throw "All form is required";
     }
   }
 

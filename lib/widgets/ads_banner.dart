@@ -20,6 +20,7 @@ class AdsBanner extends StatelessWidget {
               },
               child: Image.network(
                 e.url,
+                width: double.infinity,
                 fit: BoxFit.cover,
               )),
           Align(
@@ -36,7 +37,7 @@ class AdsBanner extends StatelessWidget {
         enableInfiniteScroll: true,
         viewportFraction: 1,
         enlargeCenterPage: false,
-        height: 59,
+        height: 60,
         autoPlayAnimationDuration: const Duration(milliseconds: 2000),
         autoPlayInterval: const Duration(seconds: 6),
       ),

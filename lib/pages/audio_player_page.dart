@@ -14,6 +14,7 @@ import 'package:music_player/providers/images_provider.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/delete_popup.dart';
 import 'package:music_player/widgets/image_popup.dart';
 import 'package:music_player/widgets/play_button.dart';
@@ -189,15 +190,7 @@ class AudioPlayerPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     audioProvider.currAudio!.images.isEmpty
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(32),
-                            child: Image.asset(
-                              "assets/audio_page.png",
-                              height: 280,
-                              width: 280,
-                              fit: BoxFit.cover,
-                            ),
-                          )
+                        ? const DefaultImage(type: ImageType.player, size: 280)
                         : CarouselSlider(
                             items: audioProvider.currAudio!.images.map((image) {
                               return Stack(
