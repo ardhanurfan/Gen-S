@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/ads_model.dart';
-import 'package:music_player/shared/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdsBanner extends StatelessWidget {
