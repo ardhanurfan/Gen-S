@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.music_player">
+    package="id.my.application.gens">
     <queries>
     <intent>
         <action android:name="android.intent.action.VIEW" />
@@ -11,9 +11,9 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
-        android:label="music_player"
+        android:label="Gen-S"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon"
+        android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"

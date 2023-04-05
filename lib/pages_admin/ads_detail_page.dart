@@ -183,7 +183,7 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        contentPath.isNotEmpty
+                        contentFile != null
                             ? Image.file(
                                 contentFile!,
                                 height: 60,

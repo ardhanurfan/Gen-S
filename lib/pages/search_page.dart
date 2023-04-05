@@ -99,7 +99,9 @@ class _SearchPageState extends State<SearchPage> {
           //
           // EMPTY STATE
           Visibility(
-            visible: foundAudio.isEmpty && foundGallery.isEmpty,
+            visible: foundAudio.isEmpty &&
+                foundGallery.isEmpty &&
+                foundPlaylist.isEmpty,
             child: Container(
               margin: const EdgeInsets.only(top: 90),
               child: Image.asset(

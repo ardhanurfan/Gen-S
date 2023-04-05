@@ -17,7 +17,7 @@ class AdsPage extends StatelessWidget {
 
     Widget header() {
       return SliverPadding(
-        padding: const EdgeInsets.only(top: 24, bottom: 42),
+        padding: const EdgeInsets.only(top: 24),
         sliver: SliverAppBar(
           stretch: true,
           elevation: 0,
@@ -62,7 +62,7 @@ class AdsPage extends StatelessWidget {
           parent: AlwaysScrollableScrollPhysics(),
         ),
         padding:
-            const EdgeInsets.only(top: 24, bottom: 100, left: 20, right: 20),
+            const EdgeInsets.only(top: 24, bottom: 240, left: 20, right: 20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1 / 1.4,
