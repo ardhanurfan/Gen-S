@@ -6,7 +6,7 @@ double defaultMargin = 36.0;
 
 Color backgroundUserColor = const Color(0xff282727);
 Color primaryUserColor = const Color(0xffFFFFFF);
-Color secondaryColor = const Color(0xff7B6AE1);
+Color secondaryColor = const Color(0xff19A7CE);
 Color greyColor = const Color(0xffBDBDBD);
 Color darkGreyColor = const Color(0xff6A6767);
 Color progressIndicatorColor = const Color(0xff6D6D6D);
