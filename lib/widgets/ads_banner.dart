@@ -16,6 +16,7 @@ class AdsBanner extends StatelessWidget {
         return Stack(children: [
           GestureDetector(
               onTap: () async {
+                print(e.link);
                 await _launchURL(e.link);
               },
               child: Image.network(
@@ -45,7 +46,10 @@ class AdsBanner extends StatelessWidget {
   }
 
   _launchURL(String url) async {
-    final uri = Uri.parse(url);
+    Uri uri = Uri.parse(url);
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      uri = Uri.parse("http://$url");
+    }
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.platformDefault);
     } else {
