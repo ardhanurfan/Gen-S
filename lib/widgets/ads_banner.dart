@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/ads_model.dart';
-import 'package:music_player/shared/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdsBanner extends StatelessWidget {
@@ -13,25 +12,15 @@ class AdsBanner extends StatelessWidget {
     return CarouselSlider(
       disableGesture: true,
       items: listOfAds.map((e) {
-        return Stack(children: [
-          GestureDetector(
-              onTap: () async {
-                print(e.link);
-                await _launchURL(e.link);
-              },
-              child: Image.network(
-                e.url,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              )),
-          Align(
-            alignment: Alignment.topRight,
-            child: Icon(
-              Icons.close,
-              color: backgroundUserColor,
-            ),
-          )
-        ]);
+        return GestureDetector(
+            onTap: () async {
+              await _launchURL(e.link);
+            },
+            child: Image.network(
+              e.url,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ));
       }).toList(),
       options: CarouselOptions(
         autoPlay: true,

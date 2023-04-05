@@ -121,7 +121,7 @@ class PlaylistPage extends StatelessWidget {
         ),
         proxyDecorator: proxyDecorator,
         padding: EdgeInsets.only(
-            right: defaultMargin, left: defaultMargin, top: 24, bottom: 180),
+            right: defaultMargin, left: defaultMargin, top: 24, bottom: 240),
         onReorder: (int oldIndex, int newIndex) async {
           if (await playlistProvider.swapPlaylist(
               oldIndex: oldIndex, newIndex: newIndex)) {

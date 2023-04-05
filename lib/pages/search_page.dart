@@ -111,7 +111,9 @@ class _SearchPageState extends State<SearchPage> {
           ),
           // ADA ISI
           Visibility(
-            visible: foundAudio.isNotEmpty || foundGallery.isNotEmpty,
+            visible: foundAudio.isNotEmpty ||
+                foundGallery.isNotEmpty ||
+                foundPlaylist.isNotEmpty,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -140,7 +142,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 Visibility(
                   visible: foundPlaylist.isNotEmpty &&
-                      userProvider.user.role == "ADMIN",
+                      userProvider.user.role == "USER",
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
