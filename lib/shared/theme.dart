@@ -16,6 +16,7 @@ Color successColor = const Color(0xFF38ABBE);
 Color alertColor = const Color(0xFFED6363);
 Color dropDownColor = const Color(0xFF4A4A4A);
 Color addSongsColor = const Color(0xFF363636);
+Color orangeColor = const Color(0xFFFF7B54);
 
 Color backgroundAdminColor = const Color(0xffFFFFFF);
 Color primaryAdminColor = const Color(0xff282727);

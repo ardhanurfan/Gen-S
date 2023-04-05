@@ -46,7 +46,7 @@ class EmptyPlaylistPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: defaultMargin),
         child: CustomButton(
           radiusButton: 32,
-          buttonColor: secondaryColor,
+          buttonColor: orangeColor,
           buttonText: "Create Playlist",
           onPressed: () {
             showDialog(

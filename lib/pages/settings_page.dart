@@ -133,7 +133,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     )
                   : CustomButton(
                       radiusButton: 32,
-                      buttonColor: secondaryColor,
+                      buttonColor: orangeColor,
                       buttonText: "Log Out",
                       onPressed: () {
                         handleLogout();
