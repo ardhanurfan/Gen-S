@@ -1,10 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-<<<<<<< HEAD
-    package="id.my.application.gens">
-=======
     package="com.example.music_player">
     <!-- Provide required visibility configuration for API level 30 and above -->
->>>>>>> 2d5d012f6f61d2caa69affcdc17e1e793783744d
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
@@ -25,9 +21,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
     <application
-        android:label="Gen-S"
+        android:label="music_player"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
