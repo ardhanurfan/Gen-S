@@ -22,7 +22,7 @@
     <application
         android:label="music_player"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon"
+        android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
