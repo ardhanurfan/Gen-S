@@ -119,7 +119,7 @@ class GalleryPage extends StatelessWidget {
           parent: AlwaysScrollableScrollPhysics(),
         ),
         padding:
-            const EdgeInsets.only(top: 24, bottom: 200, left: 20, right: 20),
+            const EdgeInsets.only(top: 24, bottom: 240, left: 20, right: 20),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 1 / 1.4,

@@ -13,24 +13,15 @@ class AdsBanner extends StatelessWidget {
     return CarouselSlider(
       disableGesture: true,
       items: listOfAds.map((e) {
-        return Stack(children: [
-          GestureDetector(
-              onTap: () async {
-                await _launchURL(e.link);
-              },
-              child: Image.network(
-                e.url,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              )),
-          Align(
-            alignment: Alignment.topRight,
-            child: Icon(
-              Icons.close,
-              color: backgroundUserColor,
-            ),
-          )
-        ]);
+        return GestureDetector(
+            onTap: () async {
+              await _launchURL(e.link);
+            },
+            child: Image.network(
+              e.url,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ));
       }).toList(),
       options: CarouselOptions(
         autoPlay: true,

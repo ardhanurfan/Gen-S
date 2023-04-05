@@ -128,7 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: isLoading
                   ? LoadingButton(
                       radiusButton: 32,
-                      buttonColor: secondaryColor,
+                      buttonColor: orangeColor,
                       heightButton: 53,
                     )
                   : CustomButton(

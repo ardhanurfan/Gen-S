@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:music_player/providers/ads_provider.dart';
 import 'package:music_player/providers/images_provider.dart';
@@ -24,12 +26,14 @@ class AdsDetailPage extends StatefulWidget {
 }
 
 String contentPath = '';
+File? contentFile;
 
 class _AdsDetailPageState extends State<AdsDetailPage> {
   @override
   void initState() {
     super.initState();
     contentPath = '';
+    contentFile = null;
   }
 
   @override
@@ -54,6 +58,7 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
       setState(() {
         if (imagesProvider.croppedImagePath.isNotEmpty) {
           contentPath = imagesProvider.croppedImagePath;
+          contentFile = imagesProvider.croppedImageFile;
         }
       });
     }
@@ -179,8 +184,8 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                       alignment: Alignment.center,
                       children: [
                         contentPath.isNotEmpty
-                            ? Image.asset(
-                                contentPath,
+                            ? Image.file(
+                                contentFile!,
                                 height: 60,
                                 width: double.infinity,
                                 fit: BoxFit.cover,

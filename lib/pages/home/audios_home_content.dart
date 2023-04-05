@@ -17,7 +17,7 @@ class SongsHomeContent extends StatelessWidget {
           parent: AlwaysScrollableScrollPhysics(),
         ),
         padding: EdgeInsets.only(
-            right: defaultMargin, left: defaultMargin, top: 24, bottom: 180),
+            right: defaultMargin, left: defaultMargin, top: 24, bottom: 240),
         children: audioProvider.audios
             .map(
               (audio) => AudioTile(
