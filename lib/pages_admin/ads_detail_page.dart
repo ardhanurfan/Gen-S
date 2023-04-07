@@ -288,17 +288,18 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                 height: 24,
               ),
               CustomButton(
-                  radiusButton: 32,
-                  buttonColor: secondaryColor,
-                  buttonText: "Save",
-                  onPressed: () async {
-                    if (isEdit) {
-                      await handleEditSave();
-                    } else {
-                      await handleSave();
-                    }
-                  },
-                  heightButton: 53)
+                radiusButton: 32,
+                buttonColor: secondaryColor,
+                buttonText: "Save",
+                onPressed: () async {
+                  if (isEdit) {
+                    await handleEditSave();
+                  } else {
+                    await handleSave();
+                  }
+                },
+                heightButton: 53,
+              )
             ],
           ),
         ],

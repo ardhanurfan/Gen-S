@@ -85,7 +85,7 @@ class AdsProvider extends ChangeNotifier {
         title: title,
       );
 
-      int idx = _defAds.indexWhere((element) => element.id == element.id);
+      int idx = _defAds.indexWhere((element) => element.id == adsId);
       _defAds.removeAt(idx);
       _defAds.insert(idx, editedAds);
 

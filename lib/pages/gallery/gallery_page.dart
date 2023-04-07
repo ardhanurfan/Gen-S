@@ -39,68 +39,54 @@ class GalleryPage extends StatelessWidget {
                       : primaryAdminColorText.copyWith(
                           fontSize: 24, fontWeight: bold),
                 ),
-                Row(
-                  children: [
-                    userProvider.user.role == "USER"
-                        ? const SizedBox()
-                        : Icon(
-                            Icons.delete_outline_outlined,
-                            size: 36,
-                            color: primaryAdminColor,
-                          ),
-                    const SizedBox(width: 16),
-                    userProvider.user.role == "USER"
-                        ? const SettingButton()
-                        : GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return CustomPopUp(
-                                    controller: galleryController,
-                                    title: "Gallery Name",
-                                    add: () async {
-                                      if (await galleryProvider.addGallery(
-                                          name: galleryController.text)) {
-                                        ScaffoldMessenger.of(context)
-                                            .removeCurrentSnackBar();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: successColor,
-                                            content: const Text(
-                                              'Add gallery successfuly',
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .removeCurrentSnackBar();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor: alertColor,
-                                            content: Text(
-                                              galleryProvider.errorMessage,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  );
+                userProvider.user.role == "USER"
+                    ? const SettingButton()
+                    : GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomPopUp(
+                                controller: galleryController,
+                                title: "Gallery Name",
+                                add: () async {
+                                  if (await galleryProvider.addGallery(
+                                      name: galleryController.text)) {
+                                    ScaffoldMessenger.of(context)
+                                        .removeCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: successColor,
+                                        content: const Text(
+                                          'Add gallery successfuly',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .removeCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: alertColor,
+                                        content: Text(
+                                          galleryProvider.errorMessage,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 },
                               );
                             },
-                            child: Icon(
-                              Icons.add,
-                              color: primaryAdminColor,
-                              size: 36,
-                            ),
-                          ),
-                  ],
-                ),
+                          );
+                        },
+                        child: Icon(
+                          Icons.add,
+                          color: primaryAdminColor,
+                          size: 36,
+                        ),
+                      ),
               ],
             ),
           ),

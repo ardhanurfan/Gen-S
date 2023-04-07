@@ -287,7 +287,8 @@ class AudioPlayerPage extends StatelessWidget {
                       baseBarColor: backgroundProgressIndicatorColor,
                       bufferedBarColor: Colors.transparent,
                       progressBarColor: progressIndicatorColor,
-                      thumbRadius: 0,
+                      thumbRadius: 8,
+                      thumbColor: Colors.transparent,
                       thumbGlowRadius: 0,
                       progress: positionData?.position ?? Duration.zero,
                       buffered: positionData?.bufferedPosition ?? Duration.zero,
@@ -304,6 +305,9 @@ class AudioPlayerPage extends StatelessWidget {
 
     Widget content() {
       return ListView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 32),
         children: [
           header(),

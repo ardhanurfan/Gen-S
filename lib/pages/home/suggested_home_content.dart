@@ -27,7 +27,7 @@ class SuggestedHomeContent extends StatelessWidget {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        padding: const EdgeInsets.only(top: 24, bottom: 100),
+        padding: const EdgeInsets.only(top: 24, bottom: 260),
         children: [
           SectionTitle(
             onTap: () {
