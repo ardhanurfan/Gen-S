@@ -155,8 +155,8 @@ class MainPage extends StatelessWidget {
                     ),
               Visibility(
                   visible: userProvider.user.role == "USER" &&
-                      adsProvider.ads.isNotEmpty,
-                  child: AdsBanner(listOfAds: adsProvider.ads))
+                      adsProvider.adsBottom.isNotEmpty,
+                  child: AdsBanner(listOfAds: adsProvider.adsBottom))
             ],
           ),
         ],

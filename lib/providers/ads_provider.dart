@@ -3,27 +3,42 @@ import 'package:music_player/models/ads_model.dart';
 import 'package:music_player/services/ads_services.dart';
 
 class AdsProvider extends ChangeNotifier {
-  List<AdsModel> _ads = [];
+  List<AdsModel> _adsBottom = [];
+  List<AdsModel> _adsPlayer = [];
   List<AdsModel> _defAds = [];
   String _errorMessage = '';
 
-  List<AdsModel> get ads => _ads;
+  List<AdsModel> get adsBottom => _adsBottom;
+  List<AdsModel> get adsPlayer => _adsPlayer;
   List<AdsModel> get defAds => _defAds;
   String get errorMessage => _errorMessage;
 
   Future<void> getAds() async {
     try {
-      List<AdsModel> ads = await AdsService().getAds();
-      _defAds = ads;
-      var len = ads.length;
-      List<AdsModel> temp = [];
-      for (var i = 0; i < len; i++) {
-        for (var j = 0; j < ads[i].frequency; j++) {
-          temp.add(ads[i]);
+      List<AdsModel> adsBottom = await AdsService().getAds(location: 'bottom');
+      List<AdsModel> adsPlayer = await AdsService().getAds(location: 'player');
+      _defAds = adsBottom + adsPlayer;
+      _defAds.sort((a, b) => a.id.compareTo(b.id));
+
+      // add bottom
+      List<AdsModel> tempBottom = [];
+      for (var i = 0; i < adsBottom.length; i++) {
+        for (var j = 0; j < adsBottom[i].frequency; j++) {
+          tempBottom.add(adsBottom[i]);
         }
       }
-      temp.shuffle();
-      _ads = temp;
+      tempBottom.shuffle();
+      _adsBottom = tempBottom;
+
+      // add player
+      List<AdsModel> tempPlayer = [];
+      for (var i = 0; i < adsPlayer.length; i++) {
+        for (var j = 0; j < adsPlayer[i].frequency; j++) {
+          tempPlayer.add(adsPlayer[i]);
+        }
+      }
+      tempPlayer.shuffle();
+      _adsPlayer = tempPlayer;
     } catch (e) {
       rethrow;
     }
@@ -34,6 +49,7 @@ class AdsProvider extends ChangeNotifier {
     required String frequency,
     required String link,
     required String title,
+    required String location,
   }) async {
     try {
       AdsModel insAds = await AdsService().addAds(
@@ -41,12 +57,24 @@ class AdsProvider extends ChangeNotifier {
         frequency: frequency,
         link: link,
         title: title,
+        location: location,
       );
       _defAds.add(insAds);
-      for (var j = 0; j < insAds.frequency; j++) {
-        ads.add(insAds);
+
+      if (location == 'bottom') {
+        for (var j = 0; j < insAds.frequency; j++) {
+          _adsBottom.add(insAds);
+        }
+        _adsBottom.shuffle();
       }
-      _ads.shuffle();
+
+      if (location == 'player') {
+        for (var j = 0; j < insAds.frequency; j++) {
+          _adsPlayer.add(insAds);
+        }
+        _adsPlayer.shuffle();
+      }
+
       notifyListeners();
       return true;
     } catch (e) {
@@ -61,8 +89,17 @@ class AdsProvider extends ChangeNotifier {
     try {
       await AdsService().deleteAds(adsId: adsId);
       _defAds.removeWhere((element) => element.id == adsId);
-      _ads.removeWhere((element) => element.id == adsId);
-      _ads.shuffle();
+
+      bool bottomFound =
+          _adsBottom.where((element) => element.id == adsId).isNotEmpty;
+      if (bottomFound) {
+        _adsBottom.removeWhere((element) => element.id == adsId);
+        _adsBottom.shuffle();
+      } else {
+        _adsPlayer.removeWhere((element) => element.id == adsId);
+        _adsPlayer.shuffle();
+      }
+
       notifyListeners();
       return true;
     } catch (e) {
@@ -76,6 +113,7 @@ class AdsProvider extends ChangeNotifier {
     required String frequency,
     required String link,
     required String title,
+    required String location,
   }) async {
     try {
       AdsModel editedAds = await AdsService().editAds(
@@ -83,17 +121,29 @@ class AdsProvider extends ChangeNotifier {
         frequency: frequency,
         link: link,
         title: title,
+        location: location,
       );
 
       int idx = _defAds.indexWhere((element) => element.id == adsId);
       _defAds.removeAt(idx);
       _defAds.insert(idx, editedAds);
 
-      _ads.removeWhere((element) => element.id == adsId);
-      for (var j = 0; j < editedAds.frequency; j++) {
-        _ads.add(editedAds);
+      bool bottomFound =
+          _adsBottom.where((element) => element.id == adsId).isNotEmpty;
+      if (bottomFound) {
+        _adsBottom.removeWhere((element) => element.id == adsId);
+        for (var j = 0; j < editedAds.frequency; j++) {
+          _adsBottom.add(editedAds);
+        }
+        _adsBottom.shuffle();
+      } else {
+        _adsPlayer.removeWhere((element) => element.id == adsId);
+        for (var j = 0; j < editedAds.frequency; j++) {
+          _adsPlayer.add(editedAds);
+        }
+        _adsPlayer.shuffle();
       }
-      _ads.shuffle();
+
       notifyListeners();
       return true;
     } catch (e) {

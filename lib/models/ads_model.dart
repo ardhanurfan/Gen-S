@@ -7,6 +7,7 @@ class AdsModel extends Equatable {
   final String url;
   final String link;
   final String title;
+  final String location;
 
   const AdsModel({
     required this.id,
@@ -15,6 +16,7 @@ class AdsModel extends Equatable {
     required this.url,
     required this.link,
     required this.title,
+    required this.location,
   });
 
   factory AdsModel.fromJson(Map<String, dynamic> json) {
@@ -25,9 +27,11 @@ class AdsModel extends Equatable {
       url: json['url'],
       link: json['link'],
       title: json['title'],
+      location: json['location'],
     );
   }
 
   @override
-  List<Object?> get props => [id, uploadTime, url, frequency, link, title];
+  List<Object?> get props =>
+      [id, uploadTime, url, frequency, link, title, location];
 }

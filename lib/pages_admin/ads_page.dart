@@ -140,6 +140,7 @@ class AdsGrid extends StatelessWidget {
                   link: ads.link,
                   frequency: ads.frequency.toString(),
                   adsId: ads.id,
+                  location: ads.location,
                 ),
               ),
             );
@@ -170,6 +171,11 @@ class AdsGrid extends StatelessWidget {
                     ),
                     Text(
                       "${ads.frequency} frequency",
+                      overflow: TextOverflow.ellipsis,
+                      style: primaryAdminColorText.copyWith(fontSize: 12),
+                    ),
+                    Text(
+                      ads.location,
                       overflow: TextOverflow.ellipsis,
                       style: primaryAdminColorText.copyWith(fontSize: 12),
                     ),

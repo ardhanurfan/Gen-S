@@ -9,16 +9,19 @@ import 'package:provider/provider.dart';
 import '../shared/theme.dart';
 
 class AdsDetailPage extends StatefulWidget {
-  const AdsDetailPage(
-      {super.key,
-      this.title = '',
-      this.frequency = '',
-      this.link = '',
-      this.adsId = 0});
+  const AdsDetailPage({
+    super.key,
+    this.title = '',
+    this.frequency = '',
+    this.link = '',
+    this.location = '',
+    this.adsId = 0,
+  });
 
   final String title;
   final String frequency;
   final String link;
+  final String location;
   final int adsId;
 
   @override
@@ -27,6 +30,10 @@ class AdsDetailPage extends StatefulWidget {
 
 String contentPath = '';
 File? contentFile;
+String location = '';
+TextEditingController titleController = TextEditingController(text: '');
+TextEditingController frequencyController = TextEditingController(text: '');
+TextEditingController linkController = TextEditingController(text: '');
 
 class _AdsDetailPageState extends State<AdsDetailPage> {
   @override
@@ -34,16 +41,14 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
     super.initState();
     contentPath = '';
     contentFile = null;
+    titleController = TextEditingController(text: widget.title);
+    frequencyController = TextEditingController(text: widget.frequency);
+    linkController = TextEditingController(text: widget.frequency);
+    location = widget.location;
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController =
-        TextEditingController(text: widget.title);
-    TextEditingController frequencyController =
-        TextEditingController(text: widget.frequency);
-    TextEditingController linkController =
-        TextEditingController(text: widget.link);
     AdsProvider adsProvider = Provider.of<AdsProvider>(context);
     ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
 
@@ -70,6 +75,7 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
           frequency: frequencyController.text,
           link: linkController.text,
           title: titleController.text,
+          location: location,
         )) {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
@@ -114,6 +120,7 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
         frequency: frequencyController.text,
         link: linkController.text,
         title: titleController.text,
+        location: location,
       )) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
@@ -243,9 +250,11 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                 style: primaryAdminColorText.copyWith(fontSize: 14),
                 cursorColor: primaryAdminColor,
                 decoration: InputDecoration(
-                    hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: primaryAdminColor))),
+                  hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: primaryAdminColor),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 24,
@@ -263,9 +272,11 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                 style: primaryAdminColorText.copyWith(fontSize: 14),
                 cursorColor: primaryAdminColor,
                 decoration: InputDecoration(
-                    hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: primaryAdminColor))),
+                  hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: primaryAdminColor),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 24,
@@ -280,9 +291,43 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                 style: primaryAdminColorText.copyWith(fontSize: 14),
                 cursorColor: primaryAdminColor,
                 decoration: InputDecoration(
-                    hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: primaryAdminColor))),
+                  hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: primaryAdminColor),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Text(
+                "Location",
+                style: primaryAdminColorText,
+              ),
+              DropdownButtonFormField(
+                style: primaryAdminColorText.copyWith(fontSize: 14),
+                decoration: InputDecoration(
+                  hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: primaryAdminColor),
+                  ),
+                ),
+                value: location,
+                items: const [
+                  DropdownMenuItem(
+                    value: 'bottom',
+                    child: Text('Bottom'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'player',
+                    child: Text('Player'),
+                  ),
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    location = value ?? '';
+                  });
+                },
               ),
               const SizedBox(
                 height: 24,

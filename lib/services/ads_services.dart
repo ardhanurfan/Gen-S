@@ -6,8 +6,8 @@ import 'package:music_player/services/url_service.dart';
 import 'package:http/http.dart' as http;
 
 class AdsService {
-  Future<List<AdsModel>> getAds() async {
-    var url = UrlService().api('ads');
+  Future<List<AdsModel>> getAds({required String location}) async {
+    var url = UrlService().api('ads?location=$location');
 
     var headers = {
       'Content-Type': 'application/json',
@@ -34,6 +34,7 @@ class AdsService {
     required String contentPath,
     required String title,
     required String link,
+    required String location,
   }) async {
     late Uri url = UrlService().api('add-ads');
 
@@ -52,6 +53,8 @@ class AdsService {
     request.fields['link'] = link;
     // add title
     request.fields['title'] = title;
+    // add location
+    request.fields['location'] = location;
 
     // add content
     request.files
@@ -98,6 +101,7 @@ class AdsService {
     required int adsId,
     required String link,
     required String title,
+    required String location,
   }) async {
     late Uri url = UrlService().api('edit-ads');
     var headers = {
@@ -109,6 +113,7 @@ class AdsService {
       'frequency': int.parse(frequency),
       'link': link,
       'title': title,
+      'location': location,
     };
 
     var response = await http.post(
