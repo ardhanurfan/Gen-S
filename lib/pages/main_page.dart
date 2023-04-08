@@ -156,7 +156,10 @@ class MainPage extends StatelessWidget {
               Visibility(
                   visible: userProvider.user.role == "USER" &&
                       adsProvider.adsBottom.isNotEmpty,
-                  child: AdsBanner(listOfAds: adsProvider.adsBottom))
+                  child: AdsBanner(
+                    listOfAds: adsProvider.adsBottom,
+                    isMainPage: true,
+                  ))
             ],
           ),
         ],

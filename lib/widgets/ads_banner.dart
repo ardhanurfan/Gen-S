@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/ads_model.dart';
+import 'package:music_player/shared/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdsBanner extends StatefulWidget {
-  const AdsBanner({super.key, required this.listOfAds});
+  const AdsBanner(
+      {super.key, required this.listOfAds, this.isMainPage = false});
+  final bool isMainPage;
   final List<AdsModel> listOfAds;
 
   @override
@@ -43,10 +46,13 @@ class _AdsBannerState extends State<AdsBanner> {
               onTap: () async {
                 await _launchURL(e.link);
               },
-              child: Image.network(
-                e.url,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(32),
+                child: Image.network(
+                  e.url,
+                  width: widget.isMainPage ? double.infinity : 280,
+                  fit: BoxFit.cover,
+                ),
               ));
         }).toList(),
         options: CarouselOptions(
@@ -55,7 +61,7 @@ class _AdsBannerState extends State<AdsBanner> {
           enableInfiniteScroll: true,
           viewportFraction: 1,
           enlargeCenterPage: false,
-          height: 60,
+          height: widget.isMainPage ? 60 : 280,
           autoPlayAnimationDuration: const Duration(milliseconds: 2000),
           autoPlayInterval: const Duration(seconds: 6),
         ),

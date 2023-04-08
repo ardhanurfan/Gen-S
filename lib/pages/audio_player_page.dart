@@ -7,6 +7,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/models/image_model.dart';
 import 'package:music_player/models/position_data_model.dart';
+import 'package:music_player/providers/ads_provider.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/audio_provider.dart';
 import 'package:music_player/providers/gallery_provider.dart';
@@ -14,6 +15,7 @@ import 'package:music_player/providers/images_provider.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/ads_banner.dart';
 import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/delete_popup.dart';
 import 'package:music_player/widgets/image_popup.dart';
@@ -29,6 +31,7 @@ class AudioPlayerPage extends StatelessWidget {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context);
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+    AdsProvider adsProvider = Provider.of<AdsProvider>(context);
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
     ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
@@ -189,66 +192,78 @@ class AudioPlayerPage extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    audioProvider.currAudio!.images.isEmpty
-                        ? const DefaultImage(type: ImageType.player, size: 280)
-                        : CarouselSlider(
-                            items: audioProvider.currAudio!.images.map((image) {
-                              return Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(32),
-                                    child: CachedNetworkImage(
-                                      imageUrl: image.url,
-                                      width: 280,
-                                      height: 280,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: userProvider.user.role == "ADMIN",
-                                    child: PopupMenuButton(
-                                      icon: Icon(
-                                        Icons.more_vert,
-                                        color: primaryUserColor,
+                    Stack(
+                      children: [
+                        (audioProvider.currAudio!.images.isEmpty
+                            ? const DefaultImage(
+                                type: ImageType.player, size: 280)
+                            : CarouselSlider(
+                                items: audioProvider.currAudio!.images
+                                    .map((image) {
+                                  return Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(32),
+                                        child: CachedNetworkImage(
+                                          imageUrl: image.url,
+                                          width: 280,
+                                          height: 280,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                      color: const Color.fromARGB(
-                                          255, 223, 223, 223),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            defaultRadius),
-                                      ),
-                                      elevation: 4,
-                                      onSelected: (value) {
-                                        if (value == 0) {
-                                          handleDeleteImage(image);
-                                        }
-                                      },
-                                      itemBuilder: (BuildContext context) => [
-                                        PopupMenuItem(
-                                          value: 0,
-                                          child: Text(
-                                            "Delete",
-                                            style: primaryAdminColorText,
+                                      Visibility(
+                                        visible:
+                                            userProvider.user.role == "ADMIN",
+                                        child: PopupMenuButton(
+                                          icon: Icon(
+                                            Icons.more_vert,
+                                            color: primaryUserColor,
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }).toList(),
-                            options: CarouselOptions(
-                              autoPlay: audio.images.length > 1,
-                              enableInfiniteScroll: audio.images.length > 1,
-                              viewportFraction: 1,
-                              enlargeCenterPage: false,
-                              height: 280,
-                              autoPlayAnimationDuration:
-                                  const Duration(milliseconds: 2000),
-                              autoPlayInterval: const Duration(seconds: 5),
-                            ),
-                          ),
+                                          color: const Color.fromARGB(
+                                              255, 223, 223, 223),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                defaultRadius),
+                                          ),
+                                          elevation: 4,
+                                          onSelected: (value) {
+                                            if (value == 0) {
+                                              handleDeleteImage(image);
+                                            }
+                                          },
+                                          itemBuilder: (BuildContext context) =>
+                                              [
+                                            PopupMenuItem(
+                                              value: 0,
+                                              child: Text(
+                                                "Delete",
+                                                style: primaryAdminColorText,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
+                                options: CarouselOptions(
+                                  autoPlay: audio.images.length > 1,
+                                  enableInfiniteScroll: audio.images.length > 1,
+                                  viewportFraction: 1,
+                                  enlargeCenterPage: false,
+                                  height: 280,
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 2000),
+                                  autoPlayInterval: const Duration(seconds: 5),
+                                ),
+                              )),
+                        Visibility(
+                            visible: userProvider.user.role == "USER" &&
+                                adsProvider.adsBottom.isNotEmpty,
+                            child: AdsBanner(listOfAds: adsProvider.adsBottom)),
+                      ],
+                    ),
                     const SizedBox(
                       height: 64,
                     ),
