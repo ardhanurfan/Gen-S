@@ -158,7 +158,6 @@ class MainPage extends StatelessWidget {
                       adsProvider.adsBottom.isNotEmpty,
                   child: AdsBanner(
                     listOfAds: adsProvider.adsBottom,
-                    isMainPage: true,
                   ))
             ],
           ),

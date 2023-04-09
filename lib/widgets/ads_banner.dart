@@ -3,13 +3,10 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/ads_model.dart';
-import 'package:music_player/shared/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdsBanner extends StatefulWidget {
-  const AdsBanner(
-      {super.key, required this.listOfAds, this.isMainPage = false});
-  final bool isMainPage;
+  const AdsBanner({super.key, required this.listOfAds});
   final List<AdsModel> listOfAds;
 
   @override
@@ -17,23 +14,30 @@ class AdsBanner extends StatefulWidget {
 }
 
 class _AdsBannerState extends State<AdsBanner> {
-  bool isAds = true;
+  bool isAds = false;
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   void initState() {
+    super.initState();
     Timer.periodic(
-      Duration(seconds: widget.listOfAds.length * 6 + 20),
+      Duration(seconds: widget.listOfAds.length * 6 + 60),
       (timer) async {
         setState(() {
           isAds = false;
         });
-        await Future.delayed(const Duration(seconds: 20));
+        await Future.delayed(const Duration(seconds: 60));
         setState(() {
           isAds = true;
         });
       },
     );
-    super.initState();
   }
 
   @override
@@ -50,7 +54,7 @@ class _AdsBannerState extends State<AdsBanner> {
                 borderRadius: BorderRadius.circular(32),
                 child: Image.network(
                   e.url,
-                  width: widget.isMainPage ? double.infinity : 280,
+                  width: double.infinity,
                   fit: BoxFit.cover,
                 ),
               ));
@@ -61,7 +65,7 @@ class _AdsBannerState extends State<AdsBanner> {
           enableInfiniteScroll: true,
           viewportFraction: 1,
           enlargeCenterPage: false,
-          height: widget.isMainPage ? 60 : 280,
+          height: 60,
           autoPlayAnimationDuration: const Duration(milliseconds: 2000),
           autoPlayInterval: const Duration(seconds: 6),
         ),

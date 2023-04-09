@@ -15,7 +15,7 @@ import 'package:music_player/providers/images_provider.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
-import 'package:music_player/widgets/ads_banner.dart';
+import 'package:music_player/widgets/ads_banner_player.dart';
 import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/delete_popup.dart';
 import 'package:music_player/widgets/image_popup.dart';
@@ -179,20 +179,21 @@ class AudioPlayerPage extends StatelessWidget {
             const SizedBox(
               height: 55,
             ),
-            StreamBuilder<SequenceState?>(
-              stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
-              builder: (context, snapshot) {
-                final state = snapshot.data;
-                if (state?.sequence.isEmpty ?? true) {
-                  return const SizedBox();
-                }
-                MediaItem audioJson = state!.currentSource!.tag;
-                AudioModel audio = AudioModel.fromJson(audioJson.extras!);
-                audioProvider.updateHistory(audio: audio);
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Stack(
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                StreamBuilder<SequenceState?>(
+                  stream: audioPlayerProvider.audioPlayer.sequenceStateStream,
+                  builder: (context, snapshot) {
+                    final state = snapshot.data;
+                    if (state?.sequence.isEmpty ?? true) {
+                      return const SizedBox();
+                    }
+                    MediaItem audioJson = state!.currentSource!.tag;
+                    AudioModel audio = AudioModel.fromJson(audioJson.extras!);
+                    audioProvider.updateHistory(audio: audio);
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         (audioProvider.currAudio!.images.isEmpty
                             ? const DefaultImage(
@@ -258,28 +259,31 @@ class AudioPlayerPage extends StatelessWidget {
                                   autoPlayInterval: const Duration(seconds: 5),
                                 ),
                               )),
-                        Visibility(
-                            visible: userProvider.user.role == "USER" &&
-                                adsProvider.adsBottom.isNotEmpty,
-                            child: AdsBanner(listOfAds: adsProvider.adsBottom)),
+                        const SizedBox(
+                          height: 64,
+                        ),
+                        Text(
+                          audio.title,
+                          style: (userProvider.user.role == "USER"
+                                  ? primaryUserColorText
+                                  : primaryAdminColorText)
+                              .copyWith(
+                            fontSize: 16,
+                            fontWeight: bold,
+                          ),
+                        ),
                       ],
-                    ),
-                    const SizedBox(
-                      height: 64,
-                    ),
-                    Text(
-                      audio.title,
-                      style: (userProvider.user.role == "USER"
-                              ? primaryUserColorText
-                              : primaryAdminColorText)
-                          .copyWith(
-                        fontSize: 16,
-                        fontWeight: bold,
-                      ),
-                    ),
-                  ],
-                );
-              },
+                    );
+                  },
+                ),
+                Visibility(
+                  visible: userProvider.user.role == "USER" &&
+                      adsProvider.adsPlayer.isNotEmpty,
+                  child: AdsBannerPlayer(
+                    listOfAds: adsProvider.adsPlayer,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 24,

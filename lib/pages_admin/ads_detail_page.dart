@@ -31,6 +31,7 @@ class AdsDetailPage extends StatefulWidget {
 String contentPath = '';
 File? contentFile;
 String location = '';
+bool isBottom = true;
 TextEditingController titleController = TextEditingController(text: '');
 TextEditingController frequencyController = TextEditingController(text: '');
 TextEditingController linkController = TextEditingController(text: '');
@@ -187,49 +188,52 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                   padding: const EdgeInsets.only(top: 60),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        contentFile != null
-                            ? Image.file(
-                                contentFile!,
-                                height: 60,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              )
-                            : Container(
-                                color: const Color.fromARGB(255, 223, 223, 223),
-                              ),
-                        Container(
-                          height: 60,
-                          width: double.infinity,
-                          color: Colors.black45,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  await handlePicker();
-                                },
-                                child: Icon(
-                                  Icons.upload,
-                                  size: 24,
-                                  color: primaryUserColor,
+                    child: Center(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          contentFile != null
+                              ? Image.file(
+                                  contentFile!,
+                                  height: isBottom ? 60 : 240,
+                                  width: isBottom ? double.infinity : 240,
+                                  fit: BoxFit.cover,
+                                )
+                              : Container(
+                                  color:
+                                      const Color.fromARGB(255, 223, 223, 223),
                                 ),
-                              ),
-                              Visibility(
-                                visible: contentPath.isNotEmpty,
-                                child: Text(
-                                  'Content Picked',
-                                  style: primaryUserColorText.copyWith(
-                                    fontSize: 12,
+                          Container(
+                            height: isBottom ? 60 : 240,
+                            width: isBottom ? double.infinity : 240,
+                            color: Colors.black45,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    await handlePicker();
+                                  },
+                                  child: Icon(
+                                    Icons.upload,
+                                    size: 24,
+                                    color: primaryUserColor,
                                   ),
                                 ),
-                              )
-                            ],
+                                Visibility(
+                                  visible: contentPath.isNotEmpty,
+                                  child: Text(
+                                    'Content Picked',
+                                    style: primaryUserColorText.copyWith(
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -312,7 +316,7 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                     borderSide: BorderSide(color: primaryAdminColor),
                   ),
                 ),
-                value: location,
+                value: location.isEmpty ? null : location,
                 items: const [
                   DropdownMenuItem(
                     value: 'bottom',
@@ -326,6 +330,7 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
                 onChanged: (value) {
                   setState(() {
                     location = value ?? '';
+                    isBottom = value == 'bottom';
                   });
                 },
               ),
