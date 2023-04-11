@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
+import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/default_image.dart';
+import 'package:music_player/widgets/rewind_popup.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/playing_tile.dart';
@@ -19,6 +21,7 @@ class PlaylistDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    TextEditingController controller = TextEditingController();
 
     Widget playlistInfo() {
       return Padding(
@@ -77,20 +80,73 @@ class PlaylistDetailPage extends StatelessWidget {
                     color: primaryUserColor,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            AddSongPage(playlistId: playlistId),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AddSongPage(playlistId: playlistId),
+                          ),
+                        );
+                      },
+                      child: Icon(
+                        Icons.add,
+                        color: primaryUserColor,
+                        size: 28,
                       ),
-                    );
-                  },
-                  child: Icon(
-                    Icons.add,
-                    color: primaryUserColor,
-                  ),
+                    ),
+                    const SizedBox(
+                      width: 18,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => RewindPopUp(
+                            audios: playlistProvider.audios,
+                            controller: controller,
+                            title: "Index Rewind",
+                            add: () async {
+                              if (await playlistProvider.addPlaylist(
+                                  name: controller.text)) {
+                                ScaffoldMessenger.of(context)
+                                    .removeCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: successColor,
+                                    content: const Text(
+                                      'Add playlist successfuly',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .removeCurrentSnackBar();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: alertColor,
+                                    content: Text(
+                                      playlistProvider.errorMessage,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      },
+                      child: Icon(
+                        Icons.sync,
+                        color: primaryUserColor,
+                        size: 28,
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),
