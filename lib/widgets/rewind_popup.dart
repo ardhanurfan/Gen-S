@@ -1,190 +1,170 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:music_player/models/audio_model.dart';
-import 'package:music_player/providers/user_provider.dart';
+import 'package:music_player/providers/audio_player_provider.dart';
+import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:provider/provider.dart';
 
 class RewindPopUp extends StatefulWidget {
-  final String title;
-  final List<AudioModel> audios;
-  final Function() add;
-  final TextEditingController controller;
-  const RewindPopUp(
-      {super.key,
-      required this.title,
-      required this.add,
-      required this.controller,
-      required this.audios});
+  const RewindPopUp({
+    super.key,
+  });
 
   @override
   State<RewindPopUp> createState() => _RewindPopUpState();
 }
 
-bool isLoading = false;
+int _selectedStart = 1;
+int _selectedFinish = 1;
 
 class _RewindPopUpState extends State<RewindPopUp> {
-  int _selected = 0;
+  @override
+  void initState() {
+    _selectedStart = 1;
+    _selectedFinish = 1;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    UserProvider userProvider = Provider.of<UserProvider>(context);
+    PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    AudioPlayerProvider audioPlayerProvider =
+        Provider.of<AudioPlayerProvider>(context);
+
     return AlertDialog(
-        backgroundColor: userProvider.user.role == "USER"
-            ? backgroundUserColor
-            : const Color.fromARGB(255, 224, 224, 224),
+        backgroundColor: backgroundUserColor,
         actions: [
-          Visibility(
-            visible: !isLoading,
-            child: TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                'CANCEL',
-                style: userProvider.user.role == "USER"
-                    ? primaryUserColorText
-                    : primaryAdminColorText,
-              ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'CANCEL',
+              style: primaryUserColorText,
             ),
           ),
-          Visibility(
-            visible: !isLoading,
-            child: TextButton(
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                final navigator = Navigator.of(context);
-                await widget.add();
-                navigator.pop(true);
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              child: Text(
-                'SAVE',
-                style: userProvider.user.role == "USER"
-                    ? primaryUserColorText
-                    : primaryAdminColorText,
-              ),
+          TextButton(
+            onPressed: () {
+              List<AudioModel> playRangeAudios = [];
+              for (var i = _selectedStart - 1; i < _selectedFinish; i++) {
+                playRangeAudios.add(playlistProvider.audios[i]);
+              }
+              audioPlayerProvider.setPlay(playRangeAudios, 0);
+              Navigator.of(context).pop(true);
+            },
+            child: Text(
+              'PLAY',
+              style: primaryUserColorText,
             ),
           )
         ],
-        title: Visibility(
-          visible: !isLoading,
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              widget.title,
-              style: userProvider.user.role == "USER"
-                  ? primaryUserColorText
-                  : primaryAdminColorText,
-            ),
-            Icon(
+        title:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(
+            'Play Range',
+            style: primaryUserColorText,
+          ),
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Icon(
               Icons.close,
               color: primaryUserColor,
-            )
-          ]),
-        ),
-        content: isLoading
-            ? SizedBox(
-                width: 30,
-                height: 30,
-                child: Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: userProvider.user.role == "USER"
-                        ? primaryUserColor
-                        : primaryAdminColor,
-                    size: 32,
+            ),
+          )
+        ]),
+        content: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          height: 200,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Start",
+                    style: primaryUserColorText.copyWith(fontSize: 16),
                   ),
-                ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    width: 70,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(defaultRadius)),
+                    child: DropdownButtonFormField(
+                      style: primaryAdminColorText.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                        hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: primaryAdminColor),
+                        ),
+                      ),
+                      value: playlistProvider.audios.isEmpty
+                          ? null
+                          : _selectedStart,
+                      items: playlistProvider.audios.map((audio) {
+                        int number = playlistProvider.audios.indexOf(audio) + 1;
+                        return DropdownMenuItem(
+                          value: number,
+                          child: Text(number.toString()),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedStart = value!;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 36,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Finish",
+                    style: primaryUserColorText.copyWith(fontSize: 16),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    width: 70,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(defaultRadius)),
+                    child: DropdownButtonFormField(
+                      style: primaryAdminColorText.copyWith(fontSize: 14),
+                      decoration: InputDecoration(
+                        hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: primaryAdminColor),
+                        ),
+                      ),
+                      value: playlistProvider.audios.isEmpty
+                          ? null
+                          : _selectedFinish,
+                      items: playlistProvider.audios.map((audio) {
+                        int number = playlistProvider.audios.indexOf(audio) + 1;
+                        return DropdownMenuItem(
+                          value: number,
+                          child: Text(number.toString()),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedFinish = value!;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               )
-            : Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-                height: 200,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Start",
-                          style: primaryUserColorText.copyWith(fontSize: 16),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          width: 70,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.circular(defaultRadius)),
-                          child: DropdownButtonFormField(
-                            style: primaryAdminColorText.copyWith(fontSize: 14),
-                            decoration: InputDecoration(
-                              hintStyle:
-                                  primaryAdminColorText.copyWith(fontSize: 16),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: primaryAdminColor),
-                              ),
-                            ),
-                            value: widget.audios.isEmpty ? null : _selected,
-                            items: widget.audios.map((e) {
-                              return DropdownMenuItem(
-                                child: Text(e.toString()),
-                                value: e,
-                              );
-                            }).toList(),
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 36,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Finish",
-                          style: primaryUserColorText.copyWith(fontSize: 16),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          width: 70,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.circular(defaultRadius)),
-                          child: DropdownButtonFormField(
-                            style: primaryAdminColorText.copyWith(fontSize: 14),
-                            decoration: InputDecoration(
-                              hintStyle:
-                                  primaryAdminColorText.copyWith(fontSize: 16),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: primaryAdminColor),
-                              ),
-                            ),
-                            value: widget.audios.isEmpty ? null : " ",
-                            items: const [],
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ));
+            ],
+          ),
+        ));
   }
 }
