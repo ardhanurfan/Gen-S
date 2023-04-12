@@ -24,7 +24,23 @@ class RewindPopUp extends StatefulWidget {
 bool isLoading = false;
 
 class _RewindPopUpState extends State<RewindPopUp> {
-  int _selected = 0;
+  int selectedItemStart = 0;
+  int selectedItemFinish = 0;
+  List<DropdownMenuItem> generateItems(int lenList) {
+    List<DropdownMenuItem> dropdownItems = [];
+    for (int i = 0; i <= lenList; i++) {
+      dropdownItems.add(DropdownMenuItem(
+        value: i,
+        alignment: Alignment.center,
+        child: Text(
+          i.toString(),
+          style: primaryAdminColorText.copyWith(fontSize: 14),
+        ),
+      ));
+    }
+    return dropdownItems;
+  }
+
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
@@ -72,19 +88,12 @@ class _RewindPopUpState extends State<RewindPopUp> {
         ],
         title: Visibility(
           visible: !isLoading,
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              widget.title,
-              style: userProvider.user.role == "USER"
-                  ? primaryUserColorText
-                  : primaryAdminColorText,
-            ),
-            Icon(
-              Icons.close,
-              color: primaryUserColor,
-            )
-          ]),
+          child: Text(
+            widget.title,
+            style: userProvider.user.role == "USER"
+                ? primaryUserColorText
+                : primaryAdminColorText,
+          ),
         ),
         content: isLoading
             ? SizedBox(
@@ -123,6 +132,10 @@ class _RewindPopUpState extends State<RewindPopUp> {
                               borderRadius:
                                   BorderRadius.circular(defaultRadius)),
                           child: DropdownButtonFormField(
+                            icon: Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: backgroundUserColor,
+                            ),
                             style: primaryAdminColorText.copyWith(fontSize: 14),
                             decoration: InputDecoration(
                               hintStyle:
@@ -132,15 +145,16 @@ class _RewindPopUpState extends State<RewindPopUp> {
                                     BorderSide(color: primaryAdminColor),
                               ),
                             ),
-                            value: widget.audios.isEmpty ? null : _selected,
-                            items: widget.audios.map((e) {
-                              return DropdownMenuItem(
-                                child: Text(e.toString()),
-                                value: e,
-                              );
-                            }).toList(),
+                            value: widget.audios.isEmpty
+                                ? null
+                                : (selectedItemStart == 0
+                                    ? null
+                                    : selectedItemStart),
+                            items: generateItems(widget.audios.length),
                             onChanged: (value) {
-                              setState(() {});
+                              setState(() {
+                                selectedItemStart = value;
+                              });
                             },
                           ),
                         ),
@@ -165,6 +179,10 @@ class _RewindPopUpState extends State<RewindPopUp> {
                               borderRadius:
                                   BorderRadius.circular(defaultRadius)),
                           child: DropdownButtonFormField(
+                            icon: Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: backgroundUserColor,
+                            ),
                             style: primaryAdminColorText.copyWith(fontSize: 14),
                             decoration: InputDecoration(
                               hintStyle:
@@ -174,10 +192,16 @@ class _RewindPopUpState extends State<RewindPopUp> {
                                     BorderSide(color: primaryAdminColor),
                               ),
                             ),
-                            value: widget.audios.isEmpty ? null : " ",
-                            items: const [],
+                            value: widget.audios.isEmpty
+                                ? null
+                                : (selectedItemFinish == 0
+                                    ? null
+                                    : selectedItemFinish),
+                            items: generateItems(widget.audios.length),
                             onChanged: (value) {
-                              setState(() {});
+                              setState(() {
+                                selectedItemFinish = value;
+                              });
                             },
                           ),
                         ),
