@@ -14,16 +14,9 @@ class RewindPopUp extends StatefulWidget {
   State<RewindPopUp> createState() => _RewindPopUpState();
 }
 
-int _selectedStart = 1;
-int _selectedFinish = 1;
-
 class _RewindPopUpState extends State<RewindPopUp> {
-  @override
-  void initState() {
-    _selectedStart = 1;
-    _selectedFinish = 1;
-    super.initState();
-  }
+  int _selectedStart = 0;
+  int _selectedFinish = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +86,13 @@ class _RewindPopUpState extends State<RewindPopUp> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(defaultRadius)),
                     child: DropdownButtonFormField(
+                      icon: Icon(
+                        Icons.keyboard_arrow_down_outlined,
+                        color: backgroundUserColor,
+                      ),
                       style: primaryAdminColorText.copyWith(fontSize: 14),
                       decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(0),
                         hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: primaryAdminColor),
@@ -102,10 +100,11 @@ class _RewindPopUpState extends State<RewindPopUp> {
                       ),
                       value: playlistProvider.audios.isEmpty
                           ? null
-                          : _selectedStart,
+                          : (_selectedStart == 0 ? null : _selectedStart),
                       items: playlistProvider.audios.map((audio) {
                         int number = playlistProvider.audios.indexOf(audio) + 1;
                         return DropdownMenuItem(
+                          alignment: Alignment.center,
                           value: number,
                           child: Text(number.toString()),
                         );
@@ -137,8 +136,13 @@ class _RewindPopUpState extends State<RewindPopUp> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(defaultRadius)),
                     child: DropdownButtonFormField(
+                      icon: Icon(
+                        Icons.keyboard_arrow_down_outlined,
+                        color: backgroundUserColor,
+                      ),
                       style: primaryAdminColorText.copyWith(fontSize: 14),
                       decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.all(0),
                         hintStyle: primaryAdminColorText.copyWith(fontSize: 16),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: primaryAdminColor),
@@ -146,10 +150,11 @@ class _RewindPopUpState extends State<RewindPopUp> {
                       ),
                       value: playlistProvider.audios.isEmpty
                           ? null
-                          : _selectedFinish,
+                          : (_selectedFinish == 0 ? null : _selectedFinish),
                       items: playlistProvider.audios.map((audio) {
                         int number = playlistProvider.audios.indexOf(audio) + 1;
                         return DropdownMenuItem(
+                          alignment: Alignment.center,
                           value: number,
                           child: Text(number.toString()),
                         );
