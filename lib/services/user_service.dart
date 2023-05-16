@@ -100,6 +100,26 @@ class UserService {
     }
   }
 
+  Future<bool> delete({required String token}) async {
+    var url = UrlService().api('delete-account');
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      await clearTokenPreference();
+      return true;
+    } else {
+      throw jsonDecode(response.body)['data']['error'];
+    }
+  }
+
   Future<UserModel> getUser({required String token}) async {
     var url = UrlService().api('user');
     var headers = {

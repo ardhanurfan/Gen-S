@@ -1,16 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/audio_provider.dart';
 import '../providers/user_provider.dart';
+import '../widgets/loading_button.dart';
 
-class DeleteAccountPage extends StatelessWidget {
+class DeleteAccountPage extends StatefulWidget {
   const DeleteAccountPage({super.key});
 
   @override
+  State<DeleteAccountPage> createState() => _DeleteAccountPageState();
+}
+
+bool isLoading = false;
+
+class _DeleteAccountPageState extends State<DeleteAccountPage> {
+  @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    AudioPlayerProvider audioPlayerProvider =
+        Provider.of<AudioPlayerProvider>(context);
+    handleDelete() async {
+      setState(() {
+        isLoading = true;
+      });
+      if (await userProvider.delete(token: userProvider.user.token)) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/sign-in', (route) => false);
+        if (audioPlayerProvider.currentPlaylist.isNotEmpty) {
+          await audioPlayerProvider.playlist.clear();
+        }
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: alertColor,
+            content: Text(
+              userProvider.errorMessage,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+    }
+
     Widget header() {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 30),
@@ -60,12 +100,20 @@ class DeleteAccountPage extends StatelessWidget {
             const SizedBox(
               height: 60,
             ),
-            CustomButton(
-                radiusButton: 32,
-                buttonColor: alertColor,
-                buttonText: "Delete My Account",
-                onPressed: () {},
-                heightButton: 53),
+            isLoading
+                ? LoadingButton(
+                    radiusButton: 32,
+                    buttonColor: alertColor,
+                    heightButton: 53,
+                  )
+                : CustomButton(
+                    radiusButton: 32,
+                    buttonColor: alertColor,
+                    buttonText: "Delete My Account",
+                    onPressed: () {
+                      handleDelete();
+                    },
+                    heightButton: 53),
             const SizedBox(
               height: 24,
             ),

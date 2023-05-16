@@ -60,6 +60,15 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> delete({required String token}) async {
+    try {
+      return await UserService().delete(token: token);
+    } catch (e) {
+      _errorMessage = e.toString();
+      return false;
+    }
+  }
+
   Future<bool> forgotPassword({required String email}) async {
     try {
       _tokenReset = await UserService().forgotPassword(email: email);
