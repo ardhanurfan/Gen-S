@@ -144,6 +144,7 @@ class AudioProvider extends ChangeNotifier {
           await ImageService().addImage(audioId: audioId, imagePath: imagePath);
 
       _currAudio!.images.add(newImage);
+      notifyListeners();
 
       _audios
           .firstWhere((element) => element.id == audioId)
@@ -160,7 +161,6 @@ class AudioProvider extends ChangeNotifier {
           .firstWhere((element) => element.id == audioId)
           .images
           .add(newImage);
-      notifyListeners();
 
       return true;
     } catch (e) {

@@ -4,7 +4,6 @@ import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/audio_provider.dart';
 import '../providers/user_provider.dart';
 import '../widgets/loading_button.dart';
 

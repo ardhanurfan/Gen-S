@@ -14,7 +14,7 @@ class AdsBanner extends StatefulWidget {
 }
 
 class _AdsBannerState extends State<AdsBanner> {
-  bool isAds = false;
+  bool isAds = true;
 
   @override
   void setState(fn) {
