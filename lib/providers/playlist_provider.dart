@@ -170,4 +170,29 @@ class PlaylistProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void renameAudioFromAllPlaylist(
+      {required int audioId, required String newTitle}) {
+    for (var element in _playlists) {
+      var index = element.audios.indexOf(
+        element.audios.firstWhere(
+          (audio) => audio.id == audioId,
+        ),
+      );
+      if (index != -1) {
+        AudioModel old = element.audios[index];
+        AudioModel newAudio = AudioModel(
+          id: old.id,
+          title: newTitle,
+          url: old.url,
+          uploaderId: old.uploaderId,
+          createdAt: old.createdAt,
+          images: old.images,
+        );
+        element.audios.removeAt(index);
+        element.audios.insert(index, newAudio);
+      }
+    }
+    notifyListeners();
+  }
 }

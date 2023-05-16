@@ -156,4 +156,31 @@ class AudioService {
       throw "Update audio failed";
     }
   }
+
+  Future<AudioModel> rename(
+      {required int audioId, required String title}) async {
+    late Uri url = UrlService().api('rename-playlist');
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var body = {
+      'id': audioId,
+      'title': title,
+    };
+
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode(body),
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'];
+      return AudioModel.fromJson(data);
+    } else {
+      throw "Rename audio failed";
+    }
+  }
 }
