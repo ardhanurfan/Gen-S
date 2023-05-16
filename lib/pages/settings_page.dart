@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:music_player/pages/delete_account_page.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/widgets/custom_button.dart';
@@ -123,17 +124,39 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: 84 - defaultMargin, vertical: 60),
+              padding: EdgeInsets.only(
+                  left: 84 - defaultMargin, top: 60, right: 84 - defaultMargin),
               child: isLoading
                   ? LoadingButton(
                       radiusButton: 32,
-                      buttonColor: orangeColor,
+                      buttonColor: alertColor,
                       heightButton: 53,
                     )
                   : CustomButton(
                       radiusButton: 32,
-                      buttonColor: orangeColor,
+                      buttonColor: alertColor,
+                      buttonText: "Delete Account",
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const DeleteAccountPage()));
+                      },
+                      heightButton: 53),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 84 - defaultMargin, vertical: 20),
+              child: isLoading
+                  ? LoadingButton(
+                      radiusButton: 32,
+                      buttonColor: secondaryColor,
+                      heightButton: 53,
+                    )
+                  : CustomButton(
+                      radiusButton: 32,
+                      buttonColor: secondaryColor,
                       buttonText: "Log Out",
                       onPressed: () {
                         handleLogout();
