@@ -123,27 +123,32 @@ class _SettingsPageState extends State<SettingsPage> {
                 )
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                  left: 84 - defaultMargin, top: 60, right: 84 - defaultMargin),
-              child: isLoading
-                  ? LoadingButton(
-                      radiusButton: 32,
-                      buttonColor: alertColor,
-                      heightButton: 53,
-                    )
-                  : CustomButton(
-                      radiusButton: 32,
-                      buttonColor: alertColor,
-                      buttonText: "Delete Account",
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const DeleteAccountPage()));
-                      },
-                      heightButton: 53),
+            Visibility(
+              visible: userProvider.user.role == "USER",
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: 84 - defaultMargin,
+                    top: 60,
+                    right: 84 - defaultMargin),
+                child: isLoading
+                    ? LoadingButton(
+                        radiusButton: 32,
+                        buttonColor: alertColor,
+                        heightButton: 53,
+                      )
+                    : CustomButton(
+                        radiusButton: 32,
+                        buttonColor: alertColor,
+                        buttonText: "Delete Account",
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const DeleteAccountPage()));
+                        },
+                        heightButton: 53),
+              ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(

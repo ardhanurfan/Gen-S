@@ -3,6 +3,7 @@ import 'package:music_player/pages/home/empty_state_page.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_popup.dart';
+import 'package:music_player/widgets/custom_popup_success.dart';
 import 'package:music_player/widgets/setting_button.dart';
 import 'package:music_player/widgets/sort_by_tile.dart';
 import 'package:provider/provider.dart';
@@ -25,19 +26,21 @@ class HomePage extends StatelessWidget {
         Provider.of<AudioPlayerProvider>(context);
     SortByProvider sortByProvider = Provider.of<SortByProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
-    TextEditingController controller = TextEditingController(text: '');
 
     handleAddAudio() async {
       if (await audioProvider.audioPicker()) {
         showDialog(
           barrierDismissible: false,
           context: context,
-          builder: (context) => CustomPopUp(
-            title: 'Audio Title',
-            controller: controller,
+          builder: (context) => CustomPopUpSuccess(
+            title: 'Add Audio',
             add: () async {
+              String audioTitle = audioProvider.audioPickedPath.split('/').last;
+              if (audioTitle.contains(".mp3")) {
+                audioTitle = audioTitle.split(".mp3").first;
+              }
               if (await audioProvider.addAudio(
-                  title: controller.text,
+                  title: audioTitle,
                   audioPath: audioProvider.audioPickedPath,
                   imagesPath: [])) {
                 audioPlayerProvider.addAudio(audio: audioProvider.audios[0]);
@@ -94,8 +97,8 @@ class HomePage extends StatelessWidget {
             children: [
               Image.asset(
                 userProvider.user.role == "ADMIN"
-                    ? "assets/logo-black-font.png"
-                    : "assets/logo-white-font.png",
+                    ? "assets/logo.png"
+                    : "assets/logo.png",
                 fit: BoxFit.cover,
                 width: 100,
               ),
