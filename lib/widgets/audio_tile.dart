@@ -5,6 +5,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:music_player/models/audio_model.dart';
 import 'package:music_player/providers/playlist_provider.dart';
+import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/delete_popup.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,6 @@ import '../shared/theme.dart';
 class AudioTile extends StatelessWidget {
   final bool isHistory;
   final bool isMostPlayed;
-  final bool isPlaylist;
   final AudioModel audio;
   final List<AudioModel> playlist;
   final int playlistId;
@@ -25,7 +25,6 @@ class AudioTile extends StatelessWidget {
   const AudioTile({
     this.isHistory = false,
     this.isMostPlayed = false,
-    this.isPlaylist = false,
     required this.audio,
     required this.playlist,
     this.playlistId = 0,
@@ -39,6 +38,8 @@ class AudioTile extends StatelessWidget {
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
+    TextEditingController audioController =
+        TextEditingController(text: audio.title);
 
     int index = playlist.indexOf(audio);
 
@@ -49,7 +50,11 @@ class AudioTile extends StatelessWidget {
           index,
         );
         audioProvider.updateHistory(audio: audio);
-        if (!isPlaylist) {
+        if (isMostPlayed) {
+          playlistProvider.setCurrentPlaylistName = 'Most Played';
+        } else if (isHistory) {
+          playlistProvider.setCurrentPlaylistName = 'Recent Played';
+        } else {
           playlistProvider.setCurrentPlaylistName = 'Audios';
         }
       },
@@ -144,8 +149,7 @@ class AudioTile extends StatelessWidget {
                       const SizedBox(width: 20),
                       Visibility(
                         visible: !isHistory &&
-                            (audio.uploaderId == userProvider.user.id ||
-                                isPlaylist),
+                            (audio.uploaderId == userProvider.user.id),
                         child: PopupMenuButton(
                           icon: Icon(
                             Icons.more_vert,
@@ -161,7 +165,7 @@ class AudioTile extends StatelessWidget {
                           ),
                           elevation: 4,
                           onSelected: (value) {
-                            if (value == 0 && !isPlaylist) {
+                            if (value == 0) {
                               showDialog(
                                 context: context,
                                 builder: (context) => DeletePopUp(
@@ -201,17 +205,16 @@ class AudioTile extends StatelessWidget {
                                   },
                                 ),
                               );
-                            } else if (value == 0 && isPlaylist) {
+                            } else if (value == 1) {
                               showDialog(
                                 context: context,
-                                builder: (context) => DeletePopUp(
-                                  delete: () async {
-                                    audioPlayerProvider.deleteAudio(
-                                        audioId: audio.id);
-                                    if (await playlistProvider.deleteAudio(
-                                      audio: audio,
-                                      playlistId: playlistId,
-                                    )) {
+                                builder: (context) => CustomPopUp(
+                                  title: "Audio Title",
+                                  controller: audioController,
+                                  add: () async {
+                                    if (await audioProvider.renameAudio(
+                                        title: audioController.text,
+                                        audioId: audio.id)) {
                                       ScaffoldMessenger.of(context)
                                           .removeCurrentSnackBar();
                                       ScaffoldMessenger.of(context)
@@ -219,11 +222,27 @@ class AudioTile extends StatelessWidget {
                                         SnackBar(
                                           backgroundColor: successColor,
                                           content: const Text(
-                                            'Delete audio from playlist successfuly',
+                                            'Rename audio successfuly',
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
                                       );
+                                      playlistProvider
+                                          .renameAudioFromAllPlaylist(
+                                              audioId: audio.id,
+                                              newTitle: audioController.text);
+
+                                      // Supaya play yang terakhir
+                                      if (audioProvider.currAudio != null) {
+                                        int indexPlaying = audioPlayerProvider
+                                            .currentPlaylist
+                                            .indexWhere((element) =>
+                                                element.id ==
+                                                audioProvider.currAudio!.id);
+                                        audioPlayerProvider.setPlay(
+                                            audioPlayerProvider.currentPlaylist,
+                                            indexPlaying);
+                                      }
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .removeCurrentSnackBar();
@@ -244,6 +263,16 @@ class AudioTile extends StatelessWidget {
                             }
                           },
                           itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 1,
+                              child: Center(
+                                child: Text(
+                                  'Rename',
+                                  style: primaryUserColorText.copyWith(
+                                      fontSize: 14),
+                                ),
+                              ),
+                            ),
                             PopupMenuItem(
                               value: 0,
                               child: Center(

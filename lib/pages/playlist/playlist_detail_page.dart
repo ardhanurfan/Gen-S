@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile.dart';
+import 'package:music_player/widgets/audio_tile_playlist.dart';
 import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/rewind_popup.dart';
 import 'package:provider/provider.dart';
@@ -176,10 +177,9 @@ class PlaylistDetailPage extends StatelessWidget {
           },
           children: playlistProvider.audios
               .map(
-                (audio) => AudioTile(
+                (audio) => AudioTilePlaylist(
                   key: Key(audio.id.toString()),
                   audio: audio,
-                  isPlaylist: true,
                   playlist: playlistProvider.audios,
                   playlistId: playlistId,
                 ),

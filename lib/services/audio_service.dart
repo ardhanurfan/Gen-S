@@ -159,7 +159,7 @@ class AudioService {
 
   Future<AudioModel> rename(
       {required int audioId, required String title}) async {
-    late Uri url = UrlService().api('rename-playlist');
+    late Uri url = UrlService().api('rename-audio');
     var headers = {
       'Content-Type': 'application/json',
     };

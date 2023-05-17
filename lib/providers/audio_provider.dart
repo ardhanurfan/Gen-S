@@ -266,27 +266,32 @@ class AudioProvider extends ChangeNotifier {
       _audios.insert(indexAudios, newAudio);
 
       // update in most
-      var indexMost = _historyMosts.indexOf(
-        _historyMosts.firstWhere(
-          (element) => element.id == audioId,
-        ),
-      );
-      if (indexMost != -1) {
-        _historyMosts.removeAt(indexMost);
-        _historyMosts.insert(indexMost, newAudio);
+      if (_historyMosts.where((element) => element.id == audioId).isNotEmpty) {
+        var indexMost = _historyMosts.indexOf(
+          _historyMosts.firstWhere(
+            (element) => element.id == audioId,
+          ),
+        );
+        if (indexMost != -1) {
+          _historyMosts.removeAt(indexMost);
+          _historyMosts.insert(indexMost, newAudio);
+        }
       }
 
       // update in recent
-      var indexRecent = _historyRecents.indexOf(
-        _historyRecents.firstWhere(
-          (element) => element.id == audioId,
-        ),
-      );
-      if (indexRecent != -1) {
-        _historyRecents.removeAt(indexRecent);
-        _historyRecents.insert(indexRecent, newAudio);
+      if (_historyRecents
+          .where((element) => element.id == audioId)
+          .isNotEmpty) {
+        var indexRecent = _historyRecents.indexOf(
+          _historyRecents.firstWhere(
+            (element) => element.id == audioId,
+          ),
+        );
+        if (indexRecent != -1) {
+          _historyRecents.removeAt(indexRecent);
+          _historyRecents.insert(indexRecent, newAudio);
+        }
       }
-
       notifyListeners();
       return true;
     } catch (e) {

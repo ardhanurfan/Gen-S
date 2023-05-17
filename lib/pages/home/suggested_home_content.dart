@@ -60,7 +60,8 @@ class SuggestedHomeContent extends StatelessWidget {
                             audioProvider.historyRecents.indexOf(audio),
                           );
                           audioProvider.updateHistory(audio: audio);
-                          playlistProvider.setCurrentPlaylistName = 'Audios';
+                          playlistProvider.setCurrentPlaylistName =
+                              'Recent Played';
                         },
                         child: AudioSuggestedTile(
                           title: audio.title,
@@ -104,7 +105,8 @@ class SuggestedHomeContent extends StatelessWidget {
                             audioProvider.historyMosts.indexOf(audio),
                           );
                           audioProvider.updateHistory(audio: audio);
-                          playlistProvider.setCurrentPlaylistName = 'Audios';
+                          playlistProvider.setCurrentPlaylistName =
+                              'Most Played';
                         },
                         child: AudioSuggestedTile(
                           title: audio.title,
