@@ -97,8 +97,8 @@ class HomePage extends StatelessWidget {
             children: [
               Image.asset(
                 userProvider.user.role == "ADMIN"
-                    ? "assets/logo.png"
-                    : "assets/logo.png",
+                    ? "assets/logo-black-font.png"
+                    : "assets/logo-white-font.png",
                 fit: BoxFit.cover,
                 width: 100,
               ),
