@@ -94,7 +94,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   padding: const EdgeInsets.only(right: 30),
                   child: ClipOval(
                     child: CachedNetworkImage(
-                      imageUrl: userProvider.user.photoUrl,
+                      imageUrl:
+                          "https://ui-avatars.com/api/?name=${userProvider.user.username}+&color=7F9CF5&background=EBF4FF",
                       height: 84,
                       width: 84,
                       fit: BoxFit.fill,
