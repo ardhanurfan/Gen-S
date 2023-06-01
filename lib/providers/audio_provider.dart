@@ -146,11 +146,6 @@ class AudioProvider extends ChangeNotifier {
       _currAudio!.images.add(newImage);
       notifyListeners();
 
-      _audios
-          .firstWhere((element) => element.id == audioId)
-          .images
-          .add(newImage);
-
       // kalau sudah diplay otomatis ada di history
       _historyMosts
           .firstWhere((element) => element.id == audioId)
