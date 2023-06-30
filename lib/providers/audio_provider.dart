@@ -197,9 +197,11 @@ class AudioProvider extends ChangeNotifier {
 
   void deleteImageFromGallery({required List<ImageModel> imagesDel}) {
     for (var image in imagesDel) {
-      var currFound = _currAudio!.images.contains(image);
-      if (currFound) {
-        _currAudio!.images.remove(image);
+      if (_currAudio != null) { 
+        var currFound = _currAudio!.images.contains(image);
+        if (currFound) {
+          _currAudio!.images.remove(image);
+        }
       }
 
       var found = _audios.where((element) => element.images.contains(image));
