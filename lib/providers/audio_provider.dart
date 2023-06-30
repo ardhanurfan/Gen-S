@@ -69,7 +69,7 @@ class AudioProvider extends ChangeNotifier {
   Future<bool> audioPicker() async {
     try {
       var result = await FilePicker.platform
-          .pickFiles(type: FileType.custom, allowedExtensions: ['mp3']);
+          .pickFiles(type: FileType.custom, allowedExtensions: ['mp3', 'm4a']);
       _audioPickedPath = result!.files.first.path!;
       return true;
     } catch (e) {

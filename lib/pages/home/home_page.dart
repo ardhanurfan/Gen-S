@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:music_player/pages/home/empty_state_page.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
-import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/custom_popup_success.dart';
 import 'package:music_player/widgets/setting_button.dart';
 import 'package:music_player/widgets/sort_by_tile.dart';
@@ -38,6 +37,8 @@ class HomePage extends StatelessWidget {
               String audioTitle = audioProvider.audioPickedPath.split('/').last;
               if (audioTitle.contains(".mp3")) {
                 audioTitle = audioTitle.split(".mp3").first;
+              } else if (audioTitle.contains(".m4a")) {
+                audioTitle = audioTitle.split(".m4a").first;
               }
               if (await audioProvider.addAudio(
                   title: audioTitle,
