@@ -42,7 +42,7 @@ class _SplashPageState extends State<SplashPage> {
     // Get general data
     await galleryProvider.getGallery();
     await adsProvider.getAds();
-    audioPlayerProvider.init();
+    await audioPlayerProvider.init();
 
     if (token == null) {
       navigator.pushNamedAndRemoveUntil('/sign-in', (route) => false);

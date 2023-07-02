@@ -22,6 +22,7 @@ import 'package:music_player/widgets/image_popup.dart';
 import 'package:music_player/widgets/play_button.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AudioPlayerPage extends StatelessWidget {
   const AudioPlayerPage({super.key});
@@ -378,6 +379,10 @@ class AudioController extends StatelessWidget {
                   }
                   await audioPlayerProvider.audioPlayer
                       .setShuffleModeEnabled(enable);
+
+                  // save local
+                  final pref = await SharedPreferences.getInstance();
+                  await pref.setBool('shuffle', enable);
                 },
                 child: Icon(
                   Icons.shuffle,
@@ -421,17 +426,21 @@ class AudioController extends StatelessWidget {
               final current = snapshot.data;
               return GestureDetector(
                 onTap: () async {
+                  final pref = await SharedPreferences.getInstance();
                   if (current == LoopMode.all) {
                     await audioPlayerProvider.audioPlayer
                         .setLoopMode(LoopMode.one);
+                    await pref.setString('loop', 'one');
                   }
                   if (current == LoopMode.one) {
                     await audioPlayerProvider.audioPlayer
                         .setLoopMode(LoopMode.off);
+                    await pref.setString('loop', 'off');
                   }
                   if (current == LoopMode.off) {
                     await audioPlayerProvider.audioPlayer
                         .setLoopMode(LoopMode.all);
+                    await pref.setString('loop', 'all');
                   }
                 },
                 child: Icon(

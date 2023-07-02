@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:music_player/models/image_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/audio_model.dart';
 
@@ -15,8 +16,31 @@ class AudioPlayerProvider extends ChangeNotifier {
   ConcatenatingAudioSource get playlist => _playlist;
   List<AudioModel> get currentPlaylist => _currentPlaylist;
 
-  void init() {
+  Future<void> init() async {
+    final pref = await SharedPreferences.getInstance();
     _audioPlayer = AudioPlayer();
+
+    bool? shuffle = pref.getBool('shuffle');
+    if (shuffle != null) {
+      await _audioPlayer.setShuffleModeEnabled(shuffle);
+    } else {
+      await _audioPlayer.setShuffleModeEnabled(false);
+      await pref.setBool('shuffle', false);
+    }
+
+    String? loop = pref.getString('loop');
+    if (loop != null) {
+      if (loop == 'one') {
+        await _audioPlayer.setLoopMode(LoopMode.one);
+      } else if (loop == 'off') {
+        await _audioPlayer.setLoopMode(LoopMode.off);
+      } else {
+        await _audioPlayer.setLoopMode(LoopMode.all);
+      }
+    } else {
+      await _audioPlayer.setLoopMode(LoopMode.all);
+      await pref.setString('loop', 'all');
+    }
   }
 
   Future<void> setPlay(List<AudioModel> playlist, int index) async {
