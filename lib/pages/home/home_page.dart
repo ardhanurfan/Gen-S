@@ -139,8 +139,8 @@ class HomePage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: const [
+            const Row(
+              children: [
                 HomePageNav(title: 'Suggested', index: 0, width: 66),
                 SizedBox(width: 24),
                 HomePageNav(title: 'Audios', index: 1, width: 38),

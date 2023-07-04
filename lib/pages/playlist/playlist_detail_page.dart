@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/providers/playlist_provider.dart';
 import 'package:music_player/shared/theme.dart';
-import 'package:music_player/widgets/audio_tile.dart';
 import 'package:music_player/widgets/audio_tile_playlist.dart';
 import 'package:music_player/widgets/default_image.dart';
 import 'package:music_player/widgets/rewind_popup.dart';

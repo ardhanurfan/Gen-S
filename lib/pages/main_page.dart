@@ -63,9 +63,9 @@ class MainPage extends StatelessWidget {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
+          children: [
             NavigationItem(
               icon: Icons.home_outlined,
               label: 'Home',
@@ -108,9 +108,9 @@ class MainPage extends StatelessWidget {
           ],
           borderRadius: BorderRadius.circular(32),
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
+          children: [
             NavigationItem(
               icon: Icons.home_outlined,
               label: 'Home',
