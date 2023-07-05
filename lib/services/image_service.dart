@@ -6,11 +6,11 @@ import 'package:music_player/services/url_service.dart';
 import 'package:http/http.dart' as http;
 
 class ImageService {
-  Future<ImageModel> addImage({
-    int audioId = -1,
-    int galleryId = -1,
-    required String imagePath,
-  }) async {
+  Future<ImageModel> addImage(
+      {int audioId = -1,
+      int galleryId = -1,
+      required String imagePath,
+      required String title}) async {
     late Uri url = UrlService().api('add-image');
 
     var headers = {
@@ -33,6 +33,8 @@ class ImageService {
     // add audio
     request.files
         .add(await http.MultipartFile.fromPath('imageFile', imagePath));
+
+    request.fields['title'] = title;
 
     var response = await request.send();
 

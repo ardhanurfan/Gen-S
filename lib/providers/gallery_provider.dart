@@ -51,10 +51,12 @@ class GalleryProvider extends ChangeNotifier {
   }
 
   Future<bool> addImageGallery(
-      {required String imagePath, required int galleryId}) async {
+      {required String imagePath,
+      required int galleryId,
+      required String title}) async {
     try {
       ImageModel newImage = await ImageService()
-          .addImage(galleryId: galleryId, imagePath: imagePath);
+          .addImage(galleryId: galleryId, imagePath: imagePath, title: title);
       _galleries
           .firstWhere(
             (element) => element.id == galleryId,

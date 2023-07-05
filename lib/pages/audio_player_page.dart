@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -50,6 +52,7 @@ class AudioPlayerPage extends StatelessWidget {
     Future<void> handleAddImage() async {
       imagesProvider.setCroppedImageFile = null;
       await imagesProvider.pickImage();
+      String newPath = imagesProvider.imageFile!.path.split('/').last;
       await imagesProvider.cropImage(imageFile: imagesProvider.imageFile);
       if (imagesProvider.croppedImageFile != null) {
         showDialog(
@@ -58,6 +61,7 @@ class AudioPlayerPage extends StatelessWidget {
           builder: (context) => ImagePopUp(
             add: () async {
               if (await audioProvider.addImageAudio(
+                  title: newPath,
                   imagePath: imagesProvider.croppedImagePath,
                   audioId: audioProvider.currAudio!.id)) {
                 ScaffoldMessenger.of(context).removeCurrentSnackBar();

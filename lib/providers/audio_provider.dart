@@ -138,10 +138,12 @@ class AudioProvider extends ChangeNotifier {
   }
 
   Future<bool> addImageAudio(
-      {required String imagePath, required int audioId}) async {
+      {required String imagePath,
+      required int audioId,
+      required String title}) async {
     try {
-      ImageModel newImage =
-          await ImageService().addImage(audioId: audioId, imagePath: imagePath);
+      ImageModel newImage = await ImageService()
+          .addImage(audioId: audioId, imagePath: imagePath, title: title);
 
       _currAudio!.images.add(newImage);
       notifyListeners();
@@ -197,7 +199,7 @@ class AudioProvider extends ChangeNotifier {
 
   void deleteImageFromGallery({required List<ImageModel> imagesDel}) {
     for (var image in imagesDel) {
-      if (_currAudio != null) { 
+      if (_currAudio != null) {
         var currFound = _currAudio!.images.contains(image);
         if (currFound) {
           _currAudio!.images.remove(image);

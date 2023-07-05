@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/models/gallery_model.dart';
@@ -43,9 +45,12 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
           context: context,
           builder: (context) => ImagePopUp(
             add: () async {
+              String newPath = imagesProvider.imageFile!.path.split('/').last;
               if (await galleryProvider.addImageGallery(
-                  galleryId: widget.gallery.id,
-                  imagePath: imagesProvider.croppedImagePath)) {
+                galleryId: widget.gallery.id,
+                imagePath: imagesProvider.croppedImagePath,
+                title: newPath,
+              )) {
                 ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -56,6 +61,8 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                     ),
                   ),
                 );
+                print(imagesProvider.croppedImagePath);
+                print(imagesProvider.imageFile);
               } else {
                 ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
