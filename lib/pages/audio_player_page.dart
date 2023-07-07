@@ -206,51 +206,122 @@ class AudioPlayerPage extends StatelessWidget {
                             : CarouselSlider(
                                 items: audioProvider.currAudio!.images
                                     .map((image) {
-                                  return Stack(
-                                    alignment: Alignment.topRight,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(32),
-                                        child: CachedNetworkImage(
-                                          imageUrl: image.url,
-                                          width: 280,
-                                          height: 280,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible:
-                                            userProvider.user.role == "ADMIN",
-                                        child: PopupMenuButton(
-                                          icon: Icon(
-                                            Icons.more_vert,
-                                            color: primaryUserColor,
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      await showDialog(
+                                          barrierDismissible: true,
+                                          context: context,
+                                          builder: (_) => CarouselSlider(
+                                                items: audioProvider
+                                                    .currAudio!.images
+                                                    .map((image) {
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 10),
+                                                    child: Stack(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      children: [
+                                                        CachedNetworkImage(
+                                                          imageUrl: image.url,
+                                                          fit: BoxFit.cover,
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  Container(
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        GestureDetector(
+                                                            onTap: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            child: Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(5),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              180),
+                                                                  color: Colors
+                                                                      .black),
+                                                              child: const Icon(
+                                                                Icons.close,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                options: CarouselOptions(
+                                                  autoPlay:
+                                                      audio.images.length > 1,
+                                                  enableInfiniteScroll:
+                                                      audio.images.length > 1,
+                                                  viewportFraction: 1,
+                                                  enlargeCenterPage: false,
+                                                  aspectRatio: 1,
+                                                  autoPlayAnimationDuration:
+                                                      const Duration(
+                                                          milliseconds: 2000),
+                                                  autoPlayInterval:
+                                                      const Duration(
+                                                          seconds: 5),
+                                                ),
+                                              ));
+                                    },
+                                    child: Stack(
+                                      alignment: Alignment.topRight,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(32),
+                                          child: CachedNetworkImage(
+                                            imageUrl: image.url,
+                                            width: 280,
+                                            height: 280,
+                                            fit: BoxFit.cover,
                                           ),
-                                          color: const Color.fromARGB(
-                                              255, 223, 223, 223),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                defaultRadius),
-                                          ),
-                                          elevation: 4,
-                                          onSelected: (value) {
-                                            if (value == 0) {
-                                              handleDeleteImage(image);
-                                            }
-                                          },
-                                          itemBuilder: (BuildContext context) =>
-                                              [
-                                            PopupMenuItem(
-                                              value: 0,
-                                              child: Text(
-                                                "Delete",
-                                                style: primaryAdminColorText,
-                                              ),
-                                            )
-                                          ],
                                         ),
-                                      ),
-                                    ],
+                                        Visibility(
+                                          visible:
+                                              userProvider.user.role == "ADMIN",
+                                          child: PopupMenuButton(
+                                            icon: Icon(
+                                              Icons.more_vert,
+                                              color: primaryUserColor,
+                                            ),
+                                            color: const Color.fromARGB(
+                                                255, 223, 223, 223),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      defaultRadius),
+                                            ),
+                                            elevation: 4,
+                                            onSelected: (value) {
+                                              if (value == 0) {
+                                                handleDeleteImage(image);
+                                              }
+                                            },
+                                            itemBuilder:
+                                                (BuildContext context) => [
+                                              PopupMenuItem(
+                                                value: 0,
+                                                child: Text(
+                                                  "Delete",
+                                                  style: primaryAdminColorText,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 }).toList(),
                                 options: CarouselOptions(

@@ -46,11 +46,14 @@ class _AdsBannerPlayerState extends State<AdsBannerPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: isAds,
+    return AnimatedOpacity(
+      opacity: isAds ? 1 : 0,
+      duration: const Duration(milliseconds: 500),
       child: GestureDetector(
         onTap: () async {
-          await _launchURL(ads.link);
+          if (isAds) {
+            await _launchURL(ads.link);
+          }
         },
         child: Container(
           alignment: Alignment.topRight,

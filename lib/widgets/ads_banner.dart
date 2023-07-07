@@ -42,13 +42,16 @@ class _AdsBannerState extends State<AdsBanner> {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: isAds,
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 500),
+      opacity: isAds ? 1 : 0,
       child: CarouselSlider(
         items: widget.listOfAds.map((e) {
           return GestureDetector(
               onTap: () async {
-                await _launchURL(e.link);
+                if (isAds) {
+                  await _launchURL(e.link);
+                }
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(32),
