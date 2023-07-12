@@ -182,7 +182,7 @@ class AudioPlayerPage extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(
-              height: 55,
+              height: 75,
             ),
             Stack(
               alignment: Alignment.center,
@@ -209,68 +209,80 @@ class AudioPlayerPage extends StatelessWidget {
                                   return GestureDetector(
                                     onTap: () async {
                                       await showDialog(
+                                          barrierColor:
+                                              Color.fromARGB(236, 0, 0, 0),
                                           barrierDismissible: true,
                                           context: context,
-                                          builder: (_) => CarouselSlider(
-                                                items: audioProvider
-                                                    .currAudio!.images
-                                                    .map((image) {
-                                                  return Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10),
-                                                    child: Stack(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      children: [
-                                                        CachedNetworkImage(
-                                                          imageUrl: image.url,
-                                                          fit: BoxFit.cover,
-                                                          placeholder:
-                                                              (context, url) =>
-                                                                  Container(
-                                                            color: Colors.grey,
+                                          builder: (_) => Container(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10,
+                                                    left: 10,
+                                                    top: 160),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.topCenter,
+                                                  child: CarouselSlider(
+                                                    items: audioProvider
+                                                        .currAudio!.images
+                                                        .map((image) {
+                                                      return Stack(
+                                                        alignment:
+                                                            Alignment.topRight,
+                                                        children: [
+                                                          CachedNetworkImage(
+                                                            imageUrl: image.url,
+                                                            fit: BoxFit.cover,
+                                                            placeholder:
+                                                                (context,
+                                                                        url) =>
+                                                                    Container(
+                                                              color:
+                                                                  Colors.grey,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        GestureDetector(
-                                                            onTap: () =>
-                                                                Navigator.pop(
-                                                                    context),
-                                                            child: Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .all(5),
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              180),
+                                                          GestureDetector(
+                                                              onTap: () =>
+                                                                  Navigator.pop(
+                                                                      context),
+                                                              child: Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .all(5),
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            180),
+                                                                    color: Colors
+                                                                        .black),
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons.close,
                                                                   color: Colors
-                                                                      .black),
-                                                              child: const Icon(
-                                                                Icons.close,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            )),
-                                                      ],
+                                                                      .white,
+                                                                ),
+                                                              )),
+                                                        ],
+                                                      );
+                                                    }).toList(),
+                                                    options: CarouselOptions(
+                                                      autoPlay:
+                                                          audio.images.length >
+                                                              1,
+                                                      enableInfiniteScroll:
+                                                          audio.images.length >
+                                                              1,
+                                                      viewportFraction: 1,
+                                                      enlargeCenterPage: false,
+                                                      aspectRatio: 1,
+                                                      autoPlayAnimationDuration:
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  2000),
+                                                      autoPlayInterval:
+                                                          const Duration(
+                                                              seconds: 5),
                                                     ),
-                                                  );
-                                                }).toList(),
-                                                options: CarouselOptions(
-                                                  autoPlay:
-                                                      audio.images.length > 1,
-                                                  enableInfiniteScroll:
-                                                      audio.images.length > 1,
-                                                  viewportFraction: 1,
-                                                  enlargeCenterPage: false,
-                                                  aspectRatio: 1,
-                                                  autoPlayAnimationDuration:
-                                                      const Duration(
-                                                          milliseconds: 2000),
-                                                  autoPlayInterval:
-                                                      const Duration(
-                                                          seconds: 5),
+                                                  ),
                                                 ),
                                               ));
                                     },
@@ -336,7 +348,7 @@ class AudioPlayerPage extends StatelessWidget {
                                 ),
                               )),
                         const SizedBox(
-                          height: 64,
+                          height: 45,
                         ),
                         Text(
                           audio.title,
@@ -369,7 +381,7 @@ class AudioPlayerPage extends StatelessWidget {
                 builder: (context, snapshot) {
                   final positionData = snapshot.data;
                   return Container(
-                    margin: const EdgeInsets.only(top: 5, bottom: 50),
+                    margin: const EdgeInsets.only(top: 5, bottom: 30),
                     width: double.infinity,
                     child: ProgressBar(
                       timeLabelLocation: TimeLabelLocation.above,
