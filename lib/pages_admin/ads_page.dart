@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:music_player/models/ads_model.dart';
 import 'package:music_player/pages_admin/ads_detail_page.dart';
 import 'package:music_player/providers/ads_provider.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../shared/theme.dart';
@@ -14,6 +15,7 @@ class AdsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AdsProvider adsProvider = Provider.of<AdsProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     Widget header() {
       return SliverPadding(
@@ -33,7 +35,11 @@ class AdsPage extends StatelessWidget {
                   style: primaryAdminColorText.copyWith(
                       fontSize: 24, fontWeight: bold),
                 ),
-                GestureDetector(
+                InkWell(
+                  highlightColor: userProvider.user.role == "USER"
+                      ? const Color.fromARGB(255, 73, 73, 73)
+                      : const Color.fromARGB(255, 200, 200, 200),
+                  borderRadius: BorderRadius.circular(360),
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(

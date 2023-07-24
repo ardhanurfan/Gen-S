@@ -44,7 +44,7 @@ class _AdsDetailPageState extends State<AdsDetailPage> {
     contentFile = null;
     titleController = TextEditingController(text: widget.title);
     frequencyController = TextEditingController(text: widget.frequency);
-    linkController = TextEditingController(text: widget.frequency);
+    linkController = TextEditingController(text: widget.link);
     location = widget.location;
   }
 

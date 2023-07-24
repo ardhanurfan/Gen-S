@@ -105,7 +105,11 @@ class HomePage extends StatelessWidget {
               ),
               Row(
                 children: [
-                  GestureDetector(
+                  InkWell(
+                    highlightColor: userProvider.user.role == "USER"
+                        ? const Color.fromARGB(255, 73, 73, 73)
+                        : const Color.fromARGB(255, 200, 200, 200),
+                    borderRadius: BorderRadius.circular(360),
                     onTap: () async {
                       handleAddAudio();
                     },

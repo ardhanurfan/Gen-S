@@ -59,7 +59,7 @@ class _AdsBannerPlayerState extends State<AdsBannerPlayer> {
           alignment: Alignment.topRight,
           height: 280,
           width: 280,
-          margin: const EdgeInsets.only(bottom: 90),
+          margin: const EdgeInsets.only(bottom: 70),
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -93,11 +93,11 @@ class _AdsBannerPlayerState extends State<AdsBannerPlayer> {
 
   _launchURL(String url) async {
     Uri uri = Uri.parse(url);
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    if (!(url.startsWith("http://") || url.startsWith("https://"))) {
       uri = Uri.parse("http://$url");
     }
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.platformDefault);
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $url';
     }

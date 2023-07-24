@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/playlist/empty_playlist_page.dart';
 import 'package:music_player/providers/playlist_provider.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/playlist_tile.dart';
@@ -13,6 +14,7 @@ class PlaylistPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     TextEditingController controller = TextEditingController(text: '');
 
     Widget header() {
@@ -41,7 +43,11 @@ class PlaylistPage extends StatelessWidget {
               ),
               Row(
                 children: [
-                  GestureDetector(
+                  InkWell(
+                    highlightColor: userProvider.user.role == "USER"
+                        ? const Color.fromARGB(255, 73, 73, 73)
+                        : const Color.fromARGB(255, 200, 200, 200),
+                    borderRadius: BorderRadius.circular(360),
                     onTap: () {
                       showDialog(
                         context: context,

@@ -57,9 +57,6 @@ class _SearchPageState extends State<SearchPage> {
 
     Widget content() {
       return ListView(
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
         padding: EdgeInsets.symmetric(
             horizontal: defaultMargin, vertical: defaultMargin),
         children: [
@@ -102,12 +99,13 @@ class _SearchPageState extends State<SearchPage> {
             visible: foundAudio.isEmpty &&
                 foundGallery.isEmpty &&
                 foundPlaylist.isEmpty,
-            child: Container(
-              margin: const EdgeInsets.only(top: 90),
-              child: Image.asset(
-                "assets/search_empty.png",
-                height: 283,
-                width: 270,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 172),
+              child: Center(
+                child: Text(
+                  "Search Empty...",
+                  style: primaryUserColorText.copyWith(fontSize: 24),
+                ),
               ),
             ),
           ),

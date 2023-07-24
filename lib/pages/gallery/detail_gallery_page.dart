@@ -61,8 +61,6 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                     ),
                   ),
                 );
-                print(imagesProvider.croppedImagePath);
-                print(imagesProvider.imageFile);
               } else {
                 ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(

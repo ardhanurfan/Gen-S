@@ -12,7 +12,11 @@ class SettingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
-    return GestureDetector(
+    return InkWell(
+      highlightColor: userProvider.user.role == "USER"
+          ? const Color.fromARGB(255, 73, 73, 73)
+          : const Color.fromARGB(255, 200, 200, 200),
+      borderRadius: BorderRadius.circular(360),
       child: Icon(
         Icons.settings_outlined,
         color: userProvider.user.role == "USER"

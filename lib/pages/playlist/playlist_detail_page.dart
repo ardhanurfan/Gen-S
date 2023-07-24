@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/providers/playlist_provider.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/audio_tile_playlist.dart';
 import 'package:music_player/widgets/default_image.dart';
@@ -20,6 +21,7 @@ class PlaylistDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     Widget playlistInfo() {
       return Padding(
@@ -80,7 +82,11 @@ class PlaylistDetailPage extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    GestureDetector(
+                    InkWell(
+                      highlightColor: userProvider.user.role == "USER"
+                          ? const Color.fromARGB(255, 73, 73, 73)
+                          : const Color.fromARGB(255, 200, 200, 200),
+                      borderRadius: BorderRadius.circular(360),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -99,7 +105,11 @@ class PlaylistDetailPage extends StatelessWidget {
                     const SizedBox(
                       width: 18,
                     ),
-                    GestureDetector(
+                    InkWell(
+                      highlightColor: userProvider.user.role == "USER"
+                          ? const Color.fromARGB(255, 73, 73, 73)
+                          : const Color.fromARGB(255, 200, 200, 200),
+                      borderRadius: BorderRadius.circular(360),
                       onTap: () {
                         showDialog(
                           context: context,

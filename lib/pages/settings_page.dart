@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/delete_account_page.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
@@ -89,21 +88,23 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          "https://ui-avatars.com/api/?name=${userProvider.user.username}+&color=7F9CF5&background=EBF4FF",
-                      height: 84,
-                      width: 84,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
+                // FOTO PROFIL
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 30),
+                //   child: ClipOval(
+                //     child: CachedNetworkImage(
+                //       imageUrl:
+                //           "https://ui-avatars.com/api/?name=${userProvider.user.username}+&color=7F9CF5&background=EBF4FF",
+                //       height: 84,
+                //       width: 84,
+                //       fit: BoxFit.fill,
+                //     ),
+                //   ),
+                // ),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       userProvider.user.username,
@@ -168,6 +169,16 @@ class _SettingsPageState extends State<SettingsPage> {
                         handleLogout();
                       },
                       heightButton: 53),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            Text(
+              "Version 1.1.3",
+              style: userProvider.user.role == "USER"
+                  ? primaryUserColorText.copyWith(fontSize: 12)
+                  : primaryAdminColorText.copyWith(
+                      fontSize: 12, fontWeight: bold),
             )
           ],
         ),
