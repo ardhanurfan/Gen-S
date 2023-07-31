@@ -21,6 +21,7 @@ class GalleryGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     UserProvider userProvider = Provider.of<UserProvider>(context);
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
     TextEditingController galleryController =
@@ -39,13 +40,15 @@ class GalleryGrid extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           gallery.images.isEmpty
-              ? const DefaultImage(type: ImageType.gallery, size: 160)
+              ? DefaultImage(
+                  type: ImageType.gallery,
+                  size: deviceWidth <= kMobileBreakpoint ? 160 : 340)
               : ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: CachedNetworkImage(
                     imageUrl: gallery.images[0].url,
-                    height: 160,
-                    width: 160,
+                    height: deviceWidth <= kMobileBreakpoint ? 160 : 340,
+                    width: deviceWidth <= kMobileBreakpoint ? 160 : 340,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -60,11 +63,13 @@ class GalleryGrid extends StatelessWidget {
                       gallery.name,
                       style: userProvider.user.role == "USER"
                           ? primaryUserColorText.copyWith(
-                              fontSize: 16,
+                              fontSize:
+                                  deviceWidth <= kMobileBreakpoint ? 16 : 24,
                               fontWeight: medium,
                               overflow: TextOverflow.ellipsis)
                           : primaryAdminColorText.copyWith(
-                              fontSize: 16,
+                              fontSize:
+                                  deviceWidth <= kMobileBreakpoint ? 16 : 24,
                               fontWeight: medium,
                               overflow: TextOverflow.ellipsis),
                     ),
@@ -72,9 +77,13 @@ class GalleryGrid extends StatelessWidget {
                       gallery.images.length.toString(),
                       style: userProvider.user.role == "USER"
                           ? primaryUserColorText.copyWith(
-                              fontSize: 12, overflow: TextOverflow.ellipsis)
+                              fontSize:
+                                  deviceWidth <= kMobileBreakpoint ? 12 : 16,
+                              overflow: TextOverflow.ellipsis)
                           : primaryAdminColorText.copyWith(
-                              fontSize: 12, overflow: TextOverflow.ellipsis),
+                              fontSize:
+                                  deviceWidth <= kMobileBreakpoint ? 12 : 16,
+                              overflow: TextOverflow.ellipsis),
                     ),
                   ],
                 ),

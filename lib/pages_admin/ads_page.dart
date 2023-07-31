@@ -14,6 +14,7 @@ class AdsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     AdsProvider adsProvider = Provider.of<AdsProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
 
@@ -67,11 +68,15 @@ class AdsPage extends StatelessWidget {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        padding:
-            const EdgeInsets.only(top: 24, bottom: 240, left: 20, right: 20),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1 / 1.4,
+        padding: EdgeInsets.only(
+            top: 24,
+            bottom: 240,
+            left: deviceWidth <= kMobileBreakpoint ? 20 : 80,
+            right: deviceWidth <= kMobileBreakpoint ? 20 : 80),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: deviceWidth <= kMobileBreakpoint ? 2 : 3,
+          childAspectRatio:
+              deviceWidth <= kMobileBreakpoint ? 1 / 1.4 : 1 / 1.3,
           crossAxisSpacing: 30,
         ),
         children: adsProvider.defAds.map((ads) => AdsGrid(ads: ads)).toList(),
@@ -105,6 +110,7 @@ class AdsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     AdsProvider adsProvider = Provider.of<AdsProvider>(context);
 
     Future<void> handleDelete() async {
@@ -155,8 +161,8 @@ class AdsGrid extends StatelessWidget {
               borderRadius: BorderRadius.circular(4),
               child: CachedNetworkImage(
                 imageUrl: ads.url,
-                height: 160,
-                width: 160,
+                height: deviceWidth <= kMobileBreakpoint ? 160 : 340,
+                width: deviceWidth <= kMobileBreakpoint ? 160 : 340,
                 fit: BoxFit.cover,
               )),
         ),

@@ -14,6 +14,7 @@ class GalleryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double deviceWidth = MediaQuery.of(context).size.width;
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
     UserProvider userProvider = Provider.of<UserProvider>(context);
     TextEditingController galleryController = TextEditingController(text: "");
@@ -108,12 +109,16 @@ class GalleryPage extends StatelessWidget {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        padding:
-            const EdgeInsets.only(top: 24, bottom: 240, left: 20, right: 20),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1 / 1.4,
-          crossAxisSpacing: 30,
+        padding: EdgeInsets.only(
+            top: 24,
+            bottom: 240,
+            left: deviceWidth <= kMobileBreakpoint ? 20 : 80,
+            right: deviceWidth <= kMobileBreakpoint ? 20 : 80),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: deviceWidth <= kMobileBreakpoint ? 2 : 3,
+          childAspectRatio:
+              deviceWidth <= kMobileBreakpoint ? 1 / 1.4 : 1 / 1.2,
+          crossAxisSpacing: deviceWidth <= kMobileBreakpoint ? 30 : 10,
         ),
         children: galleryProvider.galleries
             .map(

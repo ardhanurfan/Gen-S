@@ -14,6 +14,7 @@ class AdsBannerPlayer extends StatefulWidget {
 
 class _AdsBannerPlayerState extends State<AdsBannerPlayer> {
   bool isAds = true;
+  bool isShow = true;
   late AdsModel ads = widget.listOfAds[0];
   int index = 0;
 
@@ -29,11 +30,12 @@ class _AdsBannerPlayerState extends State<AdsBannerPlayer> {
     super.initState();
     widget.listOfAds.shuffle();
     Timer.periodic(
-      const Duration(minutes: 1),
+      const Duration(seconds: 20),
       (timer) async {
         setState(() {
           if (!isAds) {
             isAds = true;
+            isShow = true;
           }
 
           ads = widget.listOfAds[index];
@@ -46,44 +48,51 @@ class _AdsBannerPlayerState extends State<AdsBannerPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: isAds ? 1 : 0,
-      duration: const Duration(milliseconds: 500),
-      child: GestureDetector(
-        onTap: () async {
-          if (isAds) {
-            await _launchURL(ads.link);
-          }
+    return Visibility(
+      visible: isShow,
+      child: AnimatedOpacity(
+        onEnd: () {
+          isShow = false;
         },
-        child: Container(
-          alignment: Alignment.topRight,
-          height: 280,
-          width: 280,
-          margin: const EdgeInsets.only(bottom: 70),
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(ads.url),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                spreadRadius: 50,
-                blurRadius: 50,
+        opacity: isAds ? 1 : 0,
+        duration: const Duration(milliseconds: 500),
+        child: GestureDetector(
+          onTap: () async {
+            if (isAds) {
+              await _launchURL(ads.link);
+            }
+          },
+          child: Container(
+            alignment: Alignment.topRight,
+            height: 280,
+            width: 280,
+            margin: const EdgeInsets.only(bottom: 70),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(ads.url),
+                fit: BoxFit.cover,
               ),
-            ],
-          ),
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                isAds = false;
-              });
-            },
-            child: const Icon(
-              Icons.cancel,
-              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  spreadRadius: 50,
+                  blurRadius: 50,
+                ),
+              ],
+            ),
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isAds = false;
+                  isShow = false;
+                });
+              },
+              child: const Icon(
+                Icons.cancel,
+                color: Colors.white,
+              ),
             ),
           ),
         ),

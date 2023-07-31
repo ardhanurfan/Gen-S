@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+const kMobileBreakpoint = 576.0;
+
 double defaultRadius = 12.0;
 double defaultMargin = 36.0;
 
