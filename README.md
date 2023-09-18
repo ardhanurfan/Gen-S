@@ -1,4 +1,4 @@
-# music_player
+# Gen-S
 
 A new Flutter project.
 
