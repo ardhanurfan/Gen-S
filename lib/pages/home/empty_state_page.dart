@@ -28,7 +28,8 @@ class EmptyStatePage extends StatelessWidget {
           margin: const EdgeInsets.only(top: 49, bottom: 24),
           child: Text(
             "Your library is empty  :(",
-            style: userProvider.user.role == "USER"
+            style: userProvider.user?.role == "USER" ||
+                    userProvider.user == null
                 ? primaryUserColorText.copyWith(fontSize: 24, fontWeight: bold)
                 : primaryAdminColorText.copyWith(
                     fontSize: 24, fontWeight: bold),

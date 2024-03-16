@@ -61,7 +61,8 @@ class GalleryGrid extends StatelessWidget {
                   children: [
                     Text(
                       gallery.name,
-                      style: userProvider.user.role == "USER"
+                      style: userProvider.user?.role == "USER" ||
+                              userProvider.user == null
                           ? primaryUserColorText.copyWith(
                               fontSize:
                                   deviceWidth <= kMobileBreakpoint ? 16 : 24,
@@ -75,7 +76,8 @@ class GalleryGrid extends StatelessWidget {
                     ),
                     Text(
                       gallery.images.length.toString(),
-                      style: userProvider.user.role == "USER"
+                      style: userProvider.user?.role == "USER" ||
+                              userProvider.user == null
                           ? primaryUserColorText.copyWith(
                               fontSize:
                                   deviceWidth <= kMobileBreakpoint ? 12 : 16,
@@ -89,8 +91,9 @@ class GalleryGrid extends StatelessWidget {
                 ),
               ),
               Visibility(
-                visible:
-                    userProvider.user.role == "ADMIN" && gallery.name != "root",
+                visible: userProvider.user != null &&
+                    userProvider.user?.role == "ADMIN" &&
+                    gallery.name != "root",
                 child: PopupMenuButton(
                   icon: Icon(
                     Icons.more_vert,

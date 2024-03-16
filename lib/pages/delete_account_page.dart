@@ -26,7 +26,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
       setState(() {
         isLoading = true;
       });
-      if (await userProvider.delete(token: userProvider.user.token)) {
+      if (await userProvider.delete(token: userProvider.user!.token)) {
         Navigator.pushNamedAndRemoveUntil(
             context, '/sign-in', (route) => false);
         if (audioPlayerProvider.currentPlaylist.isNotEmpty) {

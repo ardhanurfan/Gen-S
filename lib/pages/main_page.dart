@@ -38,7 +38,8 @@ class MainPage extends StatelessWidget {
           }
         case 3:
           {
-            return userProvider.user.role == "USER"
+            return userProvider.user?.role == "USER" ||
+                    userProvider.user == null
                 ? const PlaylistPage()
                 : const AdsPage();
           }
@@ -147,14 +148,15 @@ class MainPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               const PlayingTile(),
-              userProvider.user.role == "USER"
+              userProvider.user?.role == "USER" || userProvider.user == null
                   ? customBottomNavigationUser()
                   : Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: customBottomNavigationAdmin(),
                     ),
               Visibility(
-                  visible: userProvider.user.role == "USER" &&
+                  visible: (userProvider.user?.role == "USER" ||
+                          userProvider.user == null) &&
                       adsProvider.adsBottom.isNotEmpty,
                   child: AdsBanner(
                     listOfAds: adsProvider.adsBottom,
@@ -199,7 +201,8 @@ class NavigationItem extends StatelessWidget {
             size: 32,
             color: pageProvider.page == index
                 ? secondaryColor
-                : (userProvider.user.role == "USER"
+                : (userProvider.user?.role == "USER" ||
+                        userProvider.user == null
                     ? primaryUserColor
                     : primaryAdminColor),
           ),
@@ -210,7 +213,8 @@ class NavigationItem extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: semibold,
                   )
-                : (userProvider.user.role == "USER"
+                : (userProvider.user?.role == "USER" ||
+                        userProvider.user == null
                     ? primaryUserColorText.copyWith(
                         fontSize: 12,
                         fontWeight: semibold,

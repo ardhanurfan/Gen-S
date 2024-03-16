@@ -36,14 +36,16 @@ class RecentlyPlayedPage extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: userProvider.user.role == "USER"
+                  color: userProvider.user?.role == "USER" ||
+                          userProvider.user == null
                       ? primaryUserColor
                       : primaryAdminColor,
                 ),
               ),
               Text(
                 "Recently Played",
-                style: (userProvider.user.role == "USER"
+                style: (userProvider.user?.role == "USER" ||
+                            userProvider.user == null
                         ? primaryUserColorText
                         : primaryAdminColorText)
                     .copyWith(
@@ -51,9 +53,10 @@ class RecentlyPlayedPage extends StatelessWidget {
               ),
             ],
           ),
-          backgroundColor: userProvider.user.role == "USER"
-              ? backgroundUserColor
-              : backgroundAdminColor,
+          backgroundColor:
+              userProvider.user?.role == "USER" || userProvider.user == null
+                  ? backgroundUserColor
+                  : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -91,9 +94,10 @@ class RecentlyPlayedPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: userProvider.user.role == "USER"
-          ? backgroundUserColor
-          : backgroundAdminColor,
+      backgroundColor:
+          userProvider.user?.role == "USER" || userProvider.user == null
+              ? backgroundUserColor
+              : backgroundAdminColor,
       body: SafeArea(
         child: Stack(
           alignment: Alignment.bottomCenter,

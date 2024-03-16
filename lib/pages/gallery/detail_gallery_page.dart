@@ -138,14 +138,16 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                   },
                   child: Icon(
                     Icons.arrow_back,
-                    color: userProvider.user.role == "USER"
+                    color: userProvider.user?.role == "USER" ||
+                            userProvider.user == null
                         ? primaryUserColor
                         : primaryAdminColor,
                   ),
                 ),
                 Text(
                   isDelete ? 'Select Images' : widget.gallery.name,
-                  style: userProvider.user.role == "USER"
+                  style: userProvider.user?.role == "USER" ||
+                          userProvider.user == null
                       ? primaryUserColorText.copyWith(
                           fontWeight: bold,
                           fontSize: 20,
@@ -158,9 +160,10 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
               ],
             ),
           ),
-          backgroundColor: userProvider.user.role == "USER"
-              ? backgroundUserColor
-              : backgroundAdminColor,
+          backgroundColor:
+              userProvider.user?.role == "USER" || userProvider.user == null
+                  ? backgroundUserColor
+                  : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -237,9 +240,10 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
     }
 
     return Scaffold(
-      backgroundColor: userProvider.user.role == "USER"
-          ? backgroundUserColor
-          : backgroundAdminColor,
+      backgroundColor:
+          userProvider.user?.role == "USER" || userProvider.user == null
+              ? backgroundUserColor
+              : backgroundAdminColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,
@@ -252,7 +256,7 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
         ),
       ),
       floatingActionButton: Visibility(
-        visible: userProvider.user.role != "USER",
+        visible: userProvider.user?.role != "USER" && userProvider.user != null,
         child: Wrap(
           direction: Axis.vertical,
           children: [

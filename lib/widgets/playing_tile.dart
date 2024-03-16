@@ -44,13 +44,18 @@ class PlayingTile extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: userProvider.user.role == "USER" ? 0 : 5,
-                    blurRadius: userProvider.user.role == "USER"
+                    spreadRadius: userProvider.user?.role == "USER" ||
+                            userProvider.user == null
+                        ? 0
+                        : 5,
+                    blurRadius: userProvider.user?.role == "USER" ||
+                            userProvider.user == null
                         ? 0
                         : 7, // changes position of shadow
                   ),
                 ],
-                color: userProvider.user.role == "USER"
+                color: userProvider.user?.role == "USER" ||
+                        userProvider.user == null
                     ? const Color(0xFF464343)
                     : const Color(0xffFFFFFF),
               ),
@@ -75,7 +80,8 @@ class PlayingTile extends StatelessWidget {
                         Expanded(
                           child: Text(
                             audio.title,
-                            style: (userProvider.user.role == "USER"
+                            style: (userProvider.user?.role == "USER" ||
+                                        userProvider.user == null
                                     ? primaryUserColorText
                                     : primaryAdminColorText)
                                 .copyWith(

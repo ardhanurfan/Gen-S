@@ -44,7 +44,8 @@ class PlaylistPage extends StatelessWidget {
               Row(
                 children: [
                   InkWell(
-                    highlightColor: userProvider.user.role == "USER"
+                    highlightColor: userProvider.user?.role == "USER" ||
+                            userProvider.user == null
                         ? const Color.fromARGB(255, 73, 73, 73)
                         : const Color.fromARGB(255, 200, 200, 200),
                     borderRadius: BorderRadius.circular(360),
@@ -85,10 +86,13 @@ class PlaylistPage extends StatelessWidget {
                         ),
                       );
                     },
-                    child: Icon(
-                      Icons.add,
-                      size: 36,
-                      color: primaryUserColor,
+                    child: Visibility(
+                      visible: userProvider.user != null,
+                      child: Icon(
+                        Icons.add,
+                        size: 36,
+                        color: primaryUserColor,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),

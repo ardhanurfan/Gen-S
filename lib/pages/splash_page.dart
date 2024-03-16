@@ -45,7 +45,9 @@ class _SplashPageState extends State<SplashPage> {
     await audioPlayerProvider.init();
 
     if (token == null) {
-      navigator.pushNamedAndRemoveUntil('/sign-in', (route) => false);
+      await audioProvider.getAudiosNoLogin();
+      // navigator.pushNamedAndRemoveUntil('/sign-in', (route) => false);
+      await navigator.pushNamedAndRemoveUntil('/main', (route) => false);
     } else {
       if (await userProvider.getUser(token: token)) {
         // Get Data User

@@ -22,9 +22,10 @@ class _ImagePopUpState extends State<ImagePopUp> {
     ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
 
     return AlertDialog(
-      backgroundColor: userProvider.user.role == "USER"
-          ? backgroundUserColor
-          : const Color.fromARGB(255, 224, 224, 224),
+      backgroundColor:
+          userProvider.user?.role == "USER" || userProvider.user == null
+              ? backgroundUserColor
+              : const Color.fromARGB(255, 224, 224, 224),
       actions: [
         Visibility(
           visible: !isLoading,
@@ -34,9 +35,10 @@ class _ImagePopUpState extends State<ImagePopUp> {
             },
             child: Text(
               'CANCEL',
-              style: userProvider.user.role == "USER"
-                  ? primaryUserColorText
-                  : primaryAdminColorText,
+              style:
+                  userProvider.user?.role == "USER" || userProvider.user == null
+                      ? primaryUserColorText
+                      : primaryAdminColorText,
             ),
           ),
         ),
@@ -56,9 +58,10 @@ class _ImagePopUpState extends State<ImagePopUp> {
             },
             child: Text(
               'SAVE',
-              style: userProvider.user.role == "USER"
-                  ? primaryUserColorText
-                  : primaryAdminColorText,
+              style:
+                  userProvider.user?.role == "USER" || userProvider.user == null
+                      ? primaryUserColorText
+                      : primaryAdminColorText,
             ),
           ),
         )
@@ -67,7 +70,7 @@ class _ImagePopUpState extends State<ImagePopUp> {
         visible: !isLoading,
         child: Text(
           "Image Preview",
-          style: userProvider.user.role == "USER"
+          style: userProvider.user?.role == "USER" || userProvider.user == null
               ? primaryUserColorText
               : primaryAdminColorText,
         ),
@@ -78,7 +81,8 @@ class _ImagePopUpState extends State<ImagePopUp> {
               height: 30,
               child: Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: userProvider.user.role == "USER"
+                  color: userProvider.user?.role == "USER" ||
+                          userProvider.user == null
                       ? primaryUserColor
                       : primaryAdminColor,
                   size: 32,

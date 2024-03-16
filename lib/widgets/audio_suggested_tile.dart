@@ -38,10 +38,11 @@ class AudioSuggestedTile extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             title,
-            style: (userProvider.user.role == "USER"
-                    ? primaryUserColorText
-                    : primaryAdminColorText)
-                .copyWith(fontSize: 12),
+            style:
+                (userProvider.user?.role == "USER" || userProvider.user == null
+                        ? primaryUserColorText
+                        : primaryAdminColorText)
+                    .copyWith(fontSize: 12),
             overflow: TextOverflow.ellipsis,
           ),
         ],

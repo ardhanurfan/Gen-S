@@ -25,7 +25,7 @@ class DefaultImage extends StatelessWidget {
             : type == ImageType.audio
                 ? 8
                 : 4),
-        color: userProvider.user.role == "USER"
+        color: userProvider.user?.role == "USER" || userProvider.user == null
             ? const Color.fromARGB(255, 58, 58, 58)
             : const Color.fromARGB(255, 223, 223, 223),
       ),
@@ -36,7 +36,9 @@ class DefaultImage extends StatelessWidget {
                 ? Icons.photo_library
                 : Icons.music_note,
         size: size * 0.5,
-        color: userProvider.user.role == "USER" ? greyColor : Colors.white,
+        color: userProvider.user?.role == "USER" || userProvider.user == null
+            ? greyColor
+            : Colors.white,
       ),
     );
   }

@@ -4,11 +4,11 @@ import 'package:music_player/services/user_service.dart';
 
 class UserProvider extends ChangeNotifier {
   String _errorMessage = '';
-  late UserModel _user;
+  UserModel? _user;
   late String _tokenReset;
 
   String get errorMessage => _errorMessage;
-  UserModel get user => _user;
+  UserModel? get user => _user;
   String get tokenReset => _tokenReset;
 
   set setUser(UserModel user) {

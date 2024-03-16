@@ -28,18 +28,20 @@ class PlayButton extends StatelessWidget {
           return IconButton(
             onPressed: audioPlayerProvider.audioPlayer.play,
             iconSize: size,
-            color: userProvider.user.role == "USER"
-                ? primaryUserColor
-                : primaryAdminColor,
+            color:
+                userProvider.user?.role == "USER" || userProvider.user == null
+                    ? primaryUserColor
+                    : primaryAdminColor,
             icon: const Icon(Icons.play_circle),
           );
         } else if (processingState != ProcessingState.completed) {
           return IconButton(
             onPressed: audioPlayerProvider.audioPlayer.pause,
             iconSize: size,
-            color: userProvider.user.role == "USER"
-                ? primaryUserColor
-                : primaryAdminColor,
+            color:
+                userProvider.user?.role == "USER" || userProvider.user == null
+                    ? primaryUserColor
+                    : primaryAdminColor,
             icon: const Icon(Icons.pause_circle),
           );
         } else if (processingState == ProcessingState.completed) {
@@ -52,16 +54,17 @@ class PlayButton extends StatelessWidget {
           return IconButton(
             onPressed: audioPlayerProvider.audioPlayer.play,
             iconSize: size,
-            color: userProvider.user.role == "USER"
-                ? primaryUserColor
-                : primaryAdminColor,
+            color:
+                userProvider.user?.role == "USER" || userProvider.user == null
+                    ? primaryUserColor
+                    : primaryAdminColor,
             icon: const Icon(Icons.play_circle),
           );
         }
         return IconButton(
           onPressed: audioPlayerProvider.audioPlayer.play,
           iconSize: size,
-          color: userProvider.user.role == "USER"
+          color: userProvider.user?.role == "USER" || userProvider.user == null
               ? primaryUserColor
               : primaryAdminColor,
           icon: const Icon(Icons.play_circle),

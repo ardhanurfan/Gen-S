@@ -56,9 +56,10 @@ class AudioTilePlaylist extends StatelessWidget {
             }
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 12),
-              color: userProvider.user.role == "USER"
-                  ? backgroundUserColor
-                  : backgroundAdminColor,
+              color:
+                  userProvider.user?.role == "USER" || userProvider.user == null
+                      ? backgroundUserColor
+                      : backgroundAdminColor,
               child: Row(
                 children: [
                   Container(
@@ -81,7 +82,8 @@ class AudioTilePlaylist extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: (isSelect
                               ? secondaryColorText
-                              : (userProvider.user.role == "USER"
+                              : (userProvider.user?.role == "USER" ||
+                                      userProvider.user == null
                                   ? primaryUserColorText
                                   : primaryAdminColorText))
                           .copyWith(

@@ -39,6 +39,36 @@ class AudioService {
     }
   }
 
+  Future<List<AudioModel>> getAudiosNoLogin({
+    String search = '',
+  }) async {
+    late Uri url;
+    if (search.isEmpty) {
+      url = UrlService().api('audio-no-login');
+    } else {
+      url = UrlService().api('audio-no-login?title=$search');
+    }
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var response = await http.get(
+      url,
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body)['data'] as List;
+      List<AudioModel> audios = List<AudioModel>.from(
+        data.map((e) => AudioModel.fromJson(e)),
+      );
+      return audios;
+    } else {
+      throw "Get audio failed";
+    }
+  }
+
   Future<List<AudioModel>> getHistory({
     required String token,
     bool isMost = false,

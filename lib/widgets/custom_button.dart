@@ -35,13 +35,16 @@ class CustomButton extends StatelessWidget {
             backgroundColor: buttonColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(radiusButton))),
-        child: Text(
-          buttonText,
-          style: primaryUserColorText.copyWith(
-            fontSize: 16,
-            fontWeight: medium,
-          ),
-        ),
+        child: Text(buttonText,
+            style: buttonColor == primaryUserColor
+                ? primaryAdminColorText.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                  )
+                : primaryUserColorText.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                  )),
       ),
     );
   }

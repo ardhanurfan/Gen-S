@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/widgets/custom_popup.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +14,7 @@ class EmptyPlaylistPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider userProvider = Provider.of<UserProvider>(context);
     PlaylistProvider playlistProvider = Provider.of<PlaylistProvider>(context);
     TextEditingController controller = TextEditingController(text: '');
 
@@ -32,11 +36,26 @@ class EmptyPlaylistPage extends StatelessWidget {
       return Center(
         child: Container(
           margin: const EdgeInsets.only(top: 49, bottom: 24),
-          child: Text(
-            "Your playlist is empty  :(",
-            style:
-                primaryUserColorText.copyWith(fontSize: 24, fontWeight: bold),
-          ),
+          child: userProvider.user == null
+              ? Column(
+                  children: [
+                    Text(
+                      "You're not logged in  :(",
+                      style: primaryUserColorText.copyWith(
+                          fontSize: 24, fontWeight: bold),
+                    ),
+                    Text(
+                      "Please login first to use this feature",
+                      style: primaryUserColorText.copyWith(
+                          fontSize: 16, fontWeight: bold),
+                    )
+                  ],
+                )
+              : Text(
+                  "Your playlist is empty  :(",
+                  style: primaryUserColorText.copyWith(
+                      fontSize: 24, fontWeight: bold),
+                ),
         ),
       );
     }
@@ -96,7 +115,8 @@ class EmptyPlaylistPage extends StatelessWidget {
         children: [
           mainIcon(),
           mainText(),
-          addAudioButton(),
+          Visibility(
+              visible: userProvider.user != null, child: addAudioButton()),
         ],
       );
     }

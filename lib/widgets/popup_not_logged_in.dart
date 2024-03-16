@@ -21,7 +21,7 @@ class PopUpNotLoggedIn extends StatelessWidget {
         ),
       ],
       content: Text(
-        "You're not logged in :(\nPlease login and try again",
+        "You're not logged in :(\nPlease login to use this feature",
         style: primaryUserColorText,
       ),
     );

@@ -42,9 +42,9 @@ class _SignInPageState extends State<SignInPage> {
       )) {
         final navigator = Navigator.of(context);
         // Get Data User
-        await audioProvider.getAudios(token: userProvider.user.token);
-        await audioProvider.getHistory(token: userProvider.user.token);
-        await playlistProvider.getPlaylist(token: userProvider.user.token);
+        await audioProvider.getAudios(token: userProvider.user!.token);
+        await audioProvider.getHistory(token: userProvider.user!.token);
+        await playlistProvider.getPlaylist(token: userProvider.user!.token);
 
         pageProvider.setPage = 0; // agar mulai di home
         navigator.pushNamedAndRemoveUntil('/main', (route) => false);

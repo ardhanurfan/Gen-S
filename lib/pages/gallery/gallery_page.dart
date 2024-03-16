@@ -34,16 +34,18 @@ class GalleryPage extends StatelessWidget {
               children: [
                 Text(
                   "Gallery",
-                  style: userProvider.user.role == "USER"
+                  style: userProvider.user?.role == "USER" ||
+                          userProvider.user == null
                       ? primaryUserColorText.copyWith(
                           fontSize: 24, fontWeight: bold)
                       : primaryAdminColorText.copyWith(
                           fontSize: 24, fontWeight: bold),
                 ),
-                userProvider.user.role == "USER"
+                userProvider.user?.role == "USER" || userProvider.user == null
                     ? const SettingButton()
                     : InkWell(
-                        highlightColor: userProvider.user.role == "USER"
+                        highlightColor: userProvider.user?.role == "USER" ||
+                                userProvider.user == null
                             ? const Color.fromARGB(255, 73, 73, 73)
                             : const Color.fromARGB(255, 200, 200, 200),
                         borderRadius: BorderRadius.circular(360),
@@ -95,9 +97,10 @@ class GalleryPage extends StatelessWidget {
               ],
             ),
           ),
-          backgroundColor: userProvider.user.role == "USER"
-              ? backgroundUserColor
-              : backgroundAdminColor,
+          backgroundColor:
+              userProvider.user?.role == "USER" || userProvider.user == null
+                  ? backgroundUserColor
+                  : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -131,9 +134,10 @@ class GalleryPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: userProvider.user.role == "USER"
-          ? backgroundUserColor
-          : backgroundAdminColor,
+      backgroundColor:
+          userProvider.user?.role == "USER" || userProvider.user == null
+              ? backgroundUserColor
+              : backgroundAdminColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,

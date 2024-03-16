@@ -26,7 +26,7 @@ class EmptyGalleryPage extends StatelessWidget {
         Text(
           "Nothing pictures here :(",
           textAlign: TextAlign.center,
-          style: userProvider.user.role == "USER"
+          style: userProvider.user?.role == "USER" || userProvider.user == null
               ? primaryUserColorText.copyWith(fontSize: 20, fontWeight: bold)
               : primaryAdminColorText.copyWith(fontSize: 20, fontWeight: bold),
         ),

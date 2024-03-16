@@ -24,9 +24,10 @@ class _CustomPopUpSuccessState extends State<CustomPopUpSuccess> {
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
     return AlertDialog(
-        backgroundColor: userProvider.user.role == "USER"
-            ? backgroundUserColor
-            : const Color.fromARGB(255, 224, 224, 224),
+        backgroundColor:
+            userProvider.user?.role == "USER" || userProvider.user == null
+                ? backgroundUserColor
+                : const Color.fromARGB(255, 224, 224, 224),
         actions: [
           Visibility(
             visible: !isLoading,
@@ -36,7 +37,8 @@ class _CustomPopUpSuccessState extends State<CustomPopUpSuccess> {
               },
               child: Text(
                 'CANCEL',
-                style: userProvider.user.role == "USER"
+                style: userProvider.user?.role == "USER" ||
+                        userProvider.user == null
                     ? primaryUserColorText
                     : primaryAdminColorText,
               ),
@@ -58,7 +60,8 @@ class _CustomPopUpSuccessState extends State<CustomPopUpSuccess> {
               },
               child: Text(
                 'YES',
-                style: userProvider.user.role == "USER"
+                style: userProvider.user?.role == "USER" ||
+                        userProvider.user == null
                     ? primaryUserColorText
                     : primaryAdminColorText,
               ),
@@ -69,9 +72,10 @@ class _CustomPopUpSuccessState extends State<CustomPopUpSuccess> {
           visible: !isLoading,
           child: Text(
             widget.title,
-            style: userProvider.user.role == "USER"
-                ? primaryUserColorText
-                : primaryAdminColorText,
+            style:
+                userProvider.user?.role == "USER" || userProvider.user == null
+                    ? primaryUserColorText
+                    : primaryAdminColorText,
           ),
         ),
         content: isLoading
@@ -80,7 +84,8 @@ class _CustomPopUpSuccessState extends State<CustomPopUpSuccess> {
                 height: 30,
                 child: Center(
                   child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: userProvider.user.role == "USER"
+                    color: userProvider.user?.role == "USER" ||
+                            userProvider.user == null
                         ? primaryUserColor
                         : primaryAdminColor,
                     size: 32,
@@ -89,7 +94,8 @@ class _CustomPopUpSuccessState extends State<CustomPopUpSuccess> {
               )
             : Text(
                 "Do you want to add this audio?",
-                style: userProvider.user.role == "USER"
+                style: userProvider.user?.role == "USER" ||
+                        userProvider.user == null
                     ? primaryUserColorText
                     : primaryAdminColorText,
               ));

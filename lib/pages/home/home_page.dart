@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/home/empty_state_page.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
 import 'package:music_player/widgets/custom_popup_success.dart';
+import 'package:music_player/widgets/popup_not_logged_in.dart';
 import 'package:music_player/widgets/setting_button.dart';
 import 'package:music_player/widgets/sort_by_tile.dart';
 import 'package:provider/provider.dart';
@@ -27,60 +30,70 @@ class HomePage extends StatelessWidget {
     UserProvider userProvider = Provider.of<UserProvider>(context);
 
     handleAddAudio() async {
-      if (await audioProvider.audioPicker()) {
+      if (userProvider.user == null) {
         showDialog(
-          barrierDismissible: false,
           context: context,
-          builder: (context) => CustomPopUpSuccess(
-            title: 'Add Audio',
-            add: () async {
-              String audioTitle = audioProvider.audioPickedPath.split('/').last;
-              if (audioTitle.contains(".mp3")) {
-                audioTitle = audioTitle.split(".mp3").first;
-              } else if (audioTitle.contains(".m4a")) {
-                audioTitle = audioTitle.split(".m4a").first;
-              }
-              if (await audioProvider.addAudio(
-                  title: audioTitle,
-                  audioPath: audioProvider.audioPickedPath,
-                  imagesPath: [])) {
-                audioPlayerProvider.addAudio(audio: audioProvider.audios[0]);
-                ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: successColor,
-                    content: const Text(
-                      'Add Audio Successfuly',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                );
-              } else {
-                ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    backgroundColor: alertColor,
-                    content: Text(
-                      audioProvider.errorMessage,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                );
-              }
-            },
-          ),
+          builder: (BuildContext context) {
+            return const PopUpNotLoggedIn();
+          },
         );
       } else {
-        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: alertColor,
-            content: Text(
-              audioProvider.errorMessage,
-              textAlign: TextAlign.center,
+        if (await audioProvider.audioPicker()) {
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => CustomPopUpSuccess(
+              title: 'Add Audio',
+              add: () async {
+                String audioTitle =
+                    audioProvider.audioPickedPath.split('/').last;
+                if (audioTitle.contains(".mp3")) {
+                  audioTitle = audioTitle.split(".mp3").first;
+                } else if (audioTitle.contains(".m4a")) {
+                  audioTitle = audioTitle.split(".m4a").first;
+                }
+                if (await audioProvider.addAudio(
+                    title: audioTitle,
+                    audioPath: audioProvider.audioPickedPath,
+                    imagesPath: [])) {
+                  audioPlayerProvider.addAudio(audio: audioProvider.audios[0]);
+                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: successColor,
+                      content: const Text(
+                        'Add Audio Successfuly',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: alertColor,
+                      content: Text(
+                        audioProvider.errorMessage,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                }
+              },
             ),
-          ),
-        );
+          );
+        } else {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: alertColor,
+              content: Text(
+                audioProvider.errorMessage,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
       }
     }
 
@@ -97,7 +110,7 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Image.asset(
-                userProvider.user.role == "ADMIN"
+                userProvider.user?.role == "ADMIN" && userProvider.user != null
                     ? "assets/logo-black-font.png"
                     : "assets/logo-white-font.png",
                 fit: BoxFit.cover,
@@ -106,7 +119,8 @@ class HomePage extends StatelessWidget {
               Row(
                 children: [
                   InkWell(
-                    highlightColor: userProvider.user.role == "USER"
+                    highlightColor: userProvider.user?.role == "USER" ||
+                            userProvider.user == null
                         ? const Color.fromARGB(255, 73, 73, 73)
                         : const Color.fromARGB(255, 200, 200, 200),
                     borderRadius: BorderRadius.circular(360),
@@ -116,7 +130,8 @@ class HomePage extends StatelessWidget {
                     child: Icon(
                       Icons.add,
                       size: 36,
-                      color: userProvider.user.role == "USER"
+                      color: userProvider.user?.role == "USER" ||
+                              userProvider.user == null
                           ? primaryUserColor
                           : primaryAdminColor,
                     ),
@@ -127,9 +142,10 @@ class HomePage extends StatelessWidget {
               )
             ],
           ),
-          backgroundColor: userProvider.user.role == "USER"
-              ? backgroundUserColor
-              : backgroundAdminColor,
+          backgroundColor:
+              userProvider.user?.role == "USER" || userProvider.user == null
+                  ? backgroundUserColor
+                  : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -158,11 +174,13 @@ class HomePage extends StatelessWidget {
                   quarterTurns: 1,
                   child: Icon(Icons.compare_arrows,
                       size: 28,
-                      color: userProvider.user.role == "USER"
+                      color: userProvider.user?.role == "USER" ||
+                              userProvider.user == null
                           ? primaryUserColor
                           : primaryAdminColor),
                 ),
-                color: userProvider.user.role == "USER"
+                color: userProvider.user?.role == "USER" ||
+                        userProvider.user == null
                     ? dropDownColor
                     : const Color.fromARGB(255, 223, 223, 223),
                 shape: RoundedRectangleBorder(
@@ -233,9 +251,10 @@ class HomePage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: userProvider.user.role == "USER"
-          ? backgroundUserColor
-          : backgroundAdminColor,
+      backgroundColor:
+          userProvider.user?.role == "USER" || userProvider.user == null
+              ? backgroundUserColor
+              : backgroundAdminColor,
       body: SafeArea(
         child: NestedScrollView(
           floatHeaderSlivers: true,
@@ -283,7 +302,7 @@ class HomePageNav extends StatelessWidget {
                     fontSize: 12,
                     fontWeight: medium,
                   )
-                : userProvider.user.role == "USER"
+                : userProvider.user?.role == "USER" || userProvider.user == null
                     ? primaryUserColorText.copyWith(
                         fontSize: 12,
                         fontWeight: medium,

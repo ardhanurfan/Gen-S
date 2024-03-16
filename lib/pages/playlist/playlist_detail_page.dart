@@ -83,7 +83,8 @@ class PlaylistDetailPage extends StatelessWidget {
                 Row(
                   children: [
                     InkWell(
-                      highlightColor: userProvider.user.role == "USER"
+                      highlightColor: userProvider.user?.role == "USER" ||
+                              userProvider.user == null
                           ? const Color.fromARGB(255, 73, 73, 73)
                           : const Color.fromARGB(255, 200, 200, 200),
                       borderRadius: BorderRadius.circular(360),
@@ -106,7 +107,8 @@ class PlaylistDetailPage extends StatelessWidget {
                       width: 18,
                     ),
                     InkWell(
-                      highlightColor: userProvider.user.role == "USER"
+                      highlightColor: userProvider.user?.role == "USER" ||
+                              userProvider.user == null
                           ? const Color.fromARGB(255, 73, 73, 73)
                           : const Color.fromARGB(255, 200, 200, 200),
                       borderRadius: BorderRadius.circular(360),

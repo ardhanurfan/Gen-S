@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/delete_account_page.dart';
 import 'package:music_player/providers/audio_player_provider.dart';
@@ -28,23 +30,27 @@ class _SettingsPageState extends State<SettingsPage> {
       setState(() {
         isLoading = true;
       });
-      if (await userProvider.logout(token: userProvider.user.token)) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/sign-in', (route) => false);
-        if (audioPlayerProvider.currentPlaylist.isNotEmpty) {
-          await audioPlayerProvider.playlist.clear();
-        }
+      if (userProvider.user == null) {
+        Navigator.pushNamed(context, '/sign-in');
       } else {
-        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: alertColor,
-            content: Text(
-              userProvider.errorMessage,
-              textAlign: TextAlign.center,
+        if (await userProvider.logout(token: userProvider.user!.token)) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/sign-in', (route) => false);
+          if (audioPlayerProvider.currentPlaylist.isNotEmpty) {
+            await audioPlayerProvider.playlist.clear();
+          }
+        } else {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: alertColor,
+              content: Text(
+                userProvider.errorMessage,
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-        );
+          );
+        }
       }
 
       setState(() {
@@ -64,18 +70,20 @@ class _SettingsPageState extends State<SettingsPage> {
               },
               child: Icon(
                 Icons.arrow_back,
-                color: userProvider.user.role == "USER"
+                color: userProvider.user?.role == "USER" ||
+                        userProvider.user == null
                     ? primaryUserColor
                     : primaryAdminColor,
               ),
             ),
             Text(
               "Settings",
-              style: userProvider.user.role == "USER"
-                  ? primaryUserColorText.copyWith(
-                      fontWeight: bold, fontSize: 24, letterSpacing: 1.3)
-                  : primaryAdminColorText.copyWith(
-                      fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
+              style:
+                  userProvider.user?.role == "USER" || userProvider.user == null
+                      ? primaryUserColorText.copyWith(
+                          fontWeight: bold, fontSize: 24, letterSpacing: 1.3)
+                      : primaryAdminColorText.copyWith(
+                          fontWeight: bold, fontSize: 24, letterSpacing: 1.3),
             ),
           ],
         ),
@@ -107,16 +115,20 @@ class _SettingsPageState extends State<SettingsPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      userProvider.user.username,
-                      style: userProvider.user.role == "USER"
+                      userProvider.user != null
+                          ? userProvider.user!.username
+                          : "GUEST",
+                      style: userProvider.user?.role == "USER" ||
+                              userProvider.user == null
                           ? primaryUserColorText.copyWith(
                               fontSize: 20, fontWeight: bold)
                           : primaryAdminColorText.copyWith(
                               fontSize: 20, fontWeight: bold),
                     ),
                     Text(
-                      userProvider.user.email,
-                      style: userProvider.user.role == "USER"
+                      userProvider.user != null ? userProvider.user!.email : "",
+                      style: userProvider.user?.role == "USER" ||
+                              userProvider.user == null
                           ? primaryUserColorText.copyWith(fontSize: 12)
                           : primaryAdminColorText.copyWith(
                               fontSize: 12, fontWeight: bold),
@@ -126,30 +138,37 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             Visibility(
-              visible: userProvider.user.role == "USER",
+              visible: userProvider.user?.role == "USER" ||
+                  userProvider.user == null,
               child: Padding(
                 padding: EdgeInsets.only(
                     left: 84 - defaultMargin,
                     top: 60,
                     right: 84 - defaultMargin),
                 child: isLoading
-                    ? LoadingButton(
-                        radiusButton: 32,
-                        buttonColor: alertColor,
-                        heightButton: 53,
+                    ? Visibility(
+                        visible: userProvider.user != null,
+                        child: LoadingButton(
+                          radiusButton: 32,
+                          buttonColor: alertColor,
+                          heightButton: 53,
+                        ),
                       )
-                    : CustomButton(
-                        radiusButton: 32,
-                        buttonColor: alertColor,
-                        buttonText: "Delete Account",
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const DeleteAccountPage()));
-                        },
-                        heightButton: 53),
+                    : Visibility(
+                        visible: userProvider.user != null,
+                        child: CustomButton(
+                            radiusButton: 32,
+                            buttonColor: alertColor,
+                            buttonText: "Delete Account",
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DeleteAccountPage()));
+                            },
+                            heightButton: 53),
+                      ),
               ),
             ),
             Padding(
@@ -164,7 +183,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   : CustomButton(
                       radiusButton: 32,
                       buttonColor: secondaryColor,
-                      buttonText: "Log Out",
+                      buttonText:
+                          userProvider.user == null ? "Log In" : "Log Out",
                       onPressed: () {
                         handleLogout();
                       },
@@ -175,10 +195,11 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             Text(
               "Version 1.1.3",
-              style: userProvider.user.role == "USER"
-                  ? primaryUserColorText.copyWith(fontSize: 12)
-                  : primaryAdminColorText.copyWith(
-                      fontSize: 12, fontWeight: bold),
+              style:
+                  userProvider.user?.role == "USER" || userProvider.user == null
+                      ? primaryUserColorText.copyWith(fontSize: 12)
+                      : primaryAdminColorText.copyWith(
+                          fontSize: 12, fontWeight: bold),
             )
           ],
         ),
@@ -186,9 +207,10 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     return Scaffold(
-      backgroundColor: userProvider.user.role == "USER"
-          ? backgroundUserColor
-          : backgroundAdminColor,
+      backgroundColor:
+          userProvider.user?.role == "USER" || userProvider.user == null
+              ? backgroundUserColor
+              : backgroundAdminColor,
       body: SafeArea(
         child: Column(
           children: [

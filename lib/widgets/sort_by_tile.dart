@@ -25,7 +25,7 @@ class SortByTile extends StatelessWidget {
       children: [
         Text(
           title,
-          style: userProvider.user.role == "USER"
+          style: userProvider.user?.role == "USER" || userProvider.user == null
               ? primaryUserColorText.copyWith(
                   fontSize: 12,
                 )
@@ -37,9 +37,10 @@ class SortByTile extends StatelessWidget {
             sortByProvider.sortBy == index
                 ? Icons.check_circle_outline
                 : Icons.circle_outlined,
-            color: userProvider.user.role == "USER"
-                ? primaryUserColor
-                : primaryAdminColor)
+            color:
+                userProvider.user?.role == "USER" || userProvider.user == null
+                    ? primaryUserColor
+                    : primaryAdminColor)
       ],
     );
   }

@@ -28,16 +28,18 @@ class SectionTitle extends StatelessWidget {
         children: [
           Text(
             title,
-            style: (userProvider.user.role == "USER"
-                    ? primaryUserColorText
-                    : primaryAdminColorText)
-                .copyWith(fontSize: 24, fontWeight: bold),
+            style:
+                (userProvider.user?.role == "USER" || userProvider.user == null
+                        ? primaryUserColorText
+                        : primaryAdminColorText)
+                    .copyWith(fontSize: 24, fontWeight: bold),
           ),
           InkWell(
             onTap: onTap,
-            highlightColor: userProvider.user.role == "USER"
-                ? const Color.fromARGB(255, 73, 73, 73)
-                : const Color.fromARGB(255, 200, 200, 200),
+            highlightColor:
+                userProvider.user?.role == "USER" || userProvider.user == null
+                    ? const Color.fromARGB(255, 73, 73, 73)
+                    : const Color.fromARGB(255, 200, 200, 200),
             child: Text(
               'Show All',
               style:

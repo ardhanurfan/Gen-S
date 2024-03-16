@@ -32,14 +32,16 @@ class MostPlayedPage extends StatelessWidget {
                 },
                 child: Icon(
                   Icons.arrow_back,
-                  color: userProvider.user.role == "USER"
+                  color: userProvider.user?.role == "USER" ||
+                          userProvider.user == null
                       ? primaryUserColor
                       : primaryAdminColor,
                 ),
               ),
               Text(
                 "Most Played",
-                style: (userProvider.user.role == "USER"
+                style: (userProvider.user?.role == "USER" ||
+                            userProvider.user == null
                         ? primaryUserColorText
                         : primaryAdminColorText)
                     .copyWith(
@@ -47,9 +49,10 @@ class MostPlayedPage extends StatelessWidget {
               ),
             ],
           ),
-          backgroundColor: userProvider.user.role == "USER"
-              ? backgroundUserColor
-              : backgroundAdminColor,
+          backgroundColor:
+              userProvider.user?.role == "USER" || userProvider.user == null
+                  ? backgroundUserColor
+                  : backgroundAdminColor,
           floating: true,
           snap: true,
         ),
@@ -78,9 +81,10 @@ class MostPlayedPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: userProvider.user.role == "USER"
-          ? backgroundUserColor
-          : backgroundAdminColor,
+      backgroundColor:
+          userProvider.user?.role == "USER" || userProvider.user == null
+              ? backgroundUserColor
+              : backgroundAdminColor,
       body: SafeArea(
         child: Stack(
           alignment: Alignment.bottomCenter,

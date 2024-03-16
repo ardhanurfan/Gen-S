@@ -30,6 +30,15 @@ class AudioProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> getAudiosNoLogin() async {
+    try {
+      List<AudioModel> audios = await AudioService().getAudiosNoLogin();
+      _audios = audios;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> getHistory({required String token}) async {
     try {
       List<AudioModel> historyMosts =

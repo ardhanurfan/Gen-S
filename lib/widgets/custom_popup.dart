@@ -25,9 +25,10 @@ class _CustomPopUpState extends State<CustomPopUp> {
   Widget build(BuildContext context) {
     UserProvider userProvider = Provider.of<UserProvider>(context);
     return AlertDialog(
-      backgroundColor: userProvider.user.role == "USER"
-          ? backgroundUserColor
-          : const Color.fromARGB(255, 224, 224, 224),
+      backgroundColor:
+          userProvider.user?.role == "USER" || userProvider.user == null
+              ? backgroundUserColor
+              : const Color.fromARGB(255, 224, 224, 224),
       actions: [
         Visibility(
           visible: !isLoading,
@@ -37,9 +38,10 @@ class _CustomPopUpState extends State<CustomPopUp> {
             },
             child: Text(
               'CANCEL',
-              style: userProvider.user.role == "USER"
-                  ? primaryUserColorText
-                  : primaryAdminColorText,
+              style:
+                  userProvider.user?.role == "USER" || userProvider.user == null
+                      ? primaryUserColorText
+                      : primaryAdminColorText,
             ),
           ),
         ),
@@ -59,9 +61,10 @@ class _CustomPopUpState extends State<CustomPopUp> {
             },
             child: Text(
               'SAVE',
-              style: userProvider.user.role == "USER"
-                  ? primaryUserColorText
-                  : primaryAdminColorText,
+              style:
+                  userProvider.user?.role == "USER" || userProvider.user == null
+                      ? primaryUserColorText
+                      : primaryAdminColorText,
             ),
           ),
         )
@@ -70,7 +73,7 @@ class _CustomPopUpState extends State<CustomPopUp> {
         visible: !isLoading,
         child: Text(
           widget.title,
-          style: userProvider.user.role == "USER"
+          style: userProvider.user?.role == "USER" || userProvider.user == null
               ? primaryUserColorText
               : primaryAdminColorText,
         ),
@@ -81,7 +84,8 @@ class _CustomPopUpState extends State<CustomPopUp> {
               height: 30,
               child: Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
-                  color: userProvider.user.role == "USER"
+                  color: userProvider.user?.role == "USER" ||
+                          userProvider.user == null
                       ? primaryUserColor
                       : primaryAdminColor,
                   size: 32,
@@ -90,12 +94,14 @@ class _CustomPopUpState extends State<CustomPopUp> {
             )
           : TextField(
               controller: widget.controller,
-              style: userProvider.user.role == "USER"
-                  ? primaryUserColorText.copyWith(fontSize: 14)
-                  : primaryAdminColorText.copyWith(fontSize: 14),
-              cursorColor: userProvider.user.role == "USER"
-                  ? primaryUserColor
-                  : primaryAdminColor,
+              style:
+                  userProvider.user?.role == "USER" || userProvider.user == null
+                      ? primaryUserColorText.copyWith(fontSize: 14)
+                      : primaryAdminColorText.copyWith(fontSize: 14),
+              cursorColor:
+                  userProvider.user?.role == "USER" || userProvider.user == null
+                      ? primaryUserColor
+                      : primaryAdminColor,
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(defaultRadius),
@@ -103,7 +109,8 @@ class _CustomPopUpState extends State<CustomPopUp> {
                 enabledBorder: UnderlineInputBorder(
                   borderRadius: BorderRadius.circular(defaultRadius),
                   borderSide: BorderSide(
-                    color: userProvider.user.role == "USER"
+                    color: userProvider.user?.role == "USER" ||
+                            userProvider.user == null
                         ? primaryUserColor
                         : primaryAdminColor,
                     width: 3,

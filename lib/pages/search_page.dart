@@ -123,7 +123,8 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       "Audio",
-                      style: (userProvider.user.role == "USER"
+                      style: (userProvider.user?.role == "USER" ||
+                                  userProvider.user == null
                               ? primaryUserColorText
                               : primaryAdminColorText)
                           .copyWith(fontSize: 20, fontWeight: bold),
@@ -142,12 +143,14 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 Visibility(
                   visible: foundPlaylist.isNotEmpty &&
-                      userProvider.user.role == "USER",
+                          userProvider.user?.role == "USER" ||
+                      userProvider.user == null,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       "Playlist",
-                      style: (userProvider.user.role == "USER"
+                      style: (userProvider.user?.role == "USER" ||
+                                  userProvider.user == null
                               ? primaryUserColorText
                               : primaryAdminColorText)
                           .copyWith(fontSize: 20, fontWeight: bold),
@@ -155,7 +158,8 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
                 Visibility(
-                  visible: userProvider.user.role == "USER",
+                  visible: userProvider.user?.role == "USER" ||
+                      userProvider.user == null,
                   child: Column(
                     children: foundPlaylist
                         .map(
@@ -172,7 +176,8 @@ class _SearchPageState extends State<SearchPage> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       "Gallery",
-                      style: (userProvider.user.role == "USER"
+                      style: (userProvider.user?.role == "USER" ||
+                                  userProvider.user == null
                               ? primaryUserColorText
                               : primaryAdminColorText)
                           .copyWith(fontSize: 20, fontWeight: bold),
@@ -209,9 +214,10 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     return Scaffold(
-      backgroundColor: userProvider.user.role == "USER"
-          ? backgroundUserColor
-          : backgroundAdminColor,
+      backgroundColor:
+          userProvider.user?.role == "USER" || userProvider.user == null
+              ? backgroundUserColor
+              : backgroundAdminColor,
       body: SafeArea(
         child: content(),
       ),
