@@ -5,6 +5,7 @@ import 'package:music_player/models/image_model.dart';
 import 'package:music_player/services/audio_service.dart';
 import 'package:music_player/services/image_service.dart';
 import 'package:music_player/services/user_service.dart';
+import 'package:music_player/utils/local_json.dart';
 
 class AudioProvider extends ChangeNotifier {
   List<AudioModel> _audios = [];
@@ -39,15 +40,25 @@ class AudioProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getHistory({required String token}) async {
+  Future<void> getHistory({required String? token}) async {
     try {
-      List<AudioModel> historyMosts =
-          await AudioService().getHistory(token: token, isMost: true);
-      List<AudioModel> historyRecents =
-          await AudioService().getHistory(token: token);
+      if (token != null) {
+        List<AudioModel> historyMosts =
+            await AudioService().getHistory(token: token, isMost: true);
+        List<AudioModel> historyRecents =
+            await AudioService().getHistory(token: token);
 
-      _historyMosts = historyMosts;
-      _historyRecents = historyRecents;
+        _historyMosts = historyMosts;
+        _historyRecents = historyRecents;
+      } else {
+        List<AudioModel> historyMosts =
+            await AudioService().getHistoryLocal(isMost: true);
+        List<AudioModel> historyRecents =
+            await AudioService().getHistoryLocal();
+
+        _historyMosts = historyMosts;
+        _historyRecents = historyRecents;
+      }
     } catch (e) {
       rethrow;
     }
@@ -55,18 +66,50 @@ class AudioProvider extends ChangeNotifier {
 
   Future<bool> updateHistory({required AudioModel audio}) async {
     try {
+      var token = await UserService().getTokenPreference();
       if (_currAudio == null || _currAudio!.id != audio.id) {
         _currAudio = audio;
-        if (await AudioService().updateHistory(audioId: audio.id)) {
-          var token = await UserService().getTokenPreference() ?? '';
-          List<AudioModel> historyMosts =
-              await AudioService().getHistory(token: token, isMost: true);
-          List<AudioModel> historyRecents =
-              await AudioService().getHistory(token: token);
+        if (token != null) {
+          if (await AudioService().updateHistory(audioId: audio.id)) {
+            List<AudioModel> historyMosts =
+                await AudioService().getHistory(token: token, isMost: true);
+            List<AudioModel> historyRecents =
+                await AudioService().getHistory(token: token);
 
-          _historyMosts = historyMosts;
-          _historyRecents = historyRecents;
-          notifyListeners();
+            _historyMosts = historyMosts;
+            _historyRecents = historyRecents;
+            notifyListeners();
+          }
+        } else {
+          // Get dari json dan modify
+          List<Map<String, dynamic>> history =
+              await LocalJSON.readJsonFile(fileName: 'history');
+
+          int index = history
+              .indexWhere((element) => element['audio']['id'] == audio.id);
+          if (index == -1) {
+            history.insert(0, {
+              'audio': audio.toJson(),
+              'total': 1,
+            });
+          } else {
+            history[index]['total'] += 1;
+            history.insert(0, history[index]);
+            history.removeAt(index + 1);
+          }
+
+          if (await LocalJSON.writeJsonFile(
+              fileName: 'history', items: history)) {
+            // Get yang baru
+            List<AudioModel> historyMosts =
+                await AudioService().getHistoryLocal(isMost: true);
+            List<AudioModel> historyRecents =
+                await AudioService().getHistoryLocal();
+
+            _historyMosts = historyMosts;
+            _historyRecents = historyRecents;
+            notifyListeners();
+          }
         }
       }
       return true;

@@ -6,6 +6,8 @@ import 'package:music_player/services/url_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:music_player/services/user_service.dart';
 
+import '../utils/local_json.dart';
+
 class AudioService {
   Future<List<AudioModel>> getAudios({
     required String token,
@@ -70,30 +72,53 @@ class AudioService {
   }
 
   Future<List<AudioModel>> getHistory({
-    required String token,
+    required String? token,
     bool isMost = false,
   }) async {
-    late Uri url =
-        UrlService().api('history?limit=30${isMost ? '&menu=MOST' : ''}');
+    if (token != null) {
+      late Uri url =
+          UrlService().api('history?limit=30${isMost ? '&menu=MOST' : ''}');
 
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': token,
-    };
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      };
 
-    var response = await http.get(
-      url,
-      headers: headers,
-    );
-
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body)['data']['data'] as List;
-      List<AudioModel> history = List<AudioModel>.from(
-        data.map((e) => AudioModel.fromJson(e['audio'])),
+      var response = await http.get(
+        url,
+        headers: headers,
       );
-      return history;
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body)['data']['data'] as List;
+        List<AudioModel> history = List<AudioModel>.from(
+          data.map((e) => AudioModel.fromJson(e['audio'])),
+        );
+        return history;
+      } else {
+        throw "Get history failed";
+      }
     } else {
-      throw "Get history failed";
+      return [];
+    }
+  }
+
+  Future<List<AudioModel>> getHistoryLocal({
+    bool isMost = false,
+  }) async {
+    List<Map<String, dynamic>> historyData =
+        await LocalJSON.readJsonFile(fileName: 'history');
+    if (isMost) {
+      List<Map<String, dynamic>> historyDataMost = [...historyData];
+      historyDataMost.sort(
+        (a, b) => b['total'].compareTo(a['total']),
+      );
+
+      return historyDataMost
+          .map((e) => AudioModel.fromJson(e['audio']))
+          .toList();
+    } else {
+      return historyData.map((e) => AudioModel.fromJson(e['audio'])).toList();
     }
   }
 
