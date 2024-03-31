@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:music_player/pages/gallery/empty_gallery_page.dart';
 import 'package:music_player/providers/user_provider.dart';

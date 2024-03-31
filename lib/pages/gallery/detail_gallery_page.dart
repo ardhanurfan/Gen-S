@@ -26,10 +26,12 @@ class DetailGalleryPage extends StatefulWidget {
 
 class _DetailGalleryPageState extends State<DetailGalleryPage> {
   bool isDelete = false;
+  bool isAdd = false;
   List<ImageModel> imagesDel = [];
 
   @override
   Widget build(BuildContext context) {
+    print(widget.gallery);
     UserProvider userProvider = Provider.of<UserProvider>(context);
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
     ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
@@ -100,6 +102,7 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
               audioProvider.deleteImageFromGallery(imagesDel: imagesDel);
               setState(() {
                 isDelete = false;
+                isAdd = false;
                 imagesDel = [];
               });
             } else {
@@ -266,9 +269,13 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                 if (isDelete) {
                   await handleDeleteImage();
                 } else {
-                  setState(() {
-                    isDelete = true;
-                  });
+                  if (isAdd) {
+                    // ADD FOLDER
+                  } else {
+                    setState(() {
+                      isDelete = true;
+                    });
+                  }
                 }
               },
               backgroundColor: isDelete ? alertColor : successColor,
@@ -277,10 +284,15 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                       Icons.delete,
                       size: 30,
                     )
-                  : const Icon(
-                      Icons.edit,
-                      size: 30,
-                    ),
+                  : isAdd
+                      ? const Icon(
+                          Icons.create_new_folder_outlined,
+                          size: 30,
+                        )
+                      : const Icon(
+                          Icons.edit,
+                          size: 30,
+                        ),
             ),
             const SizedBox(height: 16),
             FloatingActionButton(
@@ -292,7 +304,13 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                     imagesDel = [];
                   });
                 } else {
-                  await handleAddImage();
+                  if (isAdd) {
+                    await handleAddImage();
+                  } else {
+                    setState(() {
+                      isAdd = true;
+                    });
+                  }
                 }
               },
               backgroundColor: isDelete ? primaryUserColor : secondaryColor,
@@ -302,10 +320,34 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                       color: primaryAdminColor,
                       size: 30,
                     )
-                  : const Icon(
-                      Icons.add,
-                      size: 30,
-                    ),
+                  : isAdd
+                      ? const Icon(
+                          Icons.add_a_photo_outlined,
+                          size: 30,
+                        )
+                      : const Icon(
+                          Icons.add,
+                          size: 30,
+                        ),
+            ),
+            SizedBox(height: isAdd ? 16 : 0),
+            Visibility(
+              visible: isAdd,
+              child: FloatingActionButton(
+                  heroTag: '3',
+                  onPressed: () async {
+                    if (isAdd) {
+                      setState(() {
+                        isAdd = false;
+                      });
+                    }
+                  },
+                  backgroundColor: primaryUserColor,
+                  child: Icon(
+                    Icons.close,
+                    color: primaryAdminColor,
+                    size: 30,
+                  )),
             ),
           ],
         ),
