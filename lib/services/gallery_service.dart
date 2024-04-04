@@ -35,15 +35,14 @@ class GalleryService {
     }
   }
 
-  Future<GalleryModel> addGallery({required String name}) async {
+  Future<GalleryModel> addGallery(
+      {required String name, required int parentId}) async {
     late Uri url = UrlService().api('create-gallery');
     var headers = {
       'Content-Type': 'application/json',
     };
 
-    var body = {
-      'name': name,
-    };
+    var body = {'name': name, 'parentId': parentId};
 
     var response = await http.post(
       url,

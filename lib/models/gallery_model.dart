@@ -7,7 +7,7 @@ class GalleryModel extends Equatable {
   final String name;
   final List<ImageModel> images;
   final int parentId;
-  final List<GalleryModel> children;
+  final List<GalleryModel>? children;
 
   const GalleryModel({
     required this.id,
@@ -19,16 +19,15 @@ class GalleryModel extends Equatable {
 
   factory GalleryModel.fromJson(Map<String, dynamic> json) {
     return GalleryModel(
-      id: json['id'],
-      parentId: json['parentId'],
-      name: json['name'],
-      images: List<ImageModel>.from(
-        json['images'].map((x) => ImageModel.fromJson(x)),
-      ),
-      children: List<GalleryModel>.from(
-        json['children'].map((x) => ImageModel.fromJson(x)),
-      ),
-    );
+        id: json['id'],
+        parentId: json['parentId'] ?? 0,
+        name: json['name'],
+        images: List<ImageModel>.from(
+          json['images'].map((x) => ImageModel.fromJson(x)),
+        ),
+        children: List<GalleryModel>.from(
+          json['children'].map((x) => GalleryModel.fromJson(x)),
+        ));
   }
 
   @override

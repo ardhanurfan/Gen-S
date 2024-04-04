@@ -21,9 +21,10 @@ class GalleryProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> addGallery({required String name}) async {
+  Future<bool> addGallery({required String name, required int parentId}) async {
     try {
-      _galleries.add(await GalleryService().addGallery(name: name));
+      _galleries.add(
+          await GalleryService().addGallery(name: name, parentId: parentId));
       notifyListeners();
       return true;
     } catch (e) {
@@ -35,6 +36,7 @@ class GalleryProvider extends ChangeNotifier {
   Future<bool> deleteGallery({required int galleryId}) async {
     try {
       await GalleryService().deleteGallery(galleryId: galleryId);
+      print(_galleries);
       var index = _galleries.indexOf(
         _galleries.firstWhere(
           (element) => element.id == galleryId,

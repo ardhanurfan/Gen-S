@@ -9,7 +9,9 @@ import 'package:music_player/providers/gallery_provider.dart';
 import 'package:music_player/providers/images_provider.dart';
 import 'package:music_player/providers/user_provider.dart';
 import 'package:music_player/shared/theme.dart';
+import 'package:music_player/widgets/custom_popup.dart';
 import 'package:music_player/widgets/delete_popup.dart';
+import 'package:music_player/widgets/gallery_grid.dart';
 import 'package:music_player/widgets/image_popup.dart';
 import 'package:provider/provider.dart';
 
@@ -31,11 +33,23 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.gallery);
+    TextEditingController galleryController = TextEditingController(text: "");
+    double deviceWidth = MediaQuery.of(context).size.width;
     UserProvider userProvider = Provider.of<UserProvider>(context);
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
     ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
+
+    // List<dynamic> combineList() {
+    //   List<dynamic> listTemp = [];
+    //   for (var element in widget.gallery.children) {
+    //     listTemp.add(element);
+    //   }
+    //   for (var element in widget.gallery.images) {
+    //     listTemp.add(element);
+    //   }
+    //   return listTemp;
+    // }
 
     Future<void> handleAddImage() async {
       imagesProvider.setCroppedImageFile = null;
@@ -173,13 +187,39 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
       );
     }
 
+    Widget content() {
+      return widget.gallery.children!.isNotEmpty
+          ? GridView(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: EdgeInsets.only(
+                  top: 24,
+                  bottom: 24,
+                  left: deviceWidth <= kMobileBreakpoint ? 20 : 80,
+                  right: deviceWidth <= kMobileBreakpoint ? 20 : 80),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: deviceWidth <= kMobileBreakpoint ? 2 : 3,
+                childAspectRatio:
+                    deviceWidth <= kMobileBreakpoint ? 1 / 1.4 : 1 / 1.2,
+                crossAxisSpacing: deviceWidth <= kMobileBreakpoint ? 30 : 10,
+              ),
+              children: widget.gallery.children!
+                  .map(
+                    (gallery) => GalleryGrid(
+                      gallery: gallery,
+                    ),
+                  )
+                  .toList(),
+            )
+          : const SizedBox();
+    }
+
     Widget gridImages() {
       return GridView.builder(
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.all(1),
         itemCount: widget.gallery.images.length,
+        shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
         ),
@@ -241,6 +281,91 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
         }),
       );
     }
+    // Widget gridImages() {
+    //   List<dynamic> listCombine = combineList();
+    //   return GridView.builder(
+    //     // shrinkWrap: true,
+    //     physics: const BouncingScrollPhysics(
+    //       parent: AlwaysScrollableScrollPhysics(),
+    //     ),
+    //     padding: const EdgeInsets.all(1),
+    //     itemCount: listCombine.length,
+    //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //       crossAxisCount: 3,
+    //     ),
+    //     itemBuilder: ((context, index) {
+    //       if (listCombine[index] != null) {
+    //         if (listCombine[index] is GalleryModel) {
+    //           return Container(
+    //             margin: EdgeInsets.all(20),
+    //             child: GalleryGrid(
+    //               gallery: listCombine[index],
+    //             ),
+    //           );
+    //         } else if (listCombine[index] is ImageModel) {
+    //           ImageModel image = listCombine[index];
+    //           return Container(
+    //             padding: const EdgeInsets.all(0.5),
+    //             child: InkWell(
+    //               onTap: () {
+    //                 if (isDelete) {
+    //                   setState(() {
+    //                     if (imagesDel.contains(image)) {
+    //                       imagesDel.remove(image);
+    //                     } else {
+    //                       imagesDel.add(image);
+    //                     }
+    //                   });
+    //                 } else {
+    //                   Navigator.push(
+    //                     context,
+    //                     MaterialPageRoute(
+    //                       builder: (_) => PhotoViewPage(
+    //                         images: widget.gallery.images,
+    //                         index: index - widget.gallery.children.length,
+    //                       ),
+    //                     ),
+    //                   );
+    //                 }
+    //               },
+    //               child: Hero(
+    //                 tag: image.id,
+    //                 child: Stack(
+    //                   children: [
+    //                     CachedNetworkImage(
+    //                       width: double.infinity,
+    //                       height: double.infinity,
+    //                       imageUrl: image.url,
+    //                       fit: BoxFit.cover,
+    //                       placeholder: (context, url) =>
+    //                           Container(color: Colors.grey),
+    //                       errorWidget: (context, url, error) => Container(
+    //                         color: Colors.red.shade400,
+    //                       ),
+    //                     ),
+    //                     Visibility(
+    //                       visible: imagesDel.contains(image),
+    //                       child: Container(
+    //                         alignment: Alignment.center,
+    //                         color: Colors.black45,
+    //                         child: Icon(
+    //                           Icons.check,
+    //                           size: 40,
+    //                           color: primaryUserColor,
+    //                         ),
+    //                       ),
+    //                     )
+    //                   ],
+    //                 ),
+    //               ),
+    //             ),
+    //           );
+    //         }
+    //       }
+    //       return null;
+    //     }),
+    //   );
+    // }
 
     return Scaffold(
       backgroundColor:
@@ -255,7 +380,10 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
               header(),
             ];
           },
-          body: gridImages(),
+          body: ListView(children: [
+            content(),
+            gridImages(),
+          ]),
         ),
       ),
       floatingActionButton: Visibility(
@@ -271,6 +399,44 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                 } else {
                   if (isAdd) {
                     // ADD FOLDER
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomPopUp(
+                          controller: galleryController,
+                          title: "Gallery Name",
+                          add: () async {
+                            if (await galleryProvider.addGallery(
+                                parentId: widget.gallery.id,
+                                name: galleryController.text)) {
+                              ScaffoldMessenger.of(context)
+                                  .removeCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: successColor,
+                                  content: const Text(
+                                    'Add gallery successfuly',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .removeCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: alertColor,
+                                  content: Text(
+                                    galleryProvider.errorMessage,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      },
+                    );
                   } else {
                     setState(() {
                       isDelete = true;

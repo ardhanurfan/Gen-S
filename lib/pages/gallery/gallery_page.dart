@@ -60,6 +60,7 @@ class GalleryPage extends StatelessWidget {
                                 title: "Gallery Name",
                                 add: () async {
                                   if (await galleryProvider.addGallery(
+                                      parentId: 0,
                                       name: galleryController.text)) {
                                     ScaffoldMessenger.of(context)
                                         .removeCurrentSnackBar();
