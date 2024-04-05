@@ -7,15 +7,21 @@ import '../models/image_model.dart';
 
 class GalleryProvider extends ChangeNotifier {
   List<GalleryModel> _galleries = [];
+  List<GalleryModel> _allGalleries = [];
   String _errorMessage = '';
 
   List<GalleryModel> get galleries => _galleries;
+  List<GalleryModel> get allGalleries => _allGalleries;
   String get errorMessage => _errorMessage;
 
   Future<void> getGallery() async {
     try {
       List<GalleryModel> galleries = await GalleryService().getGalleries();
       _galleries = galleries;
+      for (var gallery in _galleries) {
+        _allGalleries.addAll(gallery.flatten());
+      }
+      notifyListeners();
     } catch (e) {
       rethrow;
     }
@@ -25,6 +31,8 @@ class GalleryProvider extends ChangeNotifier {
     try {
       _galleries.add(
           await GalleryService().addGallery(name: name, parentId: parentId));
+      _allGalleries.add(
+          await GalleryService().addGallery(name: name, parentId: parentId));
       notifyListeners();
       return true;
     } catch (e) {
@@ -33,16 +41,26 @@ class GalleryProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> deleteGallery({required int galleryId}) async {
+  Future<bool> deleteGallery(
+      {required int galleryId, required int parrentId}) async {
     try {
       await GalleryService().deleteGallery(galleryId: galleryId);
-      print(_galleries);
-      var index = _galleries.indexOf(
-        _galleries.firstWhere(
+      var index = _allGalleries.indexOf(
+        _allGalleries.firstWhere(
           (element) => element.id == galleryId,
         ),
       );
-      _galleries.removeAt(index);
+      List<GalleryModel> currentAndChildren = [];
+      for (var child in _allGalleries[index].children) {
+        currentAndChildren.addAll(child.flatten());
+      }
+      print(currentAndChildren);
+      for (var gallery in currentAndChildren) {
+        await GalleryService().deleteGallery(galleryId: gallery.id);
+        _allGalleries.remove(gallery);
+      }
+      _allGalleries.removeAt(index);
+      notifyListeners();
       notifyListeners();
 
       return true;

@@ -40,17 +40,6 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
     ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
     AudioProvider audioProvider = Provider.of<AudioProvider>(context);
 
-    // List<dynamic> combineList() {
-    //   List<dynamic> listTemp = [];
-    //   for (var element in widget.gallery.children) {
-    //     listTemp.add(element);
-    //   }
-    //   for (var element in widget.gallery.images) {
-    //     listTemp.add(element);
-    //   }
-    //   return listTemp;
-    // }
-
     Future<void> handleAddImage() async {
       imagesProvider.setCroppedImageFile = null;
       await imagesProvider.pickImage();
@@ -187,8 +176,8 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
       );
     }
 
-    Widget content() {
-      return widget.gallery.children!.isNotEmpty
+    Widget gridChildren() {
+      return widget.gallery.children.isNotEmpty
           ? GridView(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -203,7 +192,8 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                     deviceWidth <= kMobileBreakpoint ? 1 / 1.4 : 1 / 1.2,
                 crossAxisSpacing: deviceWidth <= kMobileBreakpoint ? 30 : 10,
               ),
-              children: widget.gallery.children!
+              children: galleryProvider.allGalleries
+                  .where((element) => element.parentId == widget.gallery.id)
                   .map(
                     (gallery) => GalleryGrid(
                       gallery: gallery,
@@ -281,91 +271,6 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
         }),
       );
     }
-    // Widget gridImages() {
-    //   List<dynamic> listCombine = combineList();
-    //   return GridView.builder(
-    //     // shrinkWrap: true,
-    //     physics: const BouncingScrollPhysics(
-    //       parent: AlwaysScrollableScrollPhysics(),
-    //     ),
-    //     padding: const EdgeInsets.all(1),
-    //     itemCount: listCombine.length,
-    //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-    //       crossAxisCount: 3,
-    //     ),
-    //     itemBuilder: ((context, index) {
-    //       if (listCombine[index] != null) {
-    //         if (listCombine[index] is GalleryModel) {
-    //           return Container(
-    //             margin: EdgeInsets.all(20),
-    //             child: GalleryGrid(
-    //               gallery: listCombine[index],
-    //             ),
-    //           );
-    //         } else if (listCombine[index] is ImageModel) {
-    //           ImageModel image = listCombine[index];
-    //           return Container(
-    //             padding: const EdgeInsets.all(0.5),
-    //             child: InkWell(
-    //               onTap: () {
-    //                 if (isDelete) {
-    //                   setState(() {
-    //                     if (imagesDel.contains(image)) {
-    //                       imagesDel.remove(image);
-    //                     } else {
-    //                       imagesDel.add(image);
-    //                     }
-    //                   });
-    //                 } else {
-    //                   Navigator.push(
-    //                     context,
-    //                     MaterialPageRoute(
-    //                       builder: (_) => PhotoViewPage(
-    //                         images: widget.gallery.images,
-    //                         index: index - widget.gallery.children.length,
-    //                       ),
-    //                     ),
-    //                   );
-    //                 }
-    //               },
-    //               child: Hero(
-    //                 tag: image.id,
-    //                 child: Stack(
-    //                   children: [
-    //                     CachedNetworkImage(
-    //                       width: double.infinity,
-    //                       height: double.infinity,
-    //                       imageUrl: image.url,
-    //                       fit: BoxFit.cover,
-    //                       placeholder: (context, url) =>
-    //                           Container(color: Colors.grey),
-    //                       errorWidget: (context, url, error) => Container(
-    //                         color: Colors.red.shade400,
-    //                       ),
-    //                     ),
-    //                     Visibility(
-    //                       visible: imagesDel.contains(image),
-    //                       child: Container(
-    //                         alignment: Alignment.center,
-    //                         color: Colors.black45,
-    //                         child: Icon(
-    //                           Icons.check,
-    //                           size: 40,
-    //                           color: primaryUserColor,
-    //                         ),
-    //                       ),
-    //                     )
-    //                   ],
-    //                 ),
-    //               ),
-    //             ),
-    //           );
-    //         }
-    //       }
-    //       return null;
-    //     }),
-    //   );
-    // }
 
     return Scaffold(
       backgroundColor:
@@ -381,7 +286,7 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
             ];
           },
           body: ListView(children: [
-            content(),
+            gridChildren(),
             gridImages(),
           ]),
         ),
@@ -409,6 +314,9 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                             if (await galleryProvider.addGallery(
                                 parentId: widget.gallery.id,
                                 name: galleryController.text)) {
+                              setState(() {
+                                galleryProvider.getGallery();
+                              });
                               ScaffoldMessenger.of(context)
                                   .removeCurrentSnackBar();
                               ScaffoldMessenger.of(context).showSnackBar(

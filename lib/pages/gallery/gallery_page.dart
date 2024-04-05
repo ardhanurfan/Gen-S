@@ -127,6 +127,7 @@ class GalleryPage extends StatelessWidget {
           crossAxisSpacing: deviceWidth <= kMobileBreakpoint ? 30 : 10,
         ),
         children: galleryProvider.galleries
+            .where((element) => element.parentId == 0)
             .map(
               (gallery) => GalleryGrid(
                 gallery: gallery,

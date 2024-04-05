@@ -150,7 +150,8 @@ class GalleryGrid extends StatelessWidget {
                         builder: (context) => DeletePopUp(
                           delete: () async {
                             if (await galleryProvider.deleteGallery(
-                                galleryId: gallery.id)) {
+                                galleryId: gallery.id,
+                                parrentId: gallery.parentId)) {
                               ScaffoldMessenger.of(context)
                                   .removeCurrentSnackBar();
                               ScaffoldMessenger.of(context).showSnackBar(

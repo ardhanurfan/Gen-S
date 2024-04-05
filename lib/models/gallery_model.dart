@@ -7,7 +7,7 @@ class GalleryModel extends Equatable {
   final String name;
   final List<ImageModel> images;
   final int parentId;
-  final List<GalleryModel>? children;
+  final List<GalleryModel> children;
 
   const GalleryModel({
     required this.id,
@@ -25,9 +25,20 @@ class GalleryModel extends Equatable {
         images: List<ImageModel>.from(
           json['images'].map((x) => ImageModel.fromJson(x)),
         ),
-        children: List<GalleryModel>.from(
-          json['children'].map((x) => GalleryModel.fromJson(x)),
-        ));
+        children: json['children'] != null
+            ? List<GalleryModel>.from(
+                json['children'].map((x) => GalleryModel.fromJson(x)),
+              )
+            : []);
+  }
+
+  List<GalleryModel> flatten() {
+    List<GalleryModel> result = [];
+    result.add(this);
+    for (var child in children) {
+      result.addAll(child.flatten());
+    }
+    return result;
   }
 
   @override
