@@ -131,13 +131,13 @@ class GalleryProvider extends ChangeNotifier {
     try {
       GalleryModel newPlaylist =
           await GalleryService().rename(name: name, galleryId: galleryId);
-      var index = _galleries.indexOf(
-        _galleries.firstWhere(
+      var index = _allGalleries.indexOf(
+        _allGalleries.firstWhere(
           (element) => element.id == galleryId,
         ),
       );
-      _galleries.removeAt(index);
-      _galleries.insert(index, newPlaylist);
+      _allGalleries.removeAt(index);
+      _allGalleries.insert(index, newPlaylist);
       notifyListeners();
       return true;
     } catch (e) {
