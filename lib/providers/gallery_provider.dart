@@ -21,6 +21,7 @@ class GalleryProvider extends ChangeNotifier {
       for (var gallery in _galleries) {
         _allGalleries.addAll(gallery.flatten());
       }
+      _allGalleries.sort((a, b) => a.name.compareTo(b.name));
       notifyListeners();
     } catch (e) {
       rethrow;
@@ -29,10 +30,10 @@ class GalleryProvider extends ChangeNotifier {
 
   Future<bool> addGallery({required String name, required int parentId}) async {
     try {
-      _galleries.add(
-          await GalleryService().addGallery(name: name, parentId: parentId));
-      _allGalleries.add(
-          await GalleryService().addGallery(name: name, parentId: parentId));
+      GalleryModel gallery =
+          await GalleryService().addGallery(name: name, parentId: parentId);
+      _allGalleries.add(gallery);
+      _allGalleries.sort((a, b) => a.name.compareTo(b.name));
       notifyListeners();
       return true;
     } catch (e) {
@@ -54,13 +55,11 @@ class GalleryProvider extends ChangeNotifier {
       for (var child in _allGalleries[index].children) {
         currentAndChildren.addAll(child.flatten());
       }
-      print(currentAndChildren);
       for (var gallery in currentAndChildren) {
         await GalleryService().deleteGallery(galleryId: gallery.id);
         _allGalleries.remove(gallery);
       }
       _allGalleries.removeAt(index);
-      notifyListeners();
       notifyListeners();
 
       return true;

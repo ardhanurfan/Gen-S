@@ -177,7 +177,9 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
     }
 
     Widget gridChildren() {
-      return widget.gallery.children.isNotEmpty
+      return galleryProvider.allGalleries
+              .where((element) => element.parentId == widget.gallery.id)
+              .isNotEmpty
           ? GridView(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -314,9 +316,6 @@ class _DetailGalleryPageState extends State<DetailGalleryPage> {
                             if (await galleryProvider.addGallery(
                                 parentId: widget.gallery.id,
                                 name: galleryController.text)) {
-                              setState(() {
-                                galleryProvider.getGallery();
-                              });
                               ScaffoldMessenger.of(context)
                                   .removeCurrentSnackBar();
                               ScaffoldMessenger.of(context).showSnackBar(
