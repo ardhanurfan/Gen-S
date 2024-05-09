@@ -25,9 +25,12 @@ class EmptyStatePage extends StatelessWidget {
     Widget mainText() {
       return Center(
         child: Container(
-          margin: const EdgeInsets.only(top: 49, bottom: 24),
+          margin: const EdgeInsets.only(top: 49, bottom: 8),
           child: Text(
-            "Your library is empty  :(",
+            userProvider.user != null
+                ? "Your library is empty  :("
+                : "Your audio history is off",
+            textAlign: TextAlign.center,
             style: userProvider.user?.role == "USER" ||
                     userProvider.user == null
                 ? primaryUserColorText.copyWith(fontSize: 24, fontWeight: bold)
@@ -38,15 +41,29 @@ class EmptyStatePage extends StatelessWidget {
       );
     }
 
+    Widget secondaryText() {
+      return Visibility(
+        visible: userProvider.user == null,
+        child: Center(
+          child: Text(
+            "Please login to use history feature",
+            textAlign: TextAlign.center,
+            style: userProvider.user?.role == "USER" ||
+                    userProvider.user == null
+                ? primaryUserColorText.copyWith(fontSize: 14, fontWeight: bold)
+                : primaryAdminColorText.copyWith(
+                    fontSize: 14, fontWeight: bold),
+          ),
+        ),
+      );
+    }
+
     return Expanded(
       child: ListView(
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        children: [
-          mainIcon(),
-          mainText(),
-        ],
+        children: [mainIcon(), mainText(), secondaryText()],
       ),
     );
   }

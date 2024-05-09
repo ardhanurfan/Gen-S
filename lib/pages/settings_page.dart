@@ -194,7 +194,7 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 40,
             ),
             Text(
-              "Version 1.1.3",
+              "Version 1.2.0",
               style:
                   userProvider.user?.role == "USER" || userProvider.user == null
                       ? primaryUserColorText.copyWith(fontSize: 12)

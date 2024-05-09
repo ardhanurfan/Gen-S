@@ -45,9 +45,9 @@ class EmptyPlaylistPage extends StatelessWidget {
                           fontSize: 24, fontWeight: bold),
                     ),
                     Text(
-                      "Please login first to use this feature",
+                      "Please login to use this feature",
                       style: primaryUserColorText.copyWith(
-                          fontSize: 16, fontWeight: bold),
+                          fontSize: 14, fontWeight: bold),
                     )
                   ],
                 )
