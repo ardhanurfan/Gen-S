@@ -145,20 +145,35 @@ class _SignInPageState extends State<SignInPage> {
           isLoading
               ? LoadingButton(
                   marginTop: 60,
-                  marginBottom: 80,
+                  marginBottom: 20,
                   heightButton: 53,
                   radiusButton: 32,
                   buttonColor: secondaryColor,
                 )
               : CustomButton(
                   marginTop: 60,
-                  marginBottom: 80,
+                  marginBottom: 20,
                   heightButton: 53,
                   radiusButton: 32,
                   buttonColor: secondaryColor,
                   buttonText: 'Login',
                   onPressed: handleSignIn,
                 ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/main", (route) => false);
+              },
+              child: Text(
+                "Continue as guest",
+                style: primaryUserColorText.copyWith(
+                    decoration: TextDecoration.underline,
+                    decorationColor: primaryUserColor,
+                    decorationThickness: 1.4),
+              ),
+            ),
+          )
         ],
       );
     }

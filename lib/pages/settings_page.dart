@@ -31,7 +31,8 @@ class _SettingsPageState extends State<SettingsPage> {
         isLoading = true;
       });
       if (userProvider.user == null) {
-        Navigator.pushNamed(context, '/sign-in');
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/sign-in', (route) => false);
       } else {
         if (await userProvider.logout(token: userProvider.user!.token)) {
           Navigator.pushNamedAndRemoveUntil(

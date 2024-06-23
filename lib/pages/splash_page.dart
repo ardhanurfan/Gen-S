@@ -37,6 +37,7 @@ class _SplashPageState extends State<SplashPage> {
     AudioPlayerProvider audioPlayerProvider =
         Provider.of<AudioPlayerProvider>(context, listen: false);
     AdsProvider adsProvider = Provider.of<AdsProvider>(context, listen: false);
+    await UserService().clearTokenPreference();
     final String? token = await UserService().getTokenPreference();
 
     // Get general data
