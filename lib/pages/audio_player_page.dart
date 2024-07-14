@@ -39,6 +39,7 @@ class AudioPlayerPage extends StatelessWidget {
     UserProvider userProvider = Provider.of<UserProvider>(context);
     ImagesProvider imagesProvider = Provider.of<ImagesProvider>(context);
     GalleryProvider galleryProvider = Provider.of<GalleryProvider>(context);
+    print(adsProvider.adsPlayer);
 
     Stream<PositionDataModel> positionDataStream =
         Rx.combineLatest3<Duration, Duration, Duration?, PositionDataModel>(
@@ -371,9 +372,9 @@ class AudioPlayerPage extends StatelessWidget {
                   },
                 ),
                 Visibility(
-                  visible: userProvider.user?.role == "USER" ||
-                      userProvider.user == null &&
-                          adsProvider.adsPlayer.isNotEmpty,
+                  visible: (userProvider.user?.role == "USER" ||
+                          userProvider.user == null) &&
+                      adsProvider.adsPlayer.isNotEmpty,
                   child: AdsBannerPlayer(
                     listOfAds: adsProvider.adsPlayer,
                   ),

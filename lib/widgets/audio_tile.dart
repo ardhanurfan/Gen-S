@@ -45,6 +45,7 @@ class AudioTile extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
+        print("TEST");
         await audioPlayerProvider.setPlay(
           playlist,
           index,
