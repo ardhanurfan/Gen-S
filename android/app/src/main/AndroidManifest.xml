@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="id.my.application.gens">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="id.my.application.gens">
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
@@ -23,7 +22,7 @@
         android:label="Gen-S"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="false">
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
             android:exported="true"
