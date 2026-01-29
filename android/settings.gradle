@@ -17,9 +17,12 @@ pluginManagement {
 }
 
 plugins {
-    id "dev.flutter.flutter-plugin-loader" version "1.0.0"
-    id "com.android.application" version "8.3.0" apply false  // Update versi
-    id "org.jetbrains.kotlin.android" version "1.9.22" apply false  // Update versi
+    // id "dev.flutter.flutter-plugin-loader" version "1.0.0"
+    // id "com.android.application" version "8.5.1" apply false  // Update versi
+    // id "org.jetbrains.kotlin.android" version "1.9.22" apply false  // Update versi
+    id "dev.flutter.flutter-plugin-loader" 
+    id "com.android.application" version "8.5.1" apply false // Update ke 8.5.1 untuk support Android 15 lebih baik
+    id "org.jetbrains.kotlin.android" version "1.9.24" apply false
 }
 
 include ":app"

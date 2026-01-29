@@ -30,16 +30,16 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace "id.my.application.gens"  // Tambahkan namespace
-    compileSdk 35  // Update ke 35
+    compileSdk 36  // Update ke 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     kotlinOptions {
-        jvmTarget = '17'  // Update ke 17
+        jvmTarget = '21'  // Update ke 17
     }
 
     sourceSets {
@@ -49,7 +49,7 @@ android {
     defaultConfig {
         applicationId "id.my.application.gens"
         minSdkVersion 21
-        targetSdkVersion 35  // Update ke 35
+        targetSdkVersion 36  // Update ke 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -62,10 +62,18 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
+
+    packagingOptions {
+        jniLibs {
+            // Ini memastikan library native sejajar dengan 16 KB
+            useLegacyPackaging = true 
+        }
+    }
     
     buildTypes {
         release {
             signingConfig signingConfigs.release
+            multiDexEnabled true
             minifyEnabled true  // Enable untuk optimasi
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
