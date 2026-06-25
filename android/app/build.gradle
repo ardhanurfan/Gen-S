@@ -48,7 +48,7 @@ android {
 
     defaultConfig {
         applicationId "id.my.application.gens"
-        minSdkVersion 21
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 36  // Update ke 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
